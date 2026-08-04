@@ -1,0 +1,377 @@
+/* =========================
+        NAVIGATION
+========================= */
+
+header{
+    width:100%;
+}
+
+nav{
+    background:#11284d;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:22px 80px;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:bold;
+    color:white;
+}
+
+.logo span{
+    color:#2fc7c9;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:50px;
+    margin-left:auto;
+}
+
+nav ul li a{
+    color:white;
+    text-decoration:none;
+    font-size:18px;
+    font-weight:600;
+    transition:.3s;
+}
+
+nav ul li a:hover{
+    color:#2fc7c9;
+}
+
+.active{
+    color:#2fc7c9 !important;
+    border-bottom:3px solid #2fc7c9;
+    padding-bottom:6px;
+}
+/* =========================
+        ABOUT PAGE
+========================= */
+
+body{
+    background:#f4f7fb;
+}
+
+/* Page */
+
+.about-page{
+    width:90%;
+    max-width:1400px;
+    margin:60px auto;
+}
+
+/* =========================
+        PAGE TITLE
+========================= */
+
+.page-title{
+    text-align:center;
+    margin-bottom:70px;
+}
+
+.page-title h1{
+    font-size:72px;
+    color:#0d2344;
+    font-weight:800;
+    margin-bottom:20px;
+}
+
+.page-title p{
+    font-size:28px;
+    color:#555;
+    max-width:900px;
+    margin:auto;
+    line-height:1.8;
+}
+
+/* =========================
+        CARDS
+========================= */
+
+.about-card{
+    background:white;
+    padding:50px;
+    border-radius:20px;
+    margin-bottom:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    text-align:center;
+
+    transition:.3s;
+}
+
+.about-card:hover{
+    transform:translateY(-6px);
+}
+
+/* =========================
+        HEADINGS
+========================= */
+
+.about-card h2{
+    font-size:42px;
+    color:#0d2344;
+    margin-bottom:30px;
+    font-weight:800;
+}
+
+.about-card h3{
+    font-size:30px;
+    color:#2fc7c9;
+    margin:30px 0 20px;
+    font-weight:700;
+}
+
+/* =========================
+        PARAGRAPHS
+========================= */
+
+.about-card p{
+
+    font-size:24px;
+
+    color:#555;
+
+    line-height:2;
+
+    max-width:900px;
+
+    margin:20px auto;
+
+    text-align:center;
+
+}
+
+/* =========================
+        OBJECTIVES
+========================= */
+
+.objective{
+
+    width:90%;
+
+    margin:20px auto;
+
+    background:#f6f9fc;
+
+    padding:22px;
+
+    border-left:6px solid #2fc7c9;
+
+    border-radius:12px;
+
+    font-size:23px;
+
+    text-align:center;
+
+    transition:.3s;
+
+}
+
+.objective:hover{
+
+    background:#eef8ff;
+
+}
+
+/* =========================
+        TWO COLUMNS
+========================= */
+
+.two-column{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:35px;
+
+    margin-bottom:40px;
+
+}
+
+/* =========================
+        REFERENCE BOX
+========================= */
+
+.reference{
+
+    background:#f8fafc;
+
+    border-left:6px solid #2fc7c9;
+
+    border-radius:12px;
+
+    padding:30px;
+
+    width:90%;
+
+    margin:25px auto;
+
+    text-align:center;
+
+}
+
+.reference strong{
+
+    display:block;
+
+    font-size:28px;
+
+    color:#0d2344;
+
+    margin-bottom:15px;
+
+}
+
+.reference p{
+
+    font-size:22px;
+
+    margin:0;
+
+}
+
+/* =========================
+        WARNING BOX
+========================= */
+
+.warning{
+
+    background:#fff8e5;
+
+    border:2px solid #ffc84d;
+
+    border-radius:20px;
+
+    padding:45px;
+
+    text-align:center;
+
+    margin-top:30px;
+
+}
+
+.warning h2{
+
+    font-size:42px;
+
+    color:#c77700;
+
+    margin-bottom:25px;
+
+    font-weight:800;
+
+}
+
+.warning p{
+
+    font-size:22px;
+
+    line-height:2;
+
+    color:#5b4a2d;
+
+    max-width:1000px;
+
+    margin:auto;
+
+}
+
+/* =========================
+        RESEARCH TEAM
+========================= */
+
+.about-card hr{
+
+    width:70%;
+
+    margin:35px auto;
+
+    border:none;
+
+    height:1px;
+
+    background:#ddd;
+
+}
+
+/* =========================
+        ACTIVE NAV
+========================= */
+
+.active{
+
+    color:#2fc7c9 !important;
+
+    border-bottom:3px solid #2fc7c9;
+
+    padding-bottom:6px;
+
+}
+
+/* =========================
+        RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+.two-column{
+
+grid-template-columns:1fr;
+
+}
+
+.page-title h1{
+
+font-size:50px;
+
+}
+
+.page-title p{
+
+font-size:22px;
+
+}
+
+.about-card h2{
+
+font-size:34px;
+
+}
+
+.about-card h3{
+
+font-size:24px;
+
+}
+
+.about-card p{
+
+font-size:20px;
+
+}
+
+.objective{
+
+font-size:20px;
+
+}
+
+.warning h2{
+
+font-size:32px;
+
+}
+
+.warning p{
+
+font-size:19px;
+
+}
+
+}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sample Information | MicroCount STEVision</title>
+
+<link rel="icon" href="images/logo.png">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="sample.css">
+
+</head>
+
+<body>
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+
+<img src="images/logo.png" alt="Logo">
+
+<span>MicroCount <strong>STEVision</strong></span>
+
+</div>
+
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="sample.html" class="active">Sample</a></li>
+<li><a href="results.html">Results</a></li>
+<li><a href="about.html">About</a></li>
+</ul>
+
+</nav>
+
+</header>
+
+
+<section class="sample-page">
+
+<div class="sample-left">
+
+<h1>Sample Information</h1>
+
+<p>Please provide the details of your water sample.</p>
+
+<form id="sampleForm">
+
+<label>School Name</label>
+<input
+    type="text"
+    id="schoolName"
+    placeholder="Name of School">
+
+<label>Section</label>
+<input
+    type="text"
+    id="section"
+    placeholder="Grade level - Section">
+
+<label>Source of Water</label>
+
+<select id="source">
+
+<option>Water Refilling Station</option>
+<option>Tap Water</option>
+<option>Mineral Water</option>
+<option>Deep Well</option>
+
+</select>
+<label for="numImages">Number of Microscope Images</label>
+
+<select id="numImages" required>
+
+    <option value="">Select number of images</option>
+
+    <option value="1">1 Image</option>
+    <option value="2">2 Images</option>
+    <option value="3">3 Images</option>
+    <option value="4">4 Images</option>
+    <option value="5">5 Images</option>
+    <option value="6">6 Images</option>
+    <option value="7">7 Images</option>
+    <option value="8">8 Images</option>
+    <option value="9">9 Images</option>
+    <option value="10" selected>10 Images (Recommended)</option>
+    <option value="11">11 Images</option>
+    <option value="12">12 Images</option>
+    <option value="13">13 Images</option>
+    <option value="14">14 Images</option>
+    <option value="15">15 Images</option>
+    <option value="16">16 Images</option>
+    <option value="17">17 Images</option>
+    <option value="18">18 Images</option>
+    <option value="19">19 Images</option>
+    <option value="20">20 Images</option>
+
+</select>
+
+<small style="color:#666;">
+Recommended: Upload around <strong>10 microscope images</strong> for more reliable analysis.
+</small>
+<label for="microscopeType">Microscope Used</label>
+
+<select id="microscopeType" required>
+    <option value="">Select microscope type</option>
+
+    <option value="Compound Light Microscope">
+        Compound Light Microscope
+    </option>
+
+    <option value="Digital Microscope">
+        Digital Microscope
+    </option>
+
+    <option value="USB Microscope">
+        USB Microscope
+    </option>
+
+    <option value="Stereo Microscope">
+        Stereo Microscope
+    </option>
+
+    <option value="Smartphone Microscope">
+        Smartphone Microscope
+    </option>
+
+    <option value="Portable Pocket Microscope">
+        Portable Pocket Microscope
+    </option>
+
+    <option value="Other">
+        Other
+    </option>
+</select>
+
+<small style="color:#666;">
+Choose the microscope used to capture the uploaded images.
+</small>
+
+
+<button
+    type="button"
+    id="continueBtn">
+    Continue to Upload →
+</button>
+
+</form>
+
+</div>
+
+<div class="sample-right"></div>
+
+</section>
+
+<script src="sample.js"></script>
+
+</body>
+</html>

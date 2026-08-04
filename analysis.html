@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MicroCount STEVision</title>
+
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Analysis | MicroCount STEVision</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+
+<img src="images/logo.png" alt="Logo">
+
+<span>MicroCount <strong>STEVision</strong></span>
+
+</div>
+
+<ul class="nav-links">
+
+<li><a href="index.html">Home</a></li>
+<li><a href="sample.html">Sample</a></li>
+<li><a href="analysis.html" class="active">Analysis</a></li>
+<li><a href="results.html">Results</a></li>
+<li><a href="about.html">About</a></li>
+
+</ul>
+
+</nav>
+
+</header>
+
+<section class="analysis-page">
+
+<h1>Analyzing Microscope Images</h1>
+
+<p>
+
+Please wait while MicroCount STEVision processes your uploaded microscope images using Fiji/ImageJ-assisted computational image analysis.
+
+</p>
+
+<div class="analysis-card">
+
+<div class="loader"></div>
+
+<h2 id="statusText">
+
+Initializing Fiji/ImageJ...
+
+</h2>
+
+<div class="progress">
+
+<div class="progress-bar" id="progressBar"></div>
+
+</div>
+
+<p id="percentText">
+
+0%
+
+</p>
+
+</div>
+
+</section>
+
+<script src="analysis.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Upload | MicroCount STEVision</title>
+
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>MicroCount <strong>STEVision</strong></span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sample.html">Sample</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="results.html">Results</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+
+    </nav>
+</header>
+
+<section class="upload-page">
+
+    <div class="upload-container">
+
+        <h1>Upload Microscope Images</h1>
+
+        <p>
+            Upload the number of microscope images you selected on the Sample page.
+            (Recommended: 10 images)
+        </p>
+
+        <div class="upload-box" id="dropArea">
+
+            <div class="upload-icon">☁️</div>
+
+            <h2>Upload Images</h2>
+
+            <p>Drag & Drop or Click to Browse</p>
+
+            <input
+                id="fileInput"
+                type="file"
+                accept="image/*"
+                multiple
+                hidden>
+
+            <label class="browse-btn" for="fileInput">
+                Browse Files
+            </label>
+
+        </div>
+
+        <div id="previewContainer" class="preview-container"></div>
+
+        <button id="analyzeBtn" class="analyze-btn">
+            Analyze Images →
+        </button>
+
+    </div>
+
+</section>
+
+<script src="upload.js"></script>
+
+</body>
+</html>

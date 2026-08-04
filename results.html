@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MicroCount STEVision</title>
+
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Results | MicroCount STEVision</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<nav class="navbar">
+
+<div class="logo">
+<img src="images/logo.png" alt="Logo">
+<span>MicroCount <strong>STEVision</strong></span>
+</div>
+
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="sample.html">Sample</a></li>
+<li><a href="analysis.html">Analysis</a></li>
+<li><a href="results.html" class="active">Results</a></li>
+<li><a href="about.html">About</a></li>
+</ul>
+
+</nav>
+
+</header>
+
+<section class="results-page">
+
+<h1>Results & Risk Assessment</h1>
+
+<p>
+Microplastic analysis completed successfully using Fiji/ImageJ-assisted computational image analysis.
+</p>
+
+<div class="results-grid">
+
+<!-- LEFT COLUMN -->
+
+<div class="result-image-card">
+
+<h2>Analyzed Microscope Image</h2>
+
+<img id="resultImage" src="" alt="Uploaded Microscope Image">
+
+</div>
+
+<!-- RIGHT COLUMN -->
+
+<div class="results-info">
+
+<!-- Sample Information -->
+
+<div class="card">
+
+<h2>Sample Information</h2>
+
+<p><strong>School Name:</strong> <span id="schoolName"></span></p>
+
+<p><strong>Section:</strong> <span id="section"></span></p>
+
+<p><strong>Water Source:</strong> <span id="source"></span></p>
+
+<p><strong>Sample ID:</strong> <span id="sampleID"></span></p>
+
+</div>
+
+<!-- Analysis Summary -->
+
+<div class="card">
+
+<h2>Analysis Summary</h2>
+
+<p><strong>Number of Images:</strong> <span id="numImages"></span></p>
+
+<p><strong>Detected Particles:</strong> <span id="particleCount"></span></p>
+
+<p><strong>Average Count:</strong> <span id="average"></span></p>
+
+<p><strong>Detection Method:</strong><br>
+Fiji/ImageJ Computational Image Analysis
+</p>
+
+</div>
+
+<!-- Risk Level -->
+
+<div class="card">
+
+<h2>Risk Level</h2>
+
+<div id="riskBox" class="risk-level">
+
+<h3 id="riskLevel">LEVEL 1</h3>
+
+<p id="riskText">LOW RISK</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Risk Scale -->
+
+<div class="card">
+
+<h2>Microplastic Quantity Classification</h2>
+
+<div class="risk-scale">
+
+<div class="risk-item green">
+
+<h3>LEVEL 1</h3>
+
+<p>0–10 particles/image</p>
+
+<span>Low</span>
+
+</div>
+
+<div class="risk-item yellow">
+
+<h3>LEVEL 2</h3>
+
+<p>11–30 particles/image</p>
+
+<span>Moderate</span>
+
+</div>
+
+<div class="risk-item orange">
+
+<h3>LEVEL 3</h3>
+
+<p>31–60 particles/image</p>
+
+<span>High</span>
+
+</div>
+
+<div class="risk-item red">
+
+<h3>LEVEL 4</h3>
+
+<p>61+ particles/image</p>
+
+<span>Very High</span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Interpretation -->
+
+<div class="card interpretation-card">
+
+<h2>Interpretation</h2>
+
+<p id="interpretation"></p>
+
+</div>
+<div class="result-card">
+
+<h2>Microplastic Types Identified</h2>
+
+<table class="mp-table">
+
+<thead>
+<tr>
+<th>Type</th>
+<th>Detected</th>
+<th>Percentage</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Fragments</td>
+<td id="fragmentCount"></td>
+<td id="fragmentPercent"></td>
+</tr>
+
+<tr>
+<td>Fibers</td>
+<td id="fiberCount"></td>
+<td id="fiberPercent"></td>
+</tr>
+
+<tr>
+<td>Films</td>
+<td id="filmCount"></td>
+<td id="filmPercent"></td>
+</tr>
+
+<tr>
+<td>Foams</td>
+<td id="foamCount"></td>
+<td id="foamPercent"></td>
+</tr>
+
+<tr>
+<td>Pellets</td>
+<td id="pelletCount"></td>
+<td id="pelletPercent"></td>
+</tr>
+
+<tr>
+<td>Lines / Filaments</td>
+<td id="lineCount"></td>
+<td id="linePercent"></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- Buttons -->
+
+<div class="download-section">
+
+<button id="downloadReport" class="download-btn">
+
+📄 Download Report
+
+</button>
+
+<button onclick="window.location.href='sample.html'" class="download-btn">
+
+🔄 New Analysis
+
+</button>
+
+</div>
+
+</section>
+
+<script src="results.js"></script>
+
+</body>
+</html>
