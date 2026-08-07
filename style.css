@@ -315,71 +315,6 @@ button:first-of-type{
     transform:translateY(-6px);
     transition:.3s;
 }
-/* ==========================================
-            SAMPLE PAGE
-========================================== */
-
-.sample-page{
-    max-width:900px;
-    margin:70px auto;
-    padding:0 30px;
-}
-
-.sample-card{
-    background:#fff;
-    border-radius:20px;
-    padding:45px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
-}
-
-.sample-card h1{
-    font-size:42px;
-    color:#11284d;
-    margin-bottom:15px;
-    text-align:center;
-}
-
-.sample-card p{
-    font-size:18px;
-    color:#666;
-    text-align:center;
-    margin-bottom:35px;
-}
-
-.sample-card form{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-}
-
-.sample-card label{
-    font-weight:600;
-    color:#11284d;
-}
-
-.sample-card input,
-.sample-card select{
-    padding:16px;
-    border:1px solid #ccc;
-    border-radius:10px;
-    font-size:17px;
-}
-
-.continue-btn{
-    margin-top:25px;
-    background:#2fc7c9;
-    color:white;
-    padding:18px;
-    border-radius:12px;
-    text-align:center;
-    font-weight:600;
-    font-size:20px;
-    transition:.3s;
-}
-
-.continue-btn:hover{
-    background:#23b0b2;
-}
 
 .results-page{
     max-width:1200px;
@@ -493,137 +428,6 @@ nav ul{
 button{
     margin-top:15px;
 }
-}
-/* SAMPLE PAGE */
-
-.sample-page{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:70px 8%;
-
-gap:60px;
-
-}
-
-.sample-left{
-
-flex:1;
-
-}
-
-.sample-left h1{
-
-font-size:46px;
-
-color:#17305d;
-
-margin-bottom:10px;
-
-}
-
-.sample-left p{
-
-color:#666;
-
-margin-bottom:35px;
-
-}
-
-.sample-left form{
-
-display:flex;
-
-flex-direction:column;
-
-gap:18px;
-
-}
-
-.sample-left label{
-
-font-weight:600;
-
-color:#17305d;
-
-}
-
-.sample-left input,
-.sample-left select{
-
-padding:15px;
-
-border:1px solid #d9d9d9;
-
-border-radius:10px;
-
-font-size:16px;
-
-}
-
-.sample-left input:focus,
-.sample-left select:focus{
-
-outline:none;
-
-border:2px solid #28c8c8;
-
-}
-
-.continue-btn{
-
-margin-top:15px;
-
-width:100%;
-
-padding:18px;
-
-background:#17305d;
-
-color:white;
-
-border:none;
-
-border-radius:10px;
-
-font-size:18px;
-
-font-weight:600;
-
-cursor:pointer;
-
-transition:.3s;
-
-}
-
-.continue-btn:hover{
-
-background:#244a88;
-
-}
-
-.sample-right{
-
-flex:1;
-
-display:flex;
-
-justify-content:center;
-
-}
-
-.sample-right img{
-
-width:370px;
-
-}
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 30px;
 }
 /* =======================
    Upload Page
@@ -1438,5 +1242,562 @@ grid-template-columns:1fr;
 grid-template-columns:1fr 1fr;
 
 }
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+/* =========================================
+   RESULTS - RECOMMENDATIONS
+========================================= */
+
+.recommendations-card {
+    margin-top: 35px;
+    padding: 35px;
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 22px;
+    border-left: 6px solid #35c3cf;
+    box-shadow: 0 10px 30px rgba(23, 50, 92, 0.10);
+}
+
+.recommendations-card > h2 {
+    color: #17325c;
+    font-size: 30px;
+    margin-bottom: 25px;
+}
+
+.recommendation-item {
+    background: #f5fafc;
+    border: 1px solid #e4f0f4;
+    border-radius: 16px;
+    padding: 22px;
+    margin-top: 18px;
+}
+
+.recommendation-item h3 {
+    color: #087f8c;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.recommendation-item p {
+    color: #555;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.recommendation-item ul {
+    margin: 0;
+    padding-left: 25px;
+    color: #555;
+    line-height: 1.8;
+}
+
+.recommendation-item li {
+    margin-bottom: 7px;
+}
+/* =====================================================
+   MICROCOUNT STEVISION
+   RESULTS PAGE DESIGN
+===================================================== */
+
+
+/* =========================
+   RESULTS PAGE
+========================= */
+
+.results-section {
+
+    width: 100%;
+    max-width: 1250px;
+
+    margin: 0 auto;
+
+    padding: 70px 30px 100px;
+
+}
+
+
+/* =========================================
+   MICROPLASTIC RESULTS TABLE
+========================================= */
+
+.microplastic-table {
+    width: 100%;
+    border-collapse: collapse !important;
+    border: 2px solid #cbd7e3 !important;
+    border-radius: 15px;
+    overflow: hidden;
+    background: white;
+}
+
+/* HEADER */
+
+.microplastic-table thead {
+    background: #17325c;
+}
+
+.microplastic-table th {
+    color: white;
+    text-align: left;
+
+    padding: 20px 25px;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    border: 1px solid #10294d !important;
+}
+
+
+/* BODY CELLS */
+
+.microplastic-table td {
+    padding: 23px 25px;
+
+    font-size: 17px;
+
+    color: #333;
+
+    border: 1px solid #cbd7e3 !important;
+}
+
+
+/* FIRST COLUMN */
+
+.microplastic-table td:first-child {
+    font-weight: 600;
+    color: #17325c;
+}
+
+
+/* ALTERNATING ROWS */
+
+.microplastic-table tbody tr:nth-child(even) {
+    background: #f5f9fc;
+}
+
+.microplastic-table tbody tr:nth-child(odd) {
+    background: #ffffff;
+}
+
+
+/* HOVER */
+
+.microplastic-table tbody tr:hover {
+    background: #e9faff;
+}
+
+
+/* EXTRA ROW HEIGHT */
+
+.microplastic-table tbody tr {
+    height: 70px;
+}
+
+
+/* MAKE SURE EVERY CELL HAS A BORDER */
+
+.microplastic-table th,
+.microplastic-table td {
+    border-top: 1px solid #cbd7e3 !important;
+    border-bottom: 1px solid #cbd7e3 !important;
+    border-left: 1px solid #cbd7e3 !important;
+    border-right: 1px solid #cbd7e3 !important;
+}
+
+
+/* HEADER BORDERS */
+
+.microplastic-table thead th {
+    border-color: #10294d !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .microplastic-table th,
+    .microplastic-table td {
+        padding: 16px 12px;
+        font-size: 14px;
+    }
+
+    .microplastic-table tbody tr {
+        height: 60px;
+    }
+
+}
+
+/* =========================
+   RECOMMENDATIONS FLOATING CARD
+========================= */
+
+.recommendations-wrapper {
+
+    position: relative;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border-radius: 28px;
+
+    padding: 45px 50px;
+
+    box-shadow:
+        0 18px 45px rgba(20, 50, 90, 0.12);
+
+    overflow: hidden;
+
+}
+
+
+/* Decorative floating shape */
+
+.recommendations-wrapper::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 280px;
+
+    height: 280px;
+
+    border-radius: 50%;
+
+    background: rgba(53, 195, 207, 0.08);
+
+    right: -100px;
+
+    top: -110px;
+
+    z-index: 0;
+
+}
+
+
+/* Another decorative shape */
+
+.recommendations-wrapper::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+
+    height: 180px;
+
+    border-radius: 50%;
+
+    background: rgba(23, 50, 92, 0.05);
+
+    left: -80px;
+
+    bottom: -80px;
+
+    z-index: 0;
+
+}
+
+
+/* Make content appear above shapes */
+
+.recommendations-wrapper > * {
+
+    position: relative;
+
+    z-index: 1;
+
+}
+
+
+/* =========================
+   RECOMMENDATIONS HEADER
+========================= */
+
+.recommendations-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 15px;
+
+    margin-bottom: 35px;
+
+}
+
+
+.recommendation-icon {
+
+    font-size: 32px;
+
+}
+
+
+.recommendations-header h2 {
+
+    margin: 0;
+
+    font-size: 34px;
+
+    color: #17325c;
+
+}
+
+
+.recommendations-header p {
+
+    margin-top: 6px;
+
+    color: #657386;
+
+    font-size: 16px;
+
+}
+
+
+/* =========================
+   RECOMMENDATION ITEMS
+========================= */
+
+.recommendation-item {
+
+    background: #f7fafc;
+
+    border-radius: 18px;
+
+    padding: 25px 30px;
+
+    margin-bottom: 25px;
+
+    border: 1px solid #e7edf3;
+
+}
+
+
+.recommendation-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.recommendation-title h3 {
+
+    margin: 0;
+
+    color: #17325c;
+
+    font-size: 21px;
+
+}
+
+
+.recommendation-item p {
+
+    margin: 0;
+
+    color: #5d6978;
+
+    line-height: 1.7;
+
+    font-size: 16px;
+
+}
+
+
+/* Recommendation list */
+
+.recommendation-item ul {
+
+    margin: 10px 0 0 20px;
+
+    padding: 0;
+
+}
+
+
+.recommendation-item li {
+
+    margin-bottom: 10px;
+
+    color: #4f5c6b;
+
+    line-height: 1.6;
+
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.results-buttons {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-top: 35px;
+
+}
+
+
+.results-buttons button {
+
+    border: none;
+
+    border-radius: 13px;
+
+    padding: 17px 30px;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+
+/* Download */
+
+.download-btn {
+
+    background: #35c3cf;
+
+    color: white;
+
+}
+
+
+.download-btn:hover {
+
+    background: #22aab8;
+
+    transform: translateY(-3px);
+
+}
+
+
+/* New analysis */
+
+.new-analysis-btn {
+
+    background: #eaf0f5;
+
+    color: #17325c;
+
+}
+
+
+.new-analysis-btn:hover {
+
+    background: #dce6ee;
+
+    transform: translateY(-3px);
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .results-section {
+
+        padding: 40px 15px 70px;
+
+    }
+
+
+    .results-card {
+
+        padding: 30px 20px;
+
+        border-radius: 20px;
+
+    }
+
+
+    .results-card h1 {
+
+        font-size: 28px;
+
+    }
+
+
+    .microplastic-table th {
+
+        padding: 15px;
+
+        font-size: 14px;
+
+    }
+
+
+    .microplastic-table td {
+
+        padding: 18px 15px;
+
+        font-size: 14px;
+
+    }
+
+
+    .recommendations-wrapper {
+
+        padding: 30px 20px;
+
+        border-radius: 20px;
+
+    }
+
+
+    .recommendations-header h2 {
+
+        font-size: 27px;
+
+    }
+
+
+    .recommendation-item {
+
+        padding: 20px;
+
+    }
+
+
+    .results-buttons {
+
+        flex-direction: column;
+
+    }
+
+
+    .results-buttons button {
+
+        width: 100%;
+
+    }
 
 }

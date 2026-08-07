@@ -1,241 +1,231 @@
-/* Sample Page */
+/* =========================================
+   SAMPLE PAGE
+========================================= */
 
 .sample-page{
+    min-height:100vh;
     display:flex;
-    justify-content:space-between;
+    justify-content:center;
     align-items:center;
-    gap:70px;
 
-    max-width:1200px;
-    margin:60px auto;
-    padding:20px;
+    padding:60px 20px;
+
+background-image: linear-gradient(
+    rgba(10,35,70,0.45),
+    rgba(10,35,70,0.45)
+), url("images/water-dispenser.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
 }
 
+/* Floating form */
 .sample-left{
-    flex:1;
+    width:100%;
+    max-width:750px;
+
+    background:rgba(255,255,255,.90);
+    backdrop-filter:blur(12px);
+
+    padding:40px;
+
+    border-radius:25px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
 }
 
+/* Hide right image section */
+.sample-right{
+    display:none;
+}
+
+/* Title */
 .sample-left h1{
+    text-align:center;
     font-size:42px;
     color:#17325c;
     margin-bottom:10px;
 }
 
+/* Description */
 .sample-left p{
-    color:#666;
+    text-align:center;
+    color:#555;
     margin-bottom:30px;
 }
 
+/* Form */
 .sample-left form{
     display:flex;
     flex-direction:column;
     gap:18px;
 }
 
+/* Labels */
 .sample-left label{
     font-weight:600;
     color:#17325c;
 }
 
+/* Inputs */
 .sample-left input,
 .sample-left select{
-    padding:16px;
-    border:1px solid #ccc;
-    border-radius:10px;
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#f4f8fc;
     font-size:16px;
+    box-sizing:border-box;
 }
 
+/* Focus */
+.sample-left input:focus,
+.sample-left select:focus{
+    outline:none;
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(53,195,207,.3);
+}
+
+/* Button */
 .sample-left button{
-    margin-top:10px;
+    margin-top:15px;
     padding:18px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
+
     background:#35c3cf;
     color:white;
+
     font-size:20px;
     font-weight:bold;
+
     cursor:pointer;
+    transition:.3s;
 }
 
 .sample-left button:hover{
-    background:#1aaab7;
+    background:#22aab8;
+    transform:translateY(-3px);
 }
 
-.sample-right{
-    position: relative;
-    min-height: 700px;
-    border-radius: 20px;
-    overflow: hidden;
-}
-.sample-right::before{
-    content: "";
-    position: absolute;
-    inset: 0;
+/* Mobile */
+@media(max-width:768px){
 
-    background-image: url("images/water-dispenser.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    .sample-page{
+        padding:30px 15px;
+    }
 
-    opacity: 0.75;      /* 75% visible */
-    z-index: 0;
+    .sample-left{
+        padding:25px;
+    }
+
+    .sample-left h1{
+        font-size:32px;
+    }
+
 }
 /* =========================================
-   RESULTS PAGE
+   MICROSCOPE MAGNIFICATION
 ========================================= */
 
-.results-page{
-
-    max-width:1200px;
-
-    margin:50px auto;
-
-    padding:20px;
-
+.magnification-box {
+    width: 100%;
+    padding: 25px;
+    background: #f7fbfe;
+    border: 1px solid #d9e6ef;
+    border-radius: 18px;
+    box-sizing: border-box;
 }
 
-.results-page h1{
-
-    text-align:center;
-
-    font-size:40px;
-
-    color:#0d6efd;
-
+.magnification-instruction {
+    margin: 0 0 20px;
+    color: #667085;
+    font-size: 14px;
+    text-align: left;
 }
 
-.results-page p{
-
-    text-align:center;
-
-    color:#555;
-
+.magnification-selects {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    align-items: end;
+    gap: 12px;
 }
 
-.results-grid{
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:30px;
-
-    margin-top:40px;
-
+.magnification-selects > div:not(.multiply-sign) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.result-image-card{
-
-    background:white;
-
-    border-radius:18px;
-
-    padding:20px;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-
+.magnification-selects label {
+    font-size: 14px;
+    color: #17325c;
 }
 
-.result-image-card img{
-
-    width:100%;
-
-    border-radius:12px;
-
+.magnification-selects select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d5e1eb;
+    border-radius: 12px;
+    background: white;
+    font-size: 16px;
+    box-sizing: border-box;
 }
 
-.results-info{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:20px;
-
+.multiply-sign {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 13px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #17325c;
 }
 
-.card{
+.total-magnification {
+    margin-top: 20px;
+    padding: 18px 20px;
 
-    background:white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    border-radius:18px;
-
-    padding:25px;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-
+    background: #e8f9fb;
+    border: 2px solid #35c3cf;
+    border-radius: 14px;
 }
 
-.card h2{
-
-    color:#0d6efd;
-
-    margin-bottom:15px;
-
+.total-magnification span {
+    color: #17325c;
+    font-weight: 600;
 }
 
-.card p{
-
-    text-align:left;
-
-    margin:10px 0;
-
+.total-magnification strong {
+    color: #0c8493;
+    font-size: 24px;
 }
 
-.risk-level{
 
-    display:inline-block;
+/* MOBILE */
 
-    padding:14px 30px;
+@media (max-width: 600px) {
 
-    color:white;
+    .magnification-selects {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
 
-    font-weight:bold;
+    .multiply-sign {
+        padding: 0;
+    }
 
-    border-radius:30px;
-
-    font-size:20px;
-
-}
-
-.interpretation-card{
-
-    margin-top:30px;
-
-}
-
-.download-section{
-
-    margin-top:40px;
-
-    text-align:center;
-
-}
-
-.download-btn{
-
-    background:#0d6efd;
-
-    color:white;
-
-    border:none;
-
-    padding:16px 35px;
-
-    border-radius:12px;
-
-    font-size:18px;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-}
-
-.download-btn:hover{
-
-    background:#0056d2;
-
-    transform:translateY(-2px);
+    .total-magnification {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
 
 }

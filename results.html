@@ -184,83 +184,142 @@ Fiji/ImageJ Computational Image Analysis
 </div>
 <div class="result-card">
 
-<h2>Microplastic Types Identified</h2>
+<!-- =========================
+     MICROPLASTIC RESULTS
+========================= -->
 
-<table class="mp-table">
+<section class="results-section">
 
-<thead>
-<tr>
-<th>Type</th>
-<th>Detected</th>
-<th>Percentage</th>
-</tr>
-</thead>
+    <div class="results-card">
 
-<tbody>
+        <h1>Microplastic Types Identified</h1>
 
-<tr>
-<td>Fragments</td>
-<td id="fragmentCount"></td>
-<td id="fragmentPercent"></td>
-</tr>
+        <table class="microplastic-table">
 
-<tr>
-<td>Fibers</td>
-<td id="fiberCount"></td>
-<td id="fiberPercent"></td>
-</tr>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Detected</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
 
-<tr>
-<td>Films</td>
-<td id="filmCount"></td>
-<td id="filmPercent"></td>
-</tr>
+            <tbody>
+                <tr>
+                    <td>Fragments</td>
+                    <td id="fragmentsCount">0</td>
+                    <td id="fragmentsPercentage">0.0%</td>
+                </tr>
 
-<tr>
-<td>Foams</td>
-<td id="foamCount"></td>
-<td id="foamPercent"></td>
-</tr>
+                <tr>
+                    <td>Fibers</td>
+                    <td id="fibersCount">0</td>
+                    <td id="fibersPercentage">0.0%</td>
+                </tr>
 
-<tr>
-<td>Pellets</td>
-<td id="pelletCount"></td>
-<td id="pelletPercent"></td>
-</tr>
+                <tr>
+                    <td>Films</td>
+                    <td id="filmsCount">0</td>
+                    <td id="filmsPercentage">0.0%</td>
+                </tr>
 
-<tr>
-<td>Lines / Filaments</td>
-<td id="lineCount"></td>
-<td id="linePercent"></td>
-</tr>
+                <tr>
+                    <td>Foams</td>
+                    <td id="foamsCount">0</td>
+                    <td id="foamsPercentage">0.0%</td>
+                </tr>
 
-</tbody>
+                <tr>
+                    <td>Pellets</td>
+                    <td id="pelletsCount">0</td>
+                    <td id="pelletsPercentage">0.0%</td>
+                </tr>
 
-</table>
+                <tr>
+                    <td>Lines / Filaments</td>
+                    <td id="linesCount">0</td>
+                    <td id="linesPercentage">0.0%</td>
+                </tr>
+            </tbody>
 
-</div>
+        </table>
 
-<!-- Buttons -->
+    </div>
 
-<div class="download-section">
 
-<button id="downloadReport" class="download-btn">
+    <!-- =========================
+         RECOMMENDATIONS
+    ========================= -->
 
-📄 Download Report
+    <div class="recommendations-wrapper">
 
-</button>
+        <div class="recommendations-header">
+            <span class="recommendation-icon">💧</span>
 
-<button onclick="window.location.href='sample.html'" class="download-btn">
+            <div>
+                <h2>Recommendations</h2>
 
-🔄 New Analysis
+                <p>
+                    Based on the detected microplastic contamination level.
+                </p>
+            </div>
+        </div>
 
-</button>
 
-</div>
+        <div class="recommendation-item">
+
+            <div class="recommendation-title">
+                🔎
+                <h3>Why may the microplastic count be high?</h3>
+            </div>
+
+            <p id="contaminationExplanation">
+                The explanation will appear based on the analysis results.
+            </p>
+
+        </div>
+
+
+        <div class="recommendation-item">
+
+            <div class="recommendation-title">
+                💧
+                <h3>How to handle the drinking water</h3>
+            </div>
+
+            <ul id="waterRecommendations">
+
+                <li>
+                    Recommendations will appear based on the analysis.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="results-buttons">
+
+            <button
+                class="download-btn"
+                id="downloadReportBtn"
+                type="button"
+            >
+                📄 Download Report
+            </button>
+
+            <button
+                class="new-analysis-btn"
+                type="button"
+                onclick="window.location.href='sample.html'"
+            >
+                🔄 New Analysis
+            </button>
+
+        </div>
+
+    </div>
 
 </section>
-
-<script src="results.js"></script>
-
-</body>
-</html>
