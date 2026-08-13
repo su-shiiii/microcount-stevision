@@ -229,3 +229,109 @@ background-image: linear-gradient(
     }
 
 }
+/* CONSENT SECTION */
+.consent-section {
+    margin-top: 30px;
+}
+
+.consent-section h2 {
+    margin-bottom: 15px;
+}
+
+.consent-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 22px;
+    cursor: pointer;
+    line-height: 1.6;
+}
+
+.consent-option input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    margin-top: 5px;
+    cursor: pointer;
+    accent-color: #27c4ce;
+}
+
+.consent-option span {
+    flex: 1;
+}
+
+.consent-option strong {
+    display: inline-block;
+    margin-bottom: 4px;
+}
+/* ================================
+   CONSENT SECTION
+================================ */
+
+.consent-section {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.consent-section h2 {
+    margin-bottom: 25px;
+}
+
+/* Each consent becomes a horizontal row */
+.consent-item {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 14px;
+    width: 100%;
+    margin-bottom: 25px;
+    padding: 0;
+}
+
+/* Checkbox */
+.consent-item input[type="checkbox"] {
+    appearance: auto !important;
+    -webkit-appearance: checkbox !important;
+
+    width: 18px !important;
+    height: 18px !important;
+
+    min-width: 18px !important;
+    max-width: 18px !important;
+
+    margin: 5px 0 0 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+    flex: 0 0 18px !important;
+
+    cursor: pointer;
+}
+
+/* Text beside checkbox */
+.consent-item label {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px;
+
+    flex: 1;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+/* Consent title */
+.consent-item label strong {
+    display: block;
+    font-size: 18px;
+    color: #17365d;
+}
+
+/* Consent description */
+.consent-item label span {
+    display: block;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #17365d;
+}
