@@ -7,9 +7,7 @@ const sampleForm = document.getElementById("sampleForm");
 
 sampleForm.addEventListener("submit", function (event) {
 
-    // DO NOT prevent the form from submitting.
-    // The form will naturally go to upload.html.
-
+    // Get information from the form
     const school = document.getElementById("schoolName").value.trim();
     const section = document.getElementById("section").value.trim();
     const source = document.getElementById("source").value;
@@ -26,10 +24,7 @@ sampleForm.addEventListener("submit", function (event) {
         document.getElementById("researchParticipationConsent").checked;
 
 
-    // ==========================
-    // CHECK REQUIRED INFORMATION
-    // ==========================
-
+    // Check required fields
     if (
         school === "" ||
         section === "" ||
@@ -47,32 +42,23 @@ sampleForm.addEventListener("submit", function (event) {
     }
 
 
-    // ==========================
-    // DATA PRIVACY CONSENT
-    // ==========================
-
+    // Data privacy consent
     if (!dataPrivacyConsent) {
 
         event.preventDefault();
 
-        alert("Please accept the Data Privacy Consent before continuing.");
+        alert("Please accept the Data Privacy Consent.");
 
         return;
     }
 
 
-    // ==========================
-    // CALCULATE MAGNIFICATION
-    // ==========================
-
+    // Calculate total magnification
     const totalMagnification =
         Number(eyepiece) * Number(objective);
 
 
-    // ==========================
-    // SAVE SAMPLE INFORMATION
-    // ==========================
-
+    // Save sample information
     localStorage.setItem("schoolName", school);
     localStorage.setItem("section", section);
     localStorage.setItem("source", source);
@@ -81,7 +67,6 @@ sampleForm.addEventListener("submit", function (event) {
 
     localStorage.setItem("eyepiece", eyepiece);
     localStorage.setItem("objective", objective);
-
     localStorage.setItem(
         "totalMagnification",
         totalMagnification
@@ -97,4 +82,7 @@ sampleForm.addEventListener("submit", function (event) {
         researchParticipationConsent
     );
 
+
+    // Go to upload page
+    window.location.href = "upload.html";
 });
