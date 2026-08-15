@@ -31,6 +31,7 @@
     </nav>
 </header>
 
+
 <section class="upload-page">
 
     <div class="upload-container">
@@ -41,6 +42,9 @@
             Upload the number of microscope images you selected on the Sample page.
             (Recommended: 10 images)
         </p>
+
+
+        <!-- UPLOAD BOX -->
 
         <div class="upload-box" id="dropArea">
 
@@ -55,7 +59,8 @@
                 type="file"
                 accept="image/*"
                 multiple
-                hidden>
+                hidden
+            >
 
             <label class="browse-btn" for="fileInput">
                 Browse Files
@@ -63,17 +68,59 @@
 
         </div>
 
-        <div id="previewContainer" class="preview-container"></div>
 
-        <button id="analyzeBtn" class="analyze-btn">
+        <!-- IMAGE PREVIEWS -->
+
+        <div
+            id="previewContainer"
+            class="preview-container">
+        </div>
+
+
+        <!-- ANALYZE BUTTON -->
+
+        <button
+            id="analyzeBtn"
+            class="analyze-btn"
+            type="button">
+
             Analyze Images →
+
         </button>
+
+
+        <!-- CONTINUE BUTTON -->
+
+        <div class="upload-next-container">
+
+            <button
+                type="button"
+                id="nextBtn">
+
+                Continue to Analysis →
+
+            </button>
+
+        </div>
 
     </div>
 
 </section>
 
+
 <script src="upload.js"></script>
+
+<script>
+
+    const nextBtn = document.getElementById("nextBtn");
+
+    nextBtn.addEventListener("click", function () {
+
+        window.location.href = "analysis.html";
+
+    });
+
+</script>
 
 </body>
 </html>
