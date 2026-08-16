@@ -3,6 +3,75 @@
 // Results Page
 // ======================================
 
+function parseCSVLine(line) {
+    const result = [];
+    let current = "";
+    let insideQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+            insideQuotes = !insideQuotes;
+        } else if (char === ',' && !insideQuotes) {
+            result.push(current.trim());
+            current = "";
+        } else {
+            current += char;
+        }
+    }
+
+    result.push(current.trim());
+    return result;
+}
+
+function findColumn(headers, name) {
+    return headers.findIndex(header =>
+        header.trim().toLowerCase() === name.toLowerCase()
+    );
+}
+
+function resolveStoredResults() {
+    const csvText = localStorage.getItem("fijiCSV");
+    const imageCountFromStorage = Number(localStorage.getItem("numImages")) || 1;
+
+    if (!csvText) {
+        return;
+    }
+
+    const lines = csvText.trim().split(/\r?\n/).filter(line => line.trim() !== "");
+    if (lines.length < 2) {
+        return;
+    }
+
+    const headers = parseCSVLine(lines[0]);
+    const rows = lines.slice(1).map(parseCSVLine);
+    const totalParticles = rows.length;
+    const imageCount = Math.max(1, Number(localStorage.getItem("numImages")) || rows.length || 1);
+
+    const summary = typeof summarizeCsvRows === 'function'
+        ? summarizeCsvRows(rows, headers, imageCount)
+        : {
+            totalParticles,
+            averageParticlesPerImage: totalParticles / imageCount,
+            typeBreakdown: {
+                Fragments: 0,
+                Fibers: 0,
+                Films: 0,
+                Foams: 0,
+                Pellets: 0,
+                "Lines / Filaments": 0
+            },
+            risk: { level: 'LEVEL 1', text: 'Low' }
+        };
+
+    localStorage.setItem("particles", String(summary.totalParticles));
+    localStorage.setItem("average", String((summary.averageParticlesPerImage || 0).toFixed(2)));
+    localStorage.setItem("riskLevel", summary.risk.level);
+    localStorage.setItem("riskText", summary.risk.text);
+    localStorage.setItem("typeBreakdown", JSON.stringify(summary.typeBreakdown || {}));
+    localStorage.setItem("numImages", String(imageCount));
+}
+
 // SAMPLE INFORMATION
 
 document.getElementById("schoolName").textContent =
@@ -21,6 +90,7 @@ document.getElementById("sampleID").textContent =
     localStorage.getItem("sampleID") ||
     "N/A";
 
+resolveStoredResults();
 
 // ======================================
 // FIJI / IMAGEJ RESULTS
