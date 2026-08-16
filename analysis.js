@@ -3,6 +3,64 @@
 // Fiji/ImageJ CSV Import
 // ======================================
 
+function parseNumeric(value) {
+    if (value === null || value === undefined || value === '') {
+        return NaN;
+    }
+
+    const parsed = Number(String(value).replace(/,/g, '').trim());
+    return Number.isFinite(parsed) ? parsed : NaN;
+}
+
+function calculateRiskLevel(averageParticlesPerImage) {
+    const average = Number(averageParticlesPerImage) || 0;
+
+    if (average <= 10) {
+        return { level: 'LEVEL 1', text: 'Low' };
+    }
+
+    if (average <= 30) {
+        return { level: 'LEVEL 2', text: 'Moderate' };
+    }
+
+    if (average <= 60) {
+        return { level: 'LEVEL 3', text: 'High' };
+    }
+
+    return { level: 'LEVEL 4', text: 'Very High' };
+}
+
+function classifyParticleType(particle) {
+    const area = parseNumeric(particle.Area);
+    const circularity = parseNumeric(particle.Circ ?? particle.circularity ?? particle.Circumference ?? particle.CIRC);
+    const aspectRatio = parseNumeric(particle.AR ?? particle.aspectRatio ?? particle.Feret ?? particle['Aspect Ratio']);
+
+    const effectiveCircularity = Number.isFinite(circularity) ? circularity : 0;
+    const effectiveAspect = Number.isFinite(aspectRatio) ? aspectRatio : 1;
+
+    if (effectiveAspect > 2.5 || effectiveCircularity < 0.35) {
+        return 'Fibers';
+    }
+
+    if (effectiveAspect <= 1.8 && effectiveCircularity >= 0.7) {
+        return 'Pellets';
+    }
+
+    if (effectiveCircularity >= 0.45 && effectiveCircularity <= 0.7) {
+        return 'Fragments';
+    }
+
+    if (area > 2000) {
+        return 'Films';
+    }
+
+    if (effectiveAspect > 1.8 && effectiveCircularity >= 0.35 && effectiveCircularity < 0.7) {
+        return 'Lines / Filaments';
+    }
+
+    return 'Fragments';
+}
+
 const csvInput =
     document.getElementById("csvInput");
 
@@ -99,19 +157,31 @@ function processFijiCSV(csvText) {
 
 
     // ----------------------------------
-    // FIND AREA COLUMN
+    // FIND COLUMN VARIANTS
     // ----------------------------------
 
-    let areaIndex =
+    const areaIndex =
         findColumn(headers, "Area");
 
+    const circularityIndex =
+        findColumn(headers, "Circ.") !== -1
+            ? findColumn(headers, "Circ.")
+            : findColumn(headers, "Circ");
 
-    // ----------------------------------
-    // FIND CIRCULARITY
-    // ----------------------------------
+    const aspectRatioIndex =
+        findColumn(headers, "AR") !== -1
+            ? findColumn(headers, "AR")
+            : findColumn(headers, "Aspect Ratio");
 
-    let circularityIndex =
-        findColumn(headers, "Circ.");
+    const feretIndex =
+        findColumn(headers, "Feret") !== -1
+            ? findColumn(headers, "Feret")
+            : findColumn(headers, "Feret X");
+
+    const minFeretIndex =
+        findColumn(headers, "MinFeret") !== -1
+            ? findColumn(headers, "MinFeret")
+            : findColumn(headers, "Min Feret");
 
 
     // ----------------------------------
@@ -145,37 +215,47 @@ function processFijiCSV(csvText) {
     // RISK LEVEL
     // ----------------------------------
 
-    let level;
-    let risk;
+    const riskResult =
+        calculateRiskLevel(Number(average));
+
+    const level = riskResult.level;
+    const risk = riskResult.text;
 
 
-    if (average <= 10) {
+    // ----------------------------------
+    // TYPE CLASSIFICATION
+    // ----------------------------------
 
-        level = "LEVEL 1";
-        risk = "Low";
+    const typeBreakdown = {
+        Fragments: 0,
+        Fibers: 0,
+        Films: 0,
+        Foams: 0,
+        Pellets: 0,
+        "Lines / Filaments": 0
+    };
 
-    }
 
-    else if (average <= 30) {
+    rows.forEach((row) => {
 
-        level = "LEVEL 2";
-        risk = "Moderate";
+        const particle = {
+            Area: row[areaIndex] || row[0],
+            Circ: circularityIndex !== -1 ? row[circularityIndex] : undefined,
+            AR: aspectRatioIndex !== -1 ? row[aspectRatioIndex] : undefined,
+            Feret: feretIndex !== -1 ? row[feretIndex] : undefined,
+            MinFeret: minFeretIndex !== -1 ? row[minFeretIndex] : undefined,
+        };
 
-    }
+        const particleType = classifyParticleType(particle);
 
-    else if (average <= 60) {
+        if (typeBreakdown[particleType] !== undefined) {
+            typeBreakdown[particleType] += 1;
+        }
+        else {
+            typeBreakdown.Fragments += 1;
+        }
 
-        level = "LEVEL 3";
-        risk = "High";
-
-    }
-
-    else {
-
-        level = "LEVEL 4";
-        risk = "Very High";
-
-    }
+    });
 
 
     // ----------------------------------
@@ -200,6 +280,11 @@ function processFijiCSV(csvText) {
     localStorage.setItem(
         "riskText",
         risk
+    );
+
+    localStorage.setItem(
+        "typeBreakdown",
+        JSON.stringify(typeBreakdown)
     );
 
 

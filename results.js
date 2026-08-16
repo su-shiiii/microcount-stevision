@@ -3,172 +3,290 @@
 // Results Page
 // ======================================
 
-// ----------------------------
-// Sample Information
-// ----------------------------
+// SAMPLE INFORMATION
 
 document.getElementById("schoolName").textContent =
-localStorage.getItem("schoolName") || "Dasmariñas East Integrated High School";
+    localStorage.getItem("schoolName") ||
+    "Dasmariñas East Integrated High School";
 
 document.getElementById("section").textContent =
-localStorage.getItem("section") || "STE";
+    localStorage.getItem("section") ||
+    "STE";
 
 document.getElementById("source").textContent =
-localStorage.getItem("source") || "Water Refilling Station";
+    localStorage.getItem("source") ||
+    "Water Refilling Station";
 
 document.getElementById("sampleID").textContent =
-localStorage.getItem("sampleID") || "N/A";
+    localStorage.getItem("sampleID") ||
+    "N/A";
 
 
-// ----------------------------
-// Generate Fiji/ImageJ Results
-// ----------------------------
+// ======================================
+// FIJI / IMAGEJ RESULTS
+// ======================================
 
 const imageCount =
-Number(localStorage.getItem("numImages")) || 1;
+    Number(localStorage.getItem("numImages")) || 0;
 
-let totalParticles = 0;
-
-for(let i=0;i<imageCount;i++){
-
-    totalParticles += Math.floor(Math.random()*40)+15;
-
-}
+const totalParticles =
+    Number(localStorage.getItem("particles")) || 0;
 
 const average =
-(totalParticles/imageCount).toFixed(2);
+    localStorage.getItem("average") || "0";
 
-let level;
-let risk;
+const level =
+    localStorage.getItem("riskLevel") || "N/A";
 
-if(average<=10){
-
-    level="LEVEL 1";
-    risk="Low";
-
-}
-else if(average<=30){
-
-    level="LEVEL 2";
-    risk="Moderate";
-
-}
-else if(average<=60){
-
-    level="LEVEL 3";
-    risk="High";
-
-}
-else{
-
-    level="LEVEL 4";
-    risk="Very High";
-
-}
+const risk =
+    localStorage.getItem("riskText") || "N/A";
 
 
-// ----------------------------
-// Display Results
-// ----------------------------
+// ======================================
+// DISPLAY RESULTS
+// ======================================
 
 document.getElementById("numImages").textContent =
-imageCount;
+    imageCount;
 
 document.getElementById("particleCount").textContent =
-totalParticles;
+    totalParticles;
 
 document.getElementById("average").textContent =
-average + " particles/image";
+    average + " particles/image";
 
 document.getElementById("riskLevel").textContent =
-level;
+    level;
 
 document.getElementById("riskText").textContent =
-risk;
+    risk;
 
 
-// ----------------------------
-// Risk Color
-// ----------------------------
+// ======================================
+// PARTICLE AREA
+// ======================================
+
+const totalArea =
+    localStorage.getItem("totalArea");
+
+const averageArea =
+    localStorage.getItem("averageArea");
+
+
+// If these elements exist on the page,
+// display the Fiji/ImageJ measurements.
+
+const totalAreaElement =
+    document.getElementById("totalArea");
+
+if (totalAreaElement) {
+
+    totalAreaElement.textContent =
+        totalArea
+        ? totalArea + " µm²"
+        : "N/A";
+
+}
+
+
+const averageAreaElement =
+    document.getElementById("averageArea");
+
+if (averageAreaElement) {
+
+    averageAreaElement.textContent =
+        averageArea
+        ? averageArea + " µm²"
+        : "N/A";
+
+}
+
+
+// ======================================
+// RISK COLOR
+// ======================================
 
 const riskBox =
-document.getElementById("riskBox");
+    document.getElementById("riskBox");
 
-switch(level){
+if (riskBox) {
 
-    case "LEVEL 1":
-        riskBox.style.background="#4CAF50";
-        break;
+    if (level === "LEVEL 1") {
 
-    case "LEVEL 2":
-        riskBox.style.background="#FFC107";
-        break;
+        riskBox.style.background = "#4CAF50";
 
-    case "LEVEL 3":
-        riskBox.style.background="#FF9800";
-        break;
+    }
 
-    default:
-        riskBox.style.background="#F44336";
+    else if (level === "LEVEL 2") {
+
+        riskBox.style.background = "#FFC107";
+
+    }
+
+    else if (level === "LEVEL 3") {
+
+        riskBox.style.background = "#FF9800";
+
+    }
+
+    else if (level === "LEVEL 4") {
+
+        riskBox.style.background = "#F44336";
+
+    }
 
 }
 
 
-// ----------------------------
-// Interpretation
-// ----------------------------
+// ======================================
+// INTERPRETATION
+// ======================================
 
-document.getElementById("interpretation").innerHTML = `
-The uploaded microscope image(s) were analyzed using
-<strong>Fiji/ImageJ-assisted computational image analysis.</strong>
+const interpretation =
+    document.getElementById("interpretation");
 
-<br><br>
-
-Number of uploaded images:
-<strong>${imageCount}</strong>
-
-<br><br>
-
-Estimated detected particles:
-<strong>${totalParticles}</strong>
-
-<br><br>
-
-Average quantity:
-<strong>${average}</strong> particles/image.
-
-<br><br>
-
-Overall contamination level:
-<strong>${level} (${risk})</strong>.
-`;
-const total = Number(localStorage.getItem("particles"));
-
-const fragment = Number(localStorage.getItem("fragment"));
-const fiber = Number(localStorage.getItem("fiber"));
-const film = Number(localStorage.getItem("film"));
-const foam = Number(localStorage.getItem("foam"));
-const pellet = Number(localStorage.getItem("pellet"));
-const line = Number(localStorage.getItem("line"));
-
-function percent(x){
-    return ((x/total)*100).toFixed(1) + "%";
+function getTypeBreakdown() {
+    try {
+        const stored = JSON.parse(localStorage.getItem("typeBreakdown") || '{}');
+        return {
+            Fragments: Number(stored.Fragments) || 0,
+            Fibers: Number(stored.Fibers) || 0,
+            Films: Number(stored.Films) || 0,
+            Foams: Number(stored.Foams) || 0,
+            Pellets: Number(stored.Pellets) || 0,
+            "Lines / Filaments": Number(stored["Lines / Filaments"]) || 0,
+        };
+    } catch (error) {
+        return {
+            Fragments: 0,
+            Fibers: 0,
+            Films: 0,
+            Foams: 0,
+            Pellets: 0,
+            "Lines / Filaments": 0,
+        };
+    }
 }
 
-document.getElementById("fragmentCount").textContent = fragment;
-document.getElementById("fragmentPercent").textContent = percent(fragment);
+function updateMicroplasticTable() {
+    const breakdown = getTypeBreakdown();
+    const categories = [
+        ["Fragments", "fragmentsCount", "fragmentsPercentage"],
+        ["Fibers", "fibersCount", "fibersPercentage"],
+        ["Films", "filmsCount", "filmsPercentage"],
+        ["Foams", "foamsCount", "foamsPercentage"],
+        ["Pellets", "pelletsCount", "pelletsPercentage"],
+        ["Lines / Filaments", "linesCount", "linesPercentage"],
+    ];
 
-document.getElementById("fiberCount").textContent = fiber;
-document.getElementById("fiberPercent").textContent = percent(fiber);
+    const total = categories.reduce((sum, [type]) => sum + (breakdown[type] || 0), 0) || totalParticles || 1;
 
-document.getElementById("filmCount").textContent = film;
-document.getElementById("filmPercent").textContent = percent(film);
+    categories.forEach(([type, countId, percentageId]) => {
+        const count = document.getElementById(countId);
+        const percentage = document.getElementById(percentageId);
 
-document.getElementById("foamCount").textContent = foam;
-document.getElementById("foamPercent").textContent = percent(foam);
+        if (!count || !percentage) return;
 
-document.getElementById("pelletCount").textContent = pellet;
-document.getElementById("pelletPercent").textContent = percent(pellet);
+        const value = breakdown[type] || 0;
+        count.textContent = value;
+        percentage.textContent = `${((value / total) * 100).toFixed(1)}%`;
+    });
+}
 
-document.getElementById("lineCount").textContent = line;
-document.getElementById("linePercent").textContent = percent(line);
+function getContaminationExplanation() {
+    const riskText = (risk || '').toLowerCase();
+    const breakdown = getTypeBreakdown();
+    const dominantType = Object.entries(breakdown).sort((a, b) => b[1] - a[1])[0] || ['Fragments', 0];
+
+    if (riskText.includes('very high') || level === 'LEVEL 4') {
+        return `The sample shows a very high microplastic burden, suggesting stronger contamination from multiple sources such as packaging debris, synthetic fibers, and particle fragments. The dominant type was ${dominantType[0]}, which is consistent with a high-risk exposure profile.`;
+    }
+
+    if (riskText.includes('high') || level === 'LEVEL 3') {
+        return `The sample falls in the high contamination range and may reflect persistent source contamination, including synthetic fiber shedding and fragment release from plastic materials. The dominant classification was ${dominantType[0]}, indicating active exposure to processed plastic particles.`;
+    }
+
+    if (riskText.includes('moderate') || level === 'LEVEL 2') {
+        return `The sample shows a moderate contamination level, which may indicate occasional inflow from plastic packaging, filtration wear, or synthetic textile fibers. The dominant type was ${dominantType[0]}, suggesting a recurring but not severe contamination pattern.`;
+    }
+
+    return `The sample shows low contamination and may indicate limited exposure to synthetic plastic particles. The dominant type was ${dominantType[0]}, which remains below the higher-risk threshold according to the Li & Xing (2025) screening framework.`;
+}
+
+function getWaterRecommendations() {
+    const levelValue = level || 'LEVEL 1';
+    const recommendations = {
+        'LEVEL 1': [
+            'Continue routine source monitoring and keep water-contact materials clean.',
+            'Inspect drinking containers and dispensing units for wear or plastic degradation.',
+            'Repeat testing every few months to confirm low-risk conditions.'
+        ],
+        'LEVEL 2': [
+            'Replace or clean storage containers and filtration accessories regularly.',
+            'Limit exposure to plastic-packaged water and synthetic fiber sources near the dispensing area.',
+            'Repeat the analysis after corrective action to confirm improvement.'
+        ],
+        'LEVEL 3': [
+            'Improve water handling by replacing old plastic lines, filters, and containers.',
+            'Reduce contact with plastic packaging and textile fibers near the water source.',
+            'Schedule immediate follow-up testing and implement source-control measures.'
+        ],
+        'LEVEL 4': [
+            'Stop using the affected supply until a corrective action plan is implemented.',
+            'Inspect all storage, piping, and filtration components for plastic contamination sources.',
+            'Perform further laboratory verification and source tracing before resuming use.'
+        ]
+    };
+
+    return recommendations[levelValue] || recommendations['LEVEL 1'];
+}
+
+if (interpretation) {
+    updateMicroplasticTable();
+
+    const explanationElement = document.getElementById("contaminationExplanation");
+    if (explanationElement) {
+        explanationElement.textContent = getContaminationExplanation();
+    }
+
+    const recommendationsList = document.getElementById("waterRecommendations");
+    if (recommendationsList) {
+        recommendationsList.innerHTML = getWaterRecommendations()
+            .map(item => `<li>${item}</li>`)
+            .join('');
+    }
+
+    interpretation.innerHTML = `
+
+        The microscope image data were analyzed
+        using <strong>Fiji/ImageJ-assisted
+        computational image analysis</strong>.
+
+        <br><br>
+
+        Number of uploaded images:
+        <strong>${imageCount}</strong>
+
+        <br><br>
+
+        Detected particles:
+        <strong>${totalParticles}</strong>
+
+        <br><br>
+
+        Average particles per image:
+        <strong>${average}</strong>
+
+        <br><br>
+
+        Overall contamination level:
+        <strong>${level} (${risk})</strong>.
+
+        <br><br>
+
+        This screening level is based on the adapted Li & Xing (2025)
+        microplastic contamination framework and is intended as a research-based preliminary assessment.
+
+    `;
+
+}
