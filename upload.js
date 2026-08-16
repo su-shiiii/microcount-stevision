@@ -7,95 +7,172 @@ const dropArea = document.getElementById("dropArea");
 const fileInput = document.getElementById("fileInput");
 const previewContainer = document.getElementById("previewContainer");
 const analyzeBtn = document.getElementById("analyzeBtn");
+const nextBtn = document.getElementById("nextBtn");
 
-analyzeBtn.style.display = "none";
+
+// Hide buttons initially
+if (analyzeBtn) {
+    analyzeBtn.style.display = "none";
+}
+
+if (nextBtn) {
+    nextBtn.style.display = "none";
+}
+
+
+// ===============================
+// CLICK UPLOAD AREA
+// ===============================
 
 dropArea.addEventListener("click", () => {
     fileInput.click();
 });
 
+
+// ===============================
+// FILE SELECTED
+// ===============================
+
 fileInput.addEventListener("change", () => {
+
     previewFiles(fileInput.files);
+
 });
 
-["dragenter","dragover","dragleave","drop"].forEach(event=>{
-    dropArea.addEventListener(event,e=>{
+
+// ===============================
+// DRAG & DROP
+// ===============================
+
+["dragenter", "dragover", "dragleave", "drop"].forEach(event => {
+
+    dropArea.addEventListener(event, e => {
+
         e.preventDefault();
         e.stopPropagation();
+
     });
+
 });
 
-["dragenter","dragover"].forEach(event=>{
-    dropArea.addEventListener(event,()=>{
+
+["dragenter", "dragover"].forEach(event => {
+
+    dropArea.addEventListener(event, () => {
+
         dropArea.classList.add("dragover");
+
     });
+
 });
 
-["dragleave","drop"].forEach(event=>{
-    dropArea.addEventListener(event,()=>{
+
+["dragleave", "drop"].forEach(event => {
+
+    dropArea.addEventListener(event, () => {
+
         dropArea.classList.remove("dragover");
+
     });
+
 });
 
-dropArea.addEventListener("drop",(e)=>{
+
+dropArea.addEventListener("drop", e => {
 
     previewFiles(e.dataTransfer.files);
 
 });
 
-function previewFiles(files){
 
-    previewContainer.innerHTML="";
+// ===============================
+// PREVIEW FILES
+// ===============================
 
-    if(files.length===0) return;
+function previewFiles(files) {
 
-    localStorage.setItem("numImages",files.length);
+    previewContainer.innerHTML = "";
+
+    if (files.length === 0) {
+        return;
+    }
+
+
+    // Save number of images
+    localStorage.setItem("numImages", files.length);
+
 
     let finished = 0;
 
-    Array.from(files).forEach((file,index)=>{
+    const uploadedImages = [];
 
-        if(!file.type.startsWith("image/")) return;
+
+    Array.from(files).forEach((file, index) => {
+
+        if (!file.type.startsWith("image/")) {
+            return;
+        }
+
 
         const reader = new FileReader();
 
-        reader.onload=function(e){
-            alert("Reader loaded!");
 
-if (index === 0) {
+        reader.onload = function(e) {
 
-    const imageData = e.target.result;
+            const imageData = e.target.result;
 
-localStorage.setItem("uploadedImage", imageData);
-alert("Image saved!");
+            uploadedImages.push(imageData);
 
-    console.log("Image saved successfully.");
 
-    console.log(imageData.length);
+            // Create preview card
+            const card = document.createElement("div");
 
-}
+            card.className = "preview-card";
 
-            const card=document.createElement("div");
-
-            card.className="preview-card";
-
-            card.innerHTML=`
-                <img src="${e.target.result}">
-                <p>Image ${index+1}</p>
+            card.innerHTML = `
+                <img src="${imageData}" alt="Microscope Image ${index + 1}">
+                <p>Image ${index + 1}</p>
             `;
 
             previewContainer.appendChild(card);
 
+
             finished++;
 
-            // Wait until ALL images finish loading
-            if(finished===files.length){
 
-                analyzeBtn.style.display="inline-block";
+            // When all images are processed
+            if (finished === files.length) {
+
+                // Save all images
+                localStorage.setItem(
+                    "uploadedImages",
+                    JSON.stringify(uploadedImages)
+                );
+
+
+                // Keep first image for compatibility
+                localStorage.setItem(
+                    "uploadedImage",
+                    uploadedImages[0]
+                );
+
+
+                console.log("Images saved:", uploadedImages.length);
+
+
+                // Show buttons
+                if (analyzeBtn) {
+                    analyzeBtn.style.display = "inline-block";
+                }
+
+                if (nextBtn) {
+                    nextBtn.style.display = "inline-block";
+                }
 
             }
 
         };
+
 
         reader.readAsDataURL(file);
 
@@ -103,26 +180,48 @@ alert("Image saved!");
 
 }
 
-analyzeBtn.addEventListener("click",()=>{
 
-    if(!localStorage.getItem("uploadedImage")){
+// ===============================
+// ANALYZE BUTTON
+// ===============================
 
-        alert("Please wait for the image to finish loading.");
+if (analyzeBtn) {
 
-        return;
+    analyzeBtn.addEventListener("click", () => {
 
-    }
+        if (!localStorage.getItem("uploadedImages")) {
 
-    window.location.href="analysis.html";
+            alert("Please wait for the images to finish loading.");
 
-});
-analyzeBtn.addEventListener("click", function () {
-    window.location.href = "analysis.html";
-});
-const nextBtn = document.getElementById("nextBtn");
+            return;
+
+        }
+
+        window.location.href = "analysis.html";
+
+    });
+
+}
+
+
+// ===============================
+// NEXT BUTTON
+// ===============================
 
 if (nextBtn) {
-    nextBtn.addEventListener("click", function () {
+
+    nextBtn.addEventListener("click", () => {
+
+        if (!localStorage.getItem("uploadedImages")) {
+
+            alert("Please upload your microscope images first.");
+
+            return;
+
+        }
+
         window.location.href = "analysis.html";
+
     });
+
 }
