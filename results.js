@@ -3,226 +3,184 @@
 // Results Page
 // ======================================
 
-function parseCSVLine(line) {
-    const result = [];
-    let current = "";
-    let insideQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        if (char === '"') {
-            insideQuotes = !insideQuotes;
-        } else if (char === ',' && !insideQuotes) {
-            result.push(current.trim());
-            current = "";
-        } else {
-            current += char;
-        }
-    }
-
-    result.push(current.trim());
-    return result;
-}
-
-function findColumn(headers, name) {
-    return headers.findIndex(header =>
-        header.trim().toLowerCase() === name.toLowerCase()
-    );
-}
-
-function resolveStoredResults() {
-    const csvText = localStorage.getItem("fijiCSV");
-    const imageCountFromStorage = Number(localStorage.getItem("numImages")) || 1;
-
-    if (!csvText) {
-        return;
-    }
-
-    const lines = csvText.trim().split(/\r?\n/).filter(line => line.trim() !== "");
-    if (lines.length < 2) {
-        return;
-    }
-
-    const headers = parseCSVLine(lines[0]);
-    const rows = lines.slice(1).map(parseCSVLine);
-    const totalParticles = rows.length;
-    const imageCount = Math.max(1, Number(localStorage.getItem("numImages")) || rows.length || 1);
-
-    const summary = typeof summarizeCsvRows === 'function'
-        ? summarizeCsvRows(rows, headers, imageCount)
-        : {
-            totalParticles,
-            averageParticlesPerImage: totalParticles / imageCount,
-            typeBreakdown: {
-                Fragments: 0,
-                Fibers: 0,
-                Films: 0,
-                Foams: 0,
-                Pellets: 0,
-                "Lines / Filaments": 0
-            },
-            risk: { level: 'LEVEL 1', text: 'Low' }
-        };
-
-    localStorage.setItem("particles", String(summary.totalParticles));
-    localStorage.setItem("average", String((summary.averageParticlesPerImage || 0).toFixed(2)));
-    localStorage.setItem("riskLevel", summary.risk.level);
-    localStorage.setItem("riskText", summary.risk.text);
-    localStorage.setItem("typeBreakdown", JSON.stringify(summary.typeBreakdown || {}));
-    localStorage.setItem("numImages", String(imageCount));
-}
-
-// SAMPLE INFORMATION
-
-const schoolNameEl = document.getElementById("schoolName");
-if (schoolNameEl) {
-    schoolNameEl.textContent = localStorage.getItem("schoolName") || "—";
-}
-
-const sectionEl = document.getElementById("section");
-if (sectionEl) {
-    sectionEl.textContent = localStorage.getItem("section") || "—";
-}
-
-const sourceEl = document.getElementById("source");
-if (sourceEl) {
-    sourceEl.textContent = localStorage.getItem("source") || "—";
-}
-
-const populationEl = document.getElementById("population");
-if (populationEl) {
-    populationEl.textContent = localStorage.getItem("population") || "—";
-}
-
-const sampleIDEl = document.getElementById("sampleID");
-if (sampleIDEl) {
-    sampleIDEl.textContent = localStorage.getItem("sampleID") || "—";
-}
-
-resolveStoredResults();
 
 // ======================================
-// FIJI / IMAGEJ RESULTS
+// GET STORED DATA
 // ======================================
+
+const schoolName =
+    localStorage.getItem("schoolName") ||
+    "Dasmariñas East Integrated High School";
+
+
+const section =
+    localStorage.getItem("section") ||
+    "STE";
+
+
+const source =
+    localStorage.getItem("source") ||
+    "Water Refilling Station";
+
+
+const sampleID =
+    localStorage.getItem("sampleID") ||
+    "N/A";
+
 
 const imageCount =
     Number(localStorage.getItem("numImages")) || 0;
 
-const totalParticles =
+
+const particleCount =
     Number(localStorage.getItem("particles")) || 0;
 
+
 const average =
-    localStorage.getItem("average") || "0";
+    localStorage.getItem("average") ||
+    "0";
 
-const level =
-    localStorage.getItem("riskLevel") || "N/A";
-
-const risk =
-    localStorage.getItem("riskText") || "N/A";
-
-
-// ======================================
-// DISPLAY RESULTS
-// ======================================
-
-const numImagesEl = document.getElementById("numImages");
-if (numImagesEl) {
-    numImagesEl.textContent = imageCount;
-}
-
-const particleCountEl = document.getElementById("particleCount");
-if (particleCountEl) {
-    particleCountEl.textContent = totalParticles;
-}
-
-const averageEl = document.getElementById("average");
-if (averageEl) {
-    averageEl.textContent = average + " particles/image";
-}
-
-const riskLevelEl = document.getElementById("riskLevel");
-if (riskLevelEl) {
-    riskLevelEl.textContent = level;
-}
-
-const riskTextEl = document.getElementById("riskText");
-if (riskTextEl) {
-    riskTextEl.textContent = risk;
-}
-
-
-// ======================================
-// PARTICLE AREA
-// ======================================
 
 const totalArea =
-    localStorage.getItem("totalArea");
+    localStorage.getItem("totalArea") ||
+    "0";
+
 
 const averageArea =
-    localStorage.getItem("averageArea");
+    localStorage.getItem("averageArea") ||
+    "0";
 
 
-// If these elements exist on the page,
-// display the Fiji/ImageJ measurements.
-
-const totalAreaElement =
-    document.getElementById("totalArea");
-
-if (totalAreaElement) {
-
-    totalAreaElement.textContent =
-        totalArea
-        ? totalArea + " µm²"
-        : "N/A";
-
-}
+const riskLevel =
+    localStorage.getItem("riskLevel") ||
+    "N/A";
 
 
-const averageAreaElement =
-    document.getElementById("averageArea");
-
-if (averageAreaElement) {
-
-    averageAreaElement.textContent =
-        averageArea
-        ? averageArea + " µm²"
-        : "N/A";
-
-}
+const riskText =
+    localStorage.getItem("riskText") ||
+    "N/A";
 
 
 // ======================================
-// RISK COLOR
+// SAMPLE INFORMATION
 // ======================================
+
+document.getElementById("schoolName")
+    .textContent = schoolName;
+
+
+document.getElementById("section")
+    .textContent = section;
+
+
+document.getElementById("source")
+    .textContent = source;
+
+
+document.getElementById("sampleID")
+    .textContent = sampleID;
+
+
+// ======================================
+// ANALYSIS SUMMARY
+// ======================================
+
+document.getElementById("numImages")
+    .textContent = imageCount;
+
+
+document.getElementById("particleCount")
+    .textContent = particleCount;
+
+
+document.getElementById("average")
+    .textContent =
+        average + " particles/image";
+
+
+document.getElementById("totalArea")
+    .textContent =
+        totalArea + " Fiji/ImageJ area units";
+
+
+document.getElementById("averageArea")
+    .textContent =
+        averageArea + " Fiji/ImageJ area units";
+
+
+// ======================================
+// RISK LEVEL
+// ======================================
+
+document.getElementById("riskLevel")
+    .textContent = riskLevel;
+
+
+document.getElementById("riskText")
+    .textContent = riskText;
+
 
 const riskBox =
     document.getElementById("riskBox");
 
-if (riskBox) {
 
-    if (level === "LEVEL 1") {
+if (riskLevel === "LEVEL 1") {
 
-        riskBox.style.background = "#4CAF50";
+    riskBox.style.background = "#4CAF50";
 
-    }
+}
 
-    else if (level === "LEVEL 2") {
+else if (riskLevel === "LEVEL 2") {
 
-        riskBox.style.background = "#FFC107";
+    riskBox.style.background = "#FFC107";
 
-    }
+}
 
-    else if (level === "LEVEL 3") {
+else if (riskLevel === "LEVEL 3") {
 
-        riskBox.style.background = "#FF9800";
+    riskBox.style.background = "#FF9800";
 
-    }
+}
 
-    else if (level === "LEVEL 4") {
+else if (riskLevel === "LEVEL 4") {
 
-        riskBox.style.background = "#F44336";
+    riskBox.style.background = "#F44336";
 
-    }
+}
+
+
+// ======================================
+// UPLOADED IMAGE
+// ======================================
+
+const imageData =
+    localStorage.getItem("uploadedImage");
+
+
+const uploadedImage =
+    document.getElementById("uploadedImage");
+
+
+const imageMessage =
+    document.getElementById("imageMessage");
+
+
+if (imageData) {
+
+    uploadedImage.src = imageData;
+
+    uploadedImage.style.display = "block";
+
+    imageMessage.textContent = "";
+
+}
+
+else {
+
+    uploadedImage.style.display = "none";
+
+    imageMessage.textContent =
+        "No microscope image was saved for this analysis.";
 
 }
 
@@ -234,230 +192,201 @@ if (riskBox) {
 const interpretation =
     document.getElementById("interpretation");
 
-function getTypeBreakdown() {
-    try {
-        const stored = JSON.parse(localStorage.getItem("typeBreakdown") || '{}');
-        return {
-            Fragments: Number(stored.Fragments) || 0,
-            Fibers: Number(stored.Fibers) || 0,
-            Films: Number(stored.Films) || 0,
-            Foams: Number(stored.Foams) || 0,
-            Pellets: Number(stored.Pellets) || 0,
-            "Lines / Filaments": Number(stored["Lines / Filaments"]) || 0,
-        };
-    } catch (error) {
-        return {
-            Fragments: 0,
-            Fibers: 0,
-            Films: 0,
-            Foams: 0,
-            Pellets: 0,
-            "Lines / Filaments": 0,
-        };
-    }
-}
 
-function updateMicroplasticTable() {
-    const breakdown = getTypeBreakdown();
-    const categories = [
-        ["Fragments", "fragmentsCount", "fragmentsPercentage"],
-        ["Fibers", "fibersCount", "fibersPercentage"],
-        ["Films", "filmsCount", "filmsPercentage"],
-        ["Foams", "foamsCount", "foamsPercentage"],
-        ["Pellets", "pelletsCount", "pelletsPercentage"],
-        ["Lines / Filaments", "linesCount", "linesPercentage"],
-    ];
+interpretation.innerHTML = `
 
-    const total = categories.reduce((sum, [type]) => sum + (breakdown[type] || 0), 0) || totalParticles || 1;
+    Fiji/ImageJ was used as the image-analysis and
+    particle-quantification method.
 
-    categories.forEach(([type, countId, percentageId]) => {
-        const count = document.getElementById(countId);
-        const percentage = document.getElementById(percentageId);
+    <br><br>
 
-        if (!count || !percentage) return;
+    <strong>${particleCount}</strong>
+    detected particle measurements were recorded
+    from the Fiji/ImageJ Results table.
 
-        const value = breakdown[type] || 0;
-        count.textContent = value;
-        percentage.textContent = `${((value / total) * 100).toFixed(1)}%`;
-    });
-}
+    <br><br>
 
-function getContaminationExplanation() {
-    const riskText = (risk || '').toLowerCase();
-    const breakdown = getTypeBreakdown();
-    const dominantType = Object.entries(breakdown).sort((a, b) => b[1] - a[1])[0] || ['Fragments', 0];
+    The analysis included
+    <strong>${imageCount}</strong>
+    microscope image(s).
 
-    if (riskText.includes('very high') || level === 'LEVEL 4') {
-        return `The sample shows a very high microplastic burden, suggesting stronger contamination from multiple sources such as packaging debris, synthetic fibers, and particle fragments. The dominant type was ${dominantType[0]}, which is consistent with a high-risk exposure profile.`;
-    }
+    <br><br>
 
-    if (riskText.includes('high') || level === 'LEVEL 3') {
-        return `The sample falls in the high contamination range and may reflect persistent source contamination, including synthetic fiber shedding and fragment release from plastic materials. The dominant classification was ${dominantType[0]}, indicating active exposure to processed plastic particles.`;
-    }
+    The calculated average was
+    <strong>${average} particles/image</strong>.
 
-    if (riskText.includes('moderate') || level === 'LEVEL 2') {
-        return `The sample shows a moderate contamination level, which may indicate occasional inflow from plastic packaging, filtration wear, or synthetic textile fibers. The dominant type was ${dominantType[0]}, suggesting a recurring but not severe contamination pattern.`;
-    }
+    <br><br>
 
-    return `The sample shows low contamination and may indicate limited exposure to synthetic plastic particles. The dominant type was ${dominantType[0]}, which remains below the higher-risk threshold according to the Li & Xing (2025) screening framework.`;
-}
+    The calculated assessment level was
+    <strong>${riskLevel}</strong>
+    (${riskText}).
 
-function getWaterRecommendations() {
-    const levelValue = level || 'LEVEL 1';
-    const recommendations = {
-        'LEVEL 1': [
-            'Continue routine source monitoring and keep water-contact materials clean.',
-            'Inspect drinking containers and dispensing units for wear or plastic degradation.',
-            'Repeat testing every few months to confirm low-risk conditions.'
-        ],
-        'LEVEL 2': [
-            'Replace or clean storage containers and filtration accessories regularly.',
-            'Limit exposure to plastic-packaged water and synthetic fiber sources near the dispensing area.',
-            'Repeat the analysis after corrective action to confirm improvement.'
-        ],
-        'LEVEL 3': [
-            'Improve water handling by replacing old plastic lines, filters, and containers.',
-            'Reduce contact with plastic packaging and textile fibers near the water source.',
-            'Schedule immediate follow-up testing and implement source-control measures.'
-        ],
-        'LEVEL 4': [
-            'Stop using the affected supply until a corrective action plan is implemented.',
-            'Inspect all storage, piping, and filtration components for plastic contamination sources.',
-            'Perform further laboratory verification and source tracing before resuming use.'
-        ]
-    };
+`;
 
-    return recommendations[levelValue] || recommendations['LEVEL 1'];
-}
 
-if (interpretation) {
-    updateMicroplasticTable();
+// ======================================
+// RECOMMENDATION
+// ======================================
 
-    const explanationElement = document.getElementById("contaminationExplanation");
-    if (explanationElement) {
-        explanationElement.textContent = getContaminationExplanation();
-    }
+const recommendation =
+    document.getElementById("recommendationText");
 
-    const recommendationsList = document.getElementById("waterRecommendations");
-    if (recommendationsList) {
-        recommendationsList.innerHTML = getWaterRecommendations()
-            .map(item => `<li>${item}</li>`)
-            .join('');
-    }
 
-    interpretation.innerHTML = `
+if (riskLevel === "LEVEL 1") {
 
-        The microscope image data were analyzed
-        using <strong>Fiji/ImageJ-assisted
-        computational image analysis</strong>.
+    recommendation.innerHTML = `
 
-        <br><br>
-
-        Number of uploaded images:
-        <strong>${imageCount}</strong>
-
-        <br><br>
-
-        Detected particles:
-        <strong>${totalParticles}</strong>
-
-        <br><br>
-
-        Average particles per image:
-        <strong>${average}</strong>
-
-        <br><br>
-
-        Overall contamination level:
-        <strong>${level} (${risk})</strong>.
-
-        <br><br>
-
-        This screening level is based on the adapted Li & Xing (2025)
-        microplastic contamination framework and is intended as a research-based preliminary assessment.
+        The analyzed sample showed a relatively low
+        particle count based on the current assessment.
+        Continue proper water storage and handling,
+        and maintain regular monitoring.
 
     `;
 
 }
 
+else if (riskLevel === "LEVEL 2") {
+
+    recommendation.innerHTML = `
+
+        The analyzed sample showed a moderate particle
+        count. Consider reviewing the water source,
+        storage containers, and handling practices.
+
+    `;
+
+}
+
+else if (riskLevel === "LEVEL 3") {
+
+    recommendation.innerHTML = `
+
+        The analyzed sample showed a high particle count.
+        Further examination of the water source and
+        additional samples is recommended.
+
+    `;
+
+}
+
+else if (riskLevel === "LEVEL 4") {
+
+    recommendation.innerHTML = `
+
+        The analyzed sample showed a very high particle
+        count. Further laboratory verification and
+        additional sampling should be considered before
+        drawing conclusions about the water source.
+
+    `;
+
+}
+
+else {
+
+    recommendation.textContent =
+        "Complete a Fiji/ImageJ analysis to generate recommendations.";
+
+}
+
+
+// ======================================
+// NEW ANALYSIS
+// ======================================
+
+document.getElementById("newAnalysisBtn")
+    .addEventListener("click", function () {
+
+        localStorage.removeItem("particles");
+        localStorage.removeItem("average");
+        localStorage.removeItem("totalArea");
+        localStorage.removeItem("averageArea");
+        localStorage.removeItem("riskLevel");
+        localStorage.removeItem("riskText");
+        localStorage.removeItem("fijiCSV");
+        localStorage.removeItem("uploadedImage");
+        localStorage.removeItem("numImages");
+
+        window.location.href = "sample.html";
+
+    });
+
+
 // ======================================
 // DOWNLOAD REPORT
 // ======================================
 
-const downloadReportBtn = document.getElementById("downloadReportBtn");
-
-if (downloadReportBtn) {
-    downloadReportBtn.addEventListener("click", () => {
-        const schoolName = localStorage.getItem("schoolName") || "—";
-        const section = localStorage.getItem("section") || "—";
-        const source = localStorage.getItem("source") || "—";
-        const population = localStorage.getItem("population") || "—";
-        const sampleID = localStorage.getItem("sampleID") || "—";
-
-        const breakdown = getTypeBreakdown();
-        const total = Object.values(breakdown).reduce((a, b) => a + b, 0) || 1;
-        const typesList = Object.entries(breakdown)
-            .map(([type, count]) => `${type}: ${count} (${((count / total) * 100).toFixed(1)}%)`)
-            .join('\n');
-        
-        const recs = getWaterRecommendations();
-        const recsList = recs.map((rec, i) => `${i + 1}. ${rec}`).join('\n');
-
-        const interpretationText = document.getElementById("interpretation")?.innerText || "No interpretation available";
+document.getElementById("downloadBtn")
+    .addEventListener("click", function () {
 
         const report = `
-========================================
-MICROCOUNT STEVISION
-MICROPLASTIC ANALYSIS REPORT
-========================================
 
-Sample Information
-School: ${schoolName}
-Section: ${section}
-Water Source: ${source}
-Population: ${population}
-Sample ID: ${sampleID}
+MicroCount STEVision
+Fiji/ImageJ Microplastic Analysis Report
 
-----------------------------------------
+School Name:
+${schoolName}
 
-Analysis Summary
-Number of Images: ${imageCount}
-Total Detected Particles: ${totalParticles}
-Average Count: ${average} particles/image
-Detection Method: Fiji/ImageJ Computational Image Analysis
+Section:
+${section}
 
-----------------------------------------
+Water Source:
+${source}
 
-Microplastic Quantity Classification
-Risk Level: ${level} (${risk})
+Sample ID:
+${sampleID}
 
-----------------------------------------
+Number of Images:
+${imageCount}
 
-Microplastic Types Identified
-${typesList}
+Detected Particles:
+${particleCount}
 
-----------------------------------------
+Average Particles/Image:
+${average}
 
-Interpretation
-${interpretationText}
+Total Particle Area:
+${totalArea}
 
-----------------------------------------
+Average Particle Area:
+${averageArea}
 
-Recommendations
-${recsList}
+Risk Level:
+${riskLevel}
 
-========================================
-Generated by MicroCount STEVision
-Date: ${new Date().toLocaleDateString()}
-Time: ${new Date().toLocaleTimeString()}
-========================================
-`;
+Risk Assessment:
+${riskText}
 
-        const blob = new Blob([report], { type: "text/plain" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "MicroCount_STEVision_Report.txt";
+Detection Method:
+Fiji/ImageJ Analyze Particles
+
+        `;
+
+
+        const blob =
+            new Blob(
+                [report],
+                { type: "text/plain" }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+        link.download =
+            "MicroCount_STEVision_Report.txt";
+
+
         link.click();
-        URL.revokeObjectURL(link.href);
+
+
+        URL.revokeObjectURL(url);
+
     });
-}

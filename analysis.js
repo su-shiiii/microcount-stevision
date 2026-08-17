@@ -1,100 +1,75 @@
 // ======================================
 // MicroCount STEVision
-// Fiji/ImageJ CSV Import
+// Fiji/ImageJ Analysis
 // ======================================
 
-function parseNumeric(value) {
-    if (value === null || value === undefined || value === '') {
-        return NaN;
-    }
+const csvInput = document.getElementById("csvInput");
+const analyzeBtn = document.getElementById("analyzeBtn");
 
-    const parsed = Number(String(value).replace(/,/g, '').trim());
-    return Number.isFinite(parsed) ? parsed : NaN;
-}
+const progressBar = document.getElementById("progressBar");
+const percentText = document.getElementById("percentText");
+const statusText = document.getElementById("statusText");
 
-function calculateRiskLevel(averageParticlesPerImage) {
-    const average = Number(averageParticlesPerImage) || 0;
 
-    if (average <= 10) {
-        return { level: 'LEVEL 1', text: 'Low' };
-    }
+// ======================================
+// INITIAL STATE
+// ======================================
 
-    if (average <= 30) {
-        return { level: 'LEVEL 2', text: 'Moderate' };
-    }
+analyzeBtn.disabled = true;
 
-    if (average <= 60) {
-        return { level: 'LEVEL 3', text: 'High' };
-    }
 
-    return { level: 'LEVEL 4', text: 'Very High' };
-}
-
-function classifyParticleType(particle) {
-    const area = parseNumeric(particle.Area);
-    const circularity = parseNumeric(particle.Circ ?? particle.circularity ?? particle.Circumference ?? particle.CIRC);
-    const aspectRatio = parseNumeric(particle.AR ?? particle.aspectRatio ?? particle.Feret ?? particle['Aspect Ratio']);
-
-    const effectiveCircularity = Number.isFinite(circularity) ? circularity : 0;
-    const effectiveAspect = Number.isFinite(aspectRatio) ? aspectRatio : 1;
-
-    if (effectiveAspect > 2.5 || effectiveCircularity < 0.35) {
-        return 'Fibers';
-    }
-
-    if (effectiveAspect <= 1.8 && effectiveCircularity >= 0.7) {
-        return 'Pellets';
-    }
-
-    if (effectiveCircularity >= 0.45 && effectiveCircularity <= 0.7) {
-        return 'Fragments';
-    }
-
-    if (area > 2000) {
-        return 'Films';
-    }
-
-    if (effectiveAspect > 1.8 && effectiveCircularity >= 0.35 && effectiveCircularity < 0.7) {
-        return 'Lines / Filaments';
-    }
-
-    return 'Fragments';
-}
-
-const csvInput =
-    document.getElementById("csvInput");
-
-const fileName =
-    document.getElementById("fileName");
-
-const analysisStatus =
-    document.getElementById("analysisStatus");
-
-const viewResultsBtn =
-    document.getElementById("viewResultsBtn");
-
+// ======================================
+// ENABLE BUTTON WHEN CSV IS SELECTED
+// ======================================
 
 csvInput.addEventListener("change", function () {
 
-    const file = csvInput.files[0];
+    if (csvInput.files.length > 0) {
 
-    if (!file) {
-        return;
+        analyzeBtn.disabled = false;
+
+        statusText.textContent =
+            "Fiji/ImageJ CSV selected. Ready to analyze.";
+
+    } else {
+
+        analyzeBtn.disabled = true;
+
+        statusText.textContent =
+            "Waiting for Fiji/ImageJ CSV...";
+
     }
 
-    fileName.textContent =
-        "Selected: " + file.name;
+});
 
-    analysisStatus.textContent =
-        "Reading Fiji/ImageJ results...";
+
+// ======================================
+// ANALYZE BUTTON
+// ======================================
+
+analyzeBtn.addEventListener("click", function () {
+
+    if (!csvInput.files.length) {
+
+        alert("Please select the Fiji/ImageJ CSV file first.");
+
+        return;
+
+    }
+
+    const file = csvInput.files[0];
+
+    statusText.textContent =
+        "Reading Fiji/ImageJ Results table...";
+
+    analyzeBtn.disabled = true;
 
     const reader = new FileReader();
 
 
     reader.onload = function (event) {
 
-        const csvText =
-            event.target.result;
+        const csvText = event.target.result;
 
         processFijiCSV(csvText);
 
@@ -103,8 +78,9 @@ csvInput.addEventListener("change", function () {
 
     reader.onerror = function () {
 
-        analysisStatus.textContent =
-            "Unable to read the CSV file.";
+        alert("The CSV file could not be read.");
+
+        analyzeBtn.disabled = false;
 
     };
 
@@ -120,261 +96,268 @@ csvInput.addEventListener("change", function () {
 
 function processFijiCSV(csvText) {
 
-    const lines =
-        csvText.trim().split(/\r?\n/);
+    progressBar.style.width = "10%";
+    percentText.textContent = "10%";
+
+    statusText.textContent =
+        "Reading Fiji/ImageJ measurements...";
 
 
-    if (lines.length < 2) {
+    setTimeout(function () {
 
-        analysisStatus.textContent =
-            "The Fiji/ImageJ CSV does not contain measurement data.";
+        progressBar.style.width = "30%";
+        percentText.textContent = "30%";
 
-        return;
-
-    }
-
-
-    // First row = column names
-    const headers =
-        parseCSVLine(lines[0]);
+        statusText.textContent =
+            "Counting detected particles...";
 
 
-    // Remaining rows = measurements
-    const rows = [];
+        const rows = parseCSV(csvText);
 
 
-    for (let i = 1; i < lines.length; i++) {
+        if (rows.length < 2) {
 
-        if (lines[i].trim() === "") {
-            continue;
+            alert(
+                "The Fiji/ImageJ CSV does not contain enough measurement data."
+            );
+
+            analyzeBtn.disabled = false;
+
+            return;
+
         }
 
-        rows.push(
-            parseCSVLine(lines[i])
+
+        // First row = column headings
+        const headers = rows[0];
+
+        // Remaining rows = detected particles
+        const particleRows = rows.slice(1);
+
+
+        // Remove completely empty rows
+        const validRows = particleRows.filter(function (row) {
+
+            return row.some(function (value) {
+
+                return value.trim() !== "";
+
+            });
+
+        });
+
+
+        const particleCount = validRows.length;
+
+
+        progressBar.style.width = "55%";
+        percentText.textContent = "55%";
+
+        statusText.textContent =
+            "Calculating particle measurements...";
+
+
+        // ======================================
+        // FIND AREA COLUMN
+        // ======================================
+
+        let areaIndex = -1;
+
+        for (let i = 0; i < headers.length; i++) {
+
+            if (
+                headers[i].trim().toLowerCase() === "area"
+            ) {
+
+                areaIndex = i;
+                break;
+
+            }
+
+        }
+
+
+        let totalArea = 0;
+        let averageArea = 0;
+
+
+        if (areaIndex !== -1) {
+
+            let areaValues = [];
+
+            validRows.forEach(function (row) {
+
+                const value =
+                    parseFloat(row[areaIndex]);
+
+                if (!isNaN(value)) {
+
+                    areaValues.push(value);
+
+                    totalArea += value;
+
+                }
+
+            });
+
+
+            if (areaValues.length > 0) {
+
+                averageArea =
+                    totalArea / areaValues.length;
+
+            }
+
+        }
+
+
+        progressBar.style.width = "75%";
+        percentText.textContent = "75%";
+
+        statusText.textContent =
+            "Generating MicroCount results...";
+
+
+        // ======================================
+        // IMAGE COUNT
+        // ======================================
+
+        const imageCount =
+            Number(localStorage.getItem("numImages")) || 1;
+
+
+        const average =
+            particleCount / imageCount;
+
+
+        // ======================================
+        // CONTAMINATION LEVEL
+        // ======================================
+
+        let level;
+        let risk;
+
+
+        if (average <= 10) {
+
+            level = "LEVEL 1";
+            risk = "Low";
+
+        }
+
+        else if (average <= 30) {
+
+            level = "LEVEL 2";
+            risk = "Moderate";
+
+        }
+
+        else if (average <= 60) {
+
+            level = "LEVEL 3";
+            risk = "High";
+
+        }
+
+        else {
+
+            level = "LEVEL 4";
+            risk = "Very High";
+
+        }
+
+
+        // ======================================
+        // SAVE FIJI RESULTS
+        // ======================================
+
+        localStorage.setItem(
+            "particles",
+            particleCount
         );
 
-    }
+        localStorage.setItem(
+            "average",
+            average.toFixed(2)
+        );
+
+        localStorage.setItem(
+            "totalArea",
+            totalArea.toFixed(2)
+        );
+
+        localStorage.setItem(
+            "averageArea",
+            averageArea.toFixed(2)
+        );
+
+        localStorage.setItem(
+            "riskLevel",
+            level
+        );
+
+        localStorage.setItem(
+            "riskText",
+            risk
+        );
 
 
-    // ----------------------------------
-    // FIND COLUMN VARIANTS
-    // ----------------------------------
-
-    const areaIndex =
-        findColumn(headers, "Area");
-
-    const circularityIndex =
-        findColumn(headers, "Circ.") !== -1
-            ? findColumn(headers, "Circ.")
-            : findColumn(headers, "Circ");
-
-    const aspectRatioIndex =
-        findColumn(headers, "AR") !== -1
-            ? findColumn(headers, "AR")
-            : findColumn(headers, "Aspect Ratio");
-
-    const feretIndex =
-        findColumn(headers, "Feret") !== -1
-            ? findColumn(headers, "Feret")
-            : findColumn(headers, "Feret X");
-
-    const minFeretIndex =
-        findColumn(headers, "MinFeret") !== -1
-            ? findColumn(headers, "MinFeret")
-            : findColumn(headers, "Min Feret");
+        // Save original CSV for this browser session
+        localStorage.setItem(
+            "fijiCSV",
+            csvText
+        );
 
 
-    // ----------------------------------
-    // FIND PARTICLE COUNT
-    // ----------------------------------
+        progressBar.style.width = "100%";
+        percentText.textContent = "100%";
 
-    const totalParticles =
-        rows.length;
-
-
-    // ----------------------------------
-    // NUMBER OF IMAGES
-    // ----------------------------------
-
-    const imageCount =
-        Number(
-            localStorage.getItem("numImages")
-        ) || 1;
+        statusText.textContent =
+            "Fiji/ImageJ analysis completed successfully.";
 
 
-    // ----------------------------------
-    // AVERAGE
-    // ----------------------------------
+        // ======================================
+        // GO TO RESULTS
+        // ======================================
 
-    const average =
-        (totalParticles / imageCount)
-        .toFixed(2);
+        setTimeout(function () {
 
+            window.location.href = "results.html";
 
-    // ----------------------------------
-    // RISK LEVEL
-    // ----------------------------------
+        }, 1000);
 
-    const riskResult =
-        calculateRiskLevel(Number(average));
+    }, 500);
 
-    const level = riskResult.level;
-    const risk = riskResult.text;
+}
 
 
-    // ----------------------------------
-    // TYPE CLASSIFICATION
-    // ----------------------------------
+// ======================================
+// SIMPLE CSV PARSER
+// ======================================
 
-    const typeBreakdown = {
-        Fragments: 0,
-        Fibers: 0,
-        Films: 0,
-        Foams: 0,
-        Pellets: 0,
-        "Lines / Filaments": 0
-    };
+function parseCSV(text) {
+
+    const lines = text
+        .replace(/\r/g, "")
+        .split("\n")
+        .filter(function (line) {
+
+            return line.trim() !== "";
+
+        });
 
 
-    rows.forEach((row) => {
+    return lines.map(function (line) {
 
-        const particle = {
-            Area: row[areaIndex] || row[0],
-            Circ: circularityIndex !== -1 ? row[circularityIndex] : undefined,
-            AR: aspectRatioIndex !== -1 ? row[aspectRatioIndex] : undefined,
-            Feret: feretIndex !== -1 ? row[feretIndex] : undefined,
-            MinFeret: minFeretIndex !== -1 ? row[minFeretIndex] : undefined,
-        };
-
-        const particleType = classifyParticleType(particle);
-
-        if (typeBreakdown[particleType] !== undefined) {
-            typeBreakdown[particleType] += 1;
-        }
-        else {
-            typeBreakdown.Fragments += 1;
-        }
+        return parseCSVLine(line);
 
     });
 
-
-    // ----------------------------------
-    // SAVE RESULTS
-    // ----------------------------------
-
-    localStorage.setItem(
-        "particles",
-        totalParticles
-    );
-
-    localStorage.setItem(
-        "average",
-        average
-    );
-
-    localStorage.setItem(
-        "riskLevel",
-        level
-    );
-
-    localStorage.setItem(
-        "riskText",
-        risk
-    );
-
-    localStorage.setItem(
-        "typeBreakdown",
-        JSON.stringify(typeBreakdown)
-    );
-
-
-    // Save the actual Fiji CSV
-    localStorage.setItem(
-        "fijiCSV",
-        csvText
-    );
-
-
-    // ----------------------------------
-    // SAVE BASIC MEASUREMENTS
-    // ----------------------------------
-
-    if (areaIndex !== -1) {
-
-        const areas = rows
-            .map(row => Number(row[areaIndex]))
-            .filter(value => !isNaN(value));
-
-
-        if (areas.length > 0) {
-
-            const totalArea =
-                areas.reduce(
-                    (sum, value) => sum + value,
-                    0
-                );
-
-
-            const averageArea =
-                totalArea / areas.length;
-
-
-            localStorage.setItem(
-                "totalArea",
-                totalArea.toFixed(2)
-            );
-
-            localStorage.setItem(
-                "averageArea",
-                averageArea.toFixed(2)
-            );
-
-        }
-
-    }
-
-
-    // ----------------------------------
-    // SUCCESS
-    // ----------------------------------
-
-    analysisStatus.innerHTML = `
-        <strong>Fiji/ImageJ results imported successfully.</strong>
-        <br><br>
-        Detected particles:
-        <strong>${totalParticles}</strong>
-        <br>
-        Average particles per image:
-        <strong>${average}</strong>
-        <br>
-        Contamination level:
-        <strong>${level} (${risk})</strong>
-    `;
-
-
-    viewResultsBtn.style.display =
-        "inline-block";
-
 }
 
 
 // ======================================
-// FIND COLUMN
-// ======================================
-
-function findColumn(headers, name) {
-
-    return headers.findIndex(
-        header =>
-            header.trim().toLowerCase() ===
-            name.toLowerCase()
-    );
-
-}
-
-
-// ======================================
-// CSV PARSER
+// HANDLE COMMAS INSIDE QUOTES
 // ======================================
 
 function parseCSVLine(line) {
@@ -382,29 +365,42 @@ function parseCSVLine(line) {
     const result = [];
 
     let current = "";
+
     let insideQuotes = false;
 
 
     for (let i = 0; i < line.length; i++) {
 
-        const char = line[i];
+        const character = line[i];
 
 
-        if (char === '"') {
+        if (character === '"') {
 
-            insideQuotes =
-                !insideQuotes;
+            if (
+                insideQuotes &&
+                line[i + 1] === '"'
+            ) {
+
+                current += '"';
+
+                i++;
+
+            }
+
+            else {
+
+                insideQuotes = !insideQuotes;
+
+            }
 
         }
 
         else if (
-            char === "," &&
+            character === "," &&
             !insideQuotes
         ) {
 
-            result.push(
-                current.trim()
-            );
+            result.push(current);
 
             current = "";
 
@@ -412,33 +408,15 @@ function parseCSVLine(line) {
 
         else {
 
-            current += char;
+            current += character;
 
         }
 
     }
 
 
-    result.push(
-        current.trim()
-    );
-
+    result.push(current);
 
     return result;
 
 }
-
-
-// ======================================
-// RESULTS BUTTON
-// ======================================
-
-viewResultsBtn.addEventListener(
-    "click",
-    function () {
-
-        window.location.href =
-            "results.html";
-
-    }
-);
