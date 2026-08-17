@@ -3,425 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Sample Information | MicroCount STEVision</title>
-
-    <!-- Main Website CSS -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- Sample Page CSS -->
     <link rel="stylesheet" href="sample.css">
 </head>
-
 <body>
 
-<!-- ===========================
-        NAVIGATION BAR
-============================ -->
-
 <header>
-
     <nav class="navbar">
-
         <div class="logo">
-
             <img src="images/logo.png" alt="MicroCount Logo">
-
             <h2>MicroCount STEVision</h2>
-
         </div>
 
         <ul class="nav-links">
-
-            <li>
-                <a href="index.html">Home</a>
-            </li>
-
-            <li>
-                <a href="sample.html" class="active">Sample</a>
-            </li>
-
-            <li>
-                <a href="results.html">Results</a>
-            </li>
-
-            <li>
-                <a href="about.html">About</a>
-            </li>
-
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sample.html" class="active">Sample</a></li>
+            <li><a href="upload.html">Upload</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="results.html">Results</a></li>
+            <li><a href="about.html">About</a></li>
         </ul>
-
     </nav>
-
 </header>
 
-
-<!-- ===========================
-          SAMPLE PAGE
-============================ -->
-
 <section class="sample-page">
-
     <div class="sample-left">
-
         <h1>Sample Information</h1>
-
-        <p>
-            Fill in the information below before uploading microscope images.
-        </p>
-
-
-        <!-- =========================
-             SAMPLE INFORMATION FORM
-        ========================== -->
-
-<form id="sampleForm"> action="upload.html" method="get">
-
-
-            <!-- SCHOOL NAME -->
-
-            <label for="schoolName">
-                School Name
-            </label>
-
-            <input
-                type="text"
-                id="schoolName"
-                name="schoolName"
-                placeholder="Name of School"
-                required
-            >
-
-
-            <!-- SECTION -->
-
-            <label for="section">
-                Section
-            </label>
-
-            <input
-                type="text"
-                id="section"
-                name="section"
-                placeholder="Grade Level - Section"
-                required
-            >
-
-
-            <!-- =========================
-                 SOURCE OF WATER
-            ========================== -->
-
-            <label for="source">
-                Source of Water
-            </label>
-
-            <select
-                id="source"
-                name="source"
-                required
-            >
-
-                <option value="">
-                    Select Source
-                </option>
-
-                <option value="Water Refilling Station">
-                    Water Refilling Station
-                </option>
-
-                <option value="Water Fountain">
-                    Water Fountain
-                </option>
-
-                <option value="Tap Water">
-                    Tap Water
-                </option>
-
-                <option value="Mineral Water">
-                    Mineral Water
-                </option>
-
-                <option value="Other">
-                    Other
-                </option>
-
-            </select>
-
-
-            <!-- OTHER WATER SOURCE -->
-
-            <input
-                type="text"
-                id="otherSource"
-                name="otherSource"
-                placeholder="Please specify your water source"
-                style="display:none;"
-            >
-
-
-            <!-- =========================
-                 WATER CONDITION
-            ========================== -->
-
-            <label for="waterCondition">
-                Water Condition
-            </label>
-
-            <select
-                id="waterCondition"
-                name="waterCondition"
-                required
-            >
-
-                <option value="">
-                    Select Water Condition
-                </option>
-
-                <option value="Direct Sunlight">
-                    Exposed to Direct Sunlight
-                </option>
-
-                <option value="Room Temperature">
-                    Away from Direct Sunlight (Room Temperature)
-                </option>
-
-                <option value="Air-Conditioned Room">
-                    Stored in an Air-Conditioned Room
-                </option>
-
-            </select>
-
-
-            <!-- =========================
-                 NUMBER OF IMAGES
-            ========================== -->
-
-            <label for="numImages">
-                Number of Microscope Images
-            </label>
-
-            <input
-                type="number"
-                id="numImages"
-                name="numImages"
-                placeholder="Enter number of images"
-                min="1"
-                max="100"
-                value="10"
-                required
-            >
-
-            <small>
-                Recommended: Upload around
-                <b>10 microscope images</b>
-                for more reliable analysis.
-            </small>
-
-
-            <!-- =========================
-                 MICROSCOPE MAGNIFICATION
-            ========================== -->
-
-            <label>
-                Microscope Magnification
-            </label>
-
-            <div class="magnification-box">
-
-                <p class="magnification-instruction">
-                    Select the eyepiece and objective used for the microscope image.
-                </p>
-
-
-                <div class="magnification-selects">
-
-
-                    <!-- EYEPIECE -->
-
-                    <div>
-
-                        <label for="eyepiece">
-                            Eyepiece
-                        </label>
-
-                        <select
-                            id="eyepiece"
-                            name="eyepiece"
-                            required
-                        >
-
-                            <option value="">
-                                Select
-                            </option>
-
-                            <option value="5">
-                                5x
-                            </option>
-
-                            <option value="10">
-                                10x
-                            </option>
-
-                            <option value="15">
-                                15x
-                            </option>
-
-                            <option value="20">
-                                20x
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- MULTIPLICATION SIGN -->
-
-                    <div class="multiply-sign">
-                        ×
-                    </div>
-
-
-                    <!-- OBJECTIVE -->
-
-                    <div>
-
-                        <label for="objective">
-                            Objective
-                        </label>
-
-                        <select
-                            id="objective"
-                            name="objective"
-                            required
-                        >
-
-                            <option value="">
-                                Select
-                            </option>
-
-                            <option value="4">
-                                4x
-                            </option>
-
-                            <option value="10">
-                                10x
-                            </option>
-
-                            <option value="40">
-                                40x
-                            </option>
-
-                            <option value="100">
-                                100x
-                            </option>
-
-                        </select>
-
-                    </div>
-
+        <p>Fill in the optional information below before uploading microscope images for analysis. All fields are optional.</p>
+
+        <form id="sampleForm" action="upload.html" method="get">
+            <div class="field-group">
+                <label for="schoolName">School Name</label>
+                <div class="input-with-button">
+                    <input type="text" id="schoolName" name="schoolName" placeholder="Name of School">
+                    <button type="button" id="schoolNameBtn" class="field-btn">Enter</button>
                 </div>
-
-
-                <!-- TOTAL MAGNIFICATION -->
-
-                <div class="total-magnification">
-
-                    <span>
-                        Total Magnification
-                    </span>
-
-                    <strong id="totalMagnification">
-                        —
-                    </strong>
-
-                </div>
-
+                <small id="schoolNameStatus"></small>
             </div>
 
+            <div class="field-group">
+                <label for="section">Section</label>
+                <div class="input-with-button">
+                    <input type="text" id="section" name="section" placeholder="Grade Level - Section">
+                    <button type="button" id="sectionBtn" class="field-btn">Enter</button>
+                </div>
+                <small id="sectionStatus"></small>
+            </div>
 
-            <!-- =========================
-                    CONSENT
-            ========================== -->
+            <div class="field-group">
+                <label for="source">Source of Water</label>
+                <div class="input-with-button">
+                    <select id="source" name="source">
+                        <option value="">Select Source</option>
+                        <option value="Water Refilling Station">Water Refilling Station</option>
+                        <option value="Water Fountain">Water Fountain</option>
+                        <option value="Tap Water">Tap Water</option>
+                        <option value="Mineral Water">Mineral Water</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <button type="button" id="sourceBtn" class="field-btn">Enter</button>
+                </div>
+                <small id="sourceStatus"></small>
+            </div>
+
+            <input type="text" id="otherSource" name="otherSource" placeholder="Please specify your water source" style="display:none;">
+
+            <div class="field-group">
+                <label for="waterCondition">Water Condition</label>
+                <div class="input-with-button">
+                    <select id="waterCondition" name="waterCondition">
+                        <option value="">Select Water Condition</option>
+                        <option value="Direct Sunlight">Exposed to Direct Sunlight</option>
+                        <option value="Room Temperature">Away from Direct Sunlight (Room Temperature)</option>
+                        <option value="Air-Conditioned Room">Stored in an Air-Conditioned Room</option>
+                    </select>
+                    <button type="button" id="waterConditionBtn" class="field-btn">Enter</button>
+                </div>
+                <small id="waterConditionStatus"></small>
+            </div>
+
+            <div class="field-group">
+                <label for="population">Population</label>
+                <div class="input-with-button">
+                    <input type="text" id="population" name="population" placeholder="Number of students/population">
+                    <button type="button" id="populationBtn" class="field-btn">Enter</button>
+                </div>
+                <small id="populationStatus"></small>
+            </div>
+
+            <div class="field-group">
+                <label for="numImages">Number of Microscope Images</label>
+                <div class="input-with-button">
+                    <input type="number" id="numImages" name="numImages" placeholder="Enter number of images" min="1" max="20" value="10">
+                    <button type="button" id="numImagesBtn" class="field-btn">Enter</button>
+                </div>
+                <small id="numImagesStatus"></small>
+                <small>
+                    Recommended: Upload around <b>10 microscope images</b> for more reliable analysis. Maximum: 20 images.
+                </small>
+            </div>
+
+            <div class="field-group">
+                <label>Microscope Magnification (Optional)</label>
+                <div class="magnification-box">
+                    <p class="magnification-instruction">Select the eyepiece and objective used for the microscope images.</p>
+
+                    <div class="magnification-selects">
+                        <div>
+                            <label for="eyepiece">Eyepiece</label>
+                            <select id="eyepiece" name="eyepiece">
+                                <option value="">Select</option>
+                                <option value="5">5x</option>
+                                <option value="10">10x</option>
+                                <option value="15">15x</option>
+                                <option value="20">20x</option>
+                            </select>
+                        </div>
+
+                        <div class="multiply-sign">×</div>
+
+                        <div>
+                            <label for="objective">Objective</label>
+                            <select id="objective" name="objective">
+                                <option value="">Select</option>
+                                <option value="4">4x</option>
+                                <option value="10">10x</option>
+                                <option value="40">40x</option>
+                                <option value="100">100x</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="total-magnification">
+                        <span>Total Magnification</span>
+                        <strong id="totalMagnification">—</strong>
+                    </div>
+                </div>
+                <button type="button" id="magnificationBtn" class="field-btn">Save Magnification</button>
+                <small id="magnificationStatus"></small>
+            </div>
 
             <div class="consent-section">
-
-                <h2>
-                    Consent
-                </h2>
-
-
-                <!-- REQUIRED DATA PRIVACY CONSENT -->
+                <h2>Consent</h2>
 
                 <label class="consent-item">
-
-                    <input
-                        type="checkbox"
-                        id="dataPrivacyConsent"
-                        name="dataPrivacyConsent"
-                        required
-                    >
-
+                    <input type="checkbox" id="dataPrivacyConsent" name="dataPrivacyConsent">
                     <span>
-
-                        <strong>
-                            Data Privacy Consent
-                        </strong>
-
-                        <br>
-
-                        I have read and understood this consent form.
-                        I acknowledge the secure collection, storage and
-                        processing of the microscope images and information
-                        that I provide for the MicroCount (STEVision) system
-                        in line with applicable data privacy laws.
-
+                        <strong>Data Privacy Consent</strong><br>
+                        I have read and understood this consent form. I acknowledge the secure collection,
+                        storage, and processing of the microscope images and information I provide for the
+                        MicroCount (STEVision) system in line with applicable data privacy laws.
                     </span>
-
                 </label>
 
-
-                <!-- OPTIONAL RESEARCH PARTICIPATION CONSENT -->
-
                 <label class="consent-item">
-
-                    <input
-                        type="checkbox"
-                        id="researchParticipationConsent"
-                        name="researchParticipationConsent"
-                    >
-
+                    <input type="checkbox" id="researchParticipationConsent" name="researchParticipationConsent">
                     <span>
-
-                        <strong>
-                            Research Participation Consent
-                        </strong>
-
-                        <br>
-
-                        I voluntarily consent to the use of my submitted
-                        microscope images and related information for
-                        research purposes. My personal information will be
-                        kept confidential, and will only be used in research
-                        reports, presentations or publications under
+                        <strong>Research Participation Consent</strong><br>
+                        I voluntarily consent to the use of my submitted microscope images and related
+                        information for research purposes. My personal information will be kept confidential
+                        and will only be used in research reports, presentations, or publications under
                         anonymous data and with the name of my institution.
-
                     </span>
-
                 </label>
-
             </div>
 
-
-            <!-- =========================
-                 CONTINUE BUTTON
-            ========================== -->
-
-<button type="submit" id="continueBtn">
-    Continue to Upload Images →
-</button>
-
-</form>
+            <button type="submit" id="continueBtn">Continue to Upload Images →</button>
+        </form>
+    </div>
+</section>
 
 <script src="sample.js"></script>
+</body>
+</html>

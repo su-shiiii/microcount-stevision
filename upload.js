@@ -97,6 +97,11 @@ function previewFiles(files) {
         return;
     }
 
+    // Check maximum number of images (20)
+    if (files.length > 20) {
+        alert("Maximum 20 microscope images allowed. Please upload up to 20 images.");
+        return;
+    }
 
     // Save number of images
     localStorage.setItem("numImages", files.length);

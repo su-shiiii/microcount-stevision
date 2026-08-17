@@ -127,6 +127,92 @@ background-image: linear-gradient(
     }
 
 }
+
+/* =========================================
+   FIELD GROUPS WITH INDIVIDUAL BUTTONS
+========================================= */
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field-group label {
+    font-weight: 600;
+    color: #17325c;
+    margin-bottom: 2px;
+}
+
+.input-with-button {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.input-with-button input,
+.input-with-button select {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #f4f8fc;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.input-with-button input:focus,
+.input-with-button select:focus {
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(53, 195, 207, 0.3);
+}
+
+.field-btn {
+    padding: 15px 24px;
+    border: none;
+    border-radius: 12px;
+    background: #35c3cf;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.field-btn:hover {
+    background: #22aab8;
+    transform: translateY(-2px);
+}
+
+.field-group small {
+    color: #666;
+    font-size: 13px;
+}
+
+.field-group small:first-of-type {
+    color: #27c4ce;
+    font-weight: 500;
+    min-height: 18px;
+}
+
+/* =========================================
+   RESPONSIVE FIELD GROUPS
+========================================= */
+
+@media (max-width: 600px) {
+    .input-with-button {
+        flex-direction: column;
+    }
+
+    .field-btn {
+        width: 100%;
+        padding: 14px;
+    }
+}
+
 /* =========================================
    MICROSCOPE MAGNIFICATION
 ========================================= */

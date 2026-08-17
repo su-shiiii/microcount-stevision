@@ -3,316 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Results | MicroCount STEVision</title>
-
     <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>MicroCount <strong>STEVision</strong></span>
+        </div>
 
-<nav class="navbar">
-
-<div class="logo">
-<img src="images/logo.png" alt="Logo">
-<span>MicroCount <strong>STEVision</strong></span>
-</div>
-
-<ul class="nav-links">
-<li><a href="index.html">Home</a></li>
-<li><a href="sample.html">Sample</a></li>
-<li><a href="analysis.html">Analysis</a></li>
-<li><a href="results.html" class="active">Results</a></li>
-<li><a href="about.html">About</a></li>
-</ul>
-
-</nav>
-
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="sample.html">Sample</a></li>
+            <li><a href="upload.html">Upload</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="results.html" class="active">Results</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </nav>
 </header>
 
 <section class="results-page">
-
-<h1>Results & Risk Assessment</h1>
-
-<p>
-Microplastic analysis completed successfully using Fiji/ImageJ-assisted computational image analysis.
-</p>
-
-<div class="results-grid">
-
-<!-- LEFT COLUMN -->
-
-<div class="result-image-card">
-
-<h2>Analyzed Microscope Image</h2>
-
-<img id="resultImage" src="" alt="Uploaded Microscope Image">
-
-</div>
-
-<!-- RIGHT COLUMN -->
-
-<div class="results-info">
-
-<!-- Sample Information -->
-
-<div class="card">
-
-<h2>Sample Information</h2>
-
-<p><strong>School Name:</strong> <span id="schoolName"></span></p>
-
-<p><strong>Section:</strong> <span id="section"></span></p>
-
-<p><strong>Water Source:</strong> <span id="source"></span></p>
-
-<p><strong>Sample ID:</strong> <span id="sampleID"></span></p>
-
-</div>
-
-<!-- Analysis Summary -->
-
-<div class="card">
-
-<h2>Analysis Summary</h2>
-
-<p><strong>Number of Images:</strong> <span id="numImages"></span></p>
-
-<p><strong>Detected Particles:</strong> <span id="particleCount"></span></p>
-
-<p><strong>Average Count:</strong> <span id="average"></span></p>
-
-<p><strong>Detection Method:</strong><br>
-Fiji/ImageJ Computational Image Analysis
-</p>
-
-</div>
-
-<!-- Risk Level -->
-
-<div class="card">
-
-<h2>Risk Level</h2>
-
-<div id="riskBox" class="risk-level">
-
-<h3 id="riskLevel">LEVEL 1</h3>
-
-<p id="riskText">LOW RISK</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- Risk Scale -->
-
-<div class="card">
-
-<h2>Microplastic Quantity Classification</h2>
-
-<div class="risk-scale">
-
-<div class="risk-item green">
-
-<h3>LEVEL 1</h3>
-
-<p>0–10 particles/image</p>
-
-<span>Low</span>
-
-</div>
-
-<div class="risk-item yellow">
-
-<h3>LEVEL 2</h3>
-
-<p>11–30 particles/image</p>
-
-<span>Moderate</span>
-
-</div>
-
-<div class="risk-item orange">
-
-<h3>LEVEL 3</h3>
-
-<p>31–60 particles/image</p>
-
-<span>High</span>
-
-</div>
-
-<div class="risk-item red">
-
-<h3>LEVEL 4</h3>
-
-<p>61+ particles/image</p>
-
-<span>Very High</span>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- Interpretation -->
-
-<div class="card interpretation-card">
-
-<h2>Interpretation</h2>
-
-<p id="interpretation"></p>
-
-</div>
-<div class="result-card">
-
-<!-- =========================
-     MICROPLASTIC RESULTS
-========================= -->
-
-<section class="results-section">
-
-    <div class="results-card">
-
-        <h1>Microplastic Types Identified</h1>
-
-        <table class="microplastic-table">
-
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Detected</th>
-                    <th>Percentage</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td>Fragments</td>
-                    <td id="fragmentsCount">0</td>
-                    <td id="fragmentsPercentage">0.0%</td>
-                </tr>
-
-                <tr>
-                    <td>Fibers</td>
-                    <td id="fibersCount">0</td>
-                    <td id="fibersPercentage">0.0%</td>
-                </tr>
-
-                <tr>
-                    <td>Films</td>
-                    <td id="filmsCount">0</td>
-                    <td id="filmsPercentage">0.0%</td>
-                </tr>
-
-                <tr>
-                    <td>Foams</td>
-                    <td id="foamsCount">0</td>
-                    <td id="foamsPercentage">0.0%</td>
-                </tr>
-
-                <tr>
-                    <td>Pellets</td>
-                    <td id="pelletsCount">0</td>
-                    <td id="pelletsPercentage">0.0%</td>
-                </tr>
-
-                <tr>
-                    <td>Lines / Filaments</td>
-                    <td id="linesCount">0</td>
-                    <td id="linesPercentage">0.0%</td>
-                </tr>
-            </tbody>
-
-        </table>
-
+    <h1>Results & Risk Assessment</h1>
+    <p>Microplastic analysis completed successfully using Fiji/ImageJ-assisted computational image analysis.</p>
+
+    <div class="results-grid">
+        <div class="result-image-card">
+            <h2>Analyzed Microscope Image</h2>
+            <img id="resultImage" src="" alt="Uploaded Microscope Image">
+        </div>
+
+        <div class="results-info">
+            <div class="card">
+                <h2>Sample Information</h2>
+                <p><strong>School Name:</strong> <span id="schoolName">—</span></p>
+                <p><strong>Section:</strong> <span id="section">—</span></p>
+                <p><strong>Water Source:</strong> <span id="source">—</span></p>
+                <p><strong>Population:</strong> <span id="population">—</span></p>
+                <p><strong>Sample ID:</strong> <span id="sampleID">—</span></p>
+            </div>
+
+            <div class="card">
+                <h2>Analysis Summary</h2>
+                <p><strong>Number of Images:</strong> <span id="numImages"></span></p>
+                <p><strong>Detected Particles:</strong> <span id="particleCount"></span></p>
+                <p><strong>Average Count:</strong> <span id="average"></span></p>
+                <p><strong>Detection Method:</strong><br>Fiji/ImageJ Computational Image Analysis</p>
+            </div>
+
+            <div class="card">
+                <h2>Risk Level</h2>
+                <div id="riskBox" class="risk-level">
+                    <h3 id="riskLevel">LEVEL 1</h3>
+                    <p id="riskText">LOW RISK</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-    <!-- =========================
-         RECOMMENDATIONS
-    ========================= -->
-
-    <div class="recommendations-wrapper">
-
-        <div class="recommendations-header">
-            <span class="recommendation-icon">💧</span>
-
-            <div>
-                <h2>Recommendations</h2>
-
-                <p>
-                    Based on the detected microplastic contamination level.
-                </p>
+    <div class="card">
+        <h2>Microplastic Quantity Classification</h2>
+        <div class="risk-scale">
+            <div class="risk-item green">
+                <h3>LEVEL 1</h3>
+                <p>0–10 particles/image</p>
+                <span>Low</span>
+            </div>
+            <div class="risk-item yellow">
+                <h3>LEVEL 2</h3>
+                <p>11–30 particles/image</p>
+                <span>Moderate</span>
+            </div>
+            <div class="risk-item orange">
+                <h3>LEVEL 3</h3>
+                <p>31–60 particles/image</p>
+                <span>High</span>
+            </div>
+            <div class="risk-item red">
+                <h3>LEVEL 4</h3>
+                <p>61+ particles/image</p>
+                <span>Very High</span>
             </div>
         </div>
-
-
-        <div class="recommendation-item">
-
-            <div class="recommendation-title">
-                🔎
-                <h3>Why may the microplastic count be high?</h3>
-            </div>
-
-            <p id="contaminationExplanation">
-                The explanation will appear based on the analysis results.
-            </p>
-
-        </div>
-
-
-        <div class="recommendation-item">
-
-            <div class="recommendation-title">
-                💧
-                <h3>How to handle the drinking water</h3>
-            </div>
-
-            <ul id="waterRecommendations">
-
-                <li>
-                    Recommendations will appear based on the analysis.
-                </li>
-
-            </ul>
-
-        </div>
-
-
-        <!-- BUTTONS -->
-
-        <div class="results-buttons">
-
-            <button
-                class="download-btn"
-                id="downloadReportBtn"
-                type="button"
-            >
-                📄 Download Report
-            </button>
-
-            <button
-                class="new-analysis-btn"
-                type="button"
-                onclick="window.location.href='sample.html'"
-            >
-                🔄 New Analysis
-            </button>
-
-        </div>
-
     </div>
 
+    <div class="card interpretation-card">
+        <h2>Interpretation</h2>
+        <p id="interpretation"></p>
+    </div>
+
+    <section class="results-section">
+        <div class="results-card">
+            <h1>Microplastic Types Identified</h1>
+            <table class="microplastic-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Detected</th>
+                        <th>Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Fragments</td>
+                        <td id="fragmentsCount">0</td>
+                        <td id="fragmentsPercentage">0.0%</td>
+                    </tr>
+                    <tr>
+                        <td>Fibers</td>
+                        <td id="fibersCount">0</td>
+                        <td id="fibersPercentage">0.0%</td>
+                    </tr>
+                    <tr>
+                        <td>Films</td>
+                        <td id="filmsCount">0</td>
+                        <td id="filmsPercentage">0.0%</td>
+                    </tr>
+                    <tr>
+                        <td>Foams</td>
+                        <td id="foamsCount">0</td>
+                        <td id="foamsPercentage">0.0%</td>
+                    </tr>
+                    <tr>
+                        <td>Pellets</td>
+                        <td id="pelletsCount">0</td>
+                        <td id="pelletsPercentage">0.0%</td>
+                    </tr>
+                    <tr>
+                        <td>Lines / Filaments</td>
+                        <td id="linesCount">0</td>
+                        <td id="linesPercentage">0.0%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="recommendations-wrapper">
+            <div class="recommendations-header">
+                <span class="recommendation-icon">💧</span>
+                <div>
+                    <h2>Recommendations</h2>
+                    <p>Based on the detected microplastic contamination level.</p>
+                </div>
+            </div>
+
+            <div class="recommendation-item">
+                <div class="recommendation-title">
+                    <span>🔎</span>
+                    <h3>Why may the microplastic count be high?</h3>
+                </div>
+                <p id="contaminationExplanation">The explanation will appear based on the analysis results.</p>
+            </div>
+
+            <div class="recommendation-item">
+                <div class="recommendation-title">
+                    <span>💧</span>
+                    <h3>How to handle the drinking water</h3>
+                </div>
+                <ul id="waterRecommendations">
+                    <li>Recommendations will appear based on the analysis.</li>
+                </ul>
+            </div>
+
+            <div class="results-buttons">
+                <button class="download-btn" id="downloadReportBtn" type="button">📄 Download Report</button>
+                <button class="new-analysis-btn" type="button" onclick="window.location.href='sample.html'">🔄 New Analysis</button>
+            </div>
+        </div>
+    </section>
 </section>
 
 <script src="microplastic-analysis.js"></script>
 <script src="results.js"></script>
+</body>
+</html>
