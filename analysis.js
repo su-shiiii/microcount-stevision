@@ -1,332 +1,536 @@
 // ======================================
 // MicroCount STEVision
-// Fiji/ImageJ Analysis
+// Fiji/ImageJ Analysis Page
 // ======================================
 
-const csvInput = document.getElementById("csvInput");
-const analyzeBtn = document.getElementById("analyzeBtn");
+// ----------------------------
+// Page elements
+// ----------------------------
 
 const progressBar = document.getElementById("progressBar");
 const percentText = document.getElementById("percentText");
 const statusText = document.getElementById("statusText");
 
 
-// ======================================
-// INITIAL STATE
-// ======================================
+// ----------------------------
+// Create Fiji CSV input
+// ----------------------------
 
-analyzeBtn.disabled = true;
+const analysisCard = document.querySelector(".analysis-card");
+
+const csvWrapper = document.createElement("div");
+
+csvWrapper.style.marginTop = "25px";
+
+csvWrapper.innerHTML = `
+    <p style="font-weight:bold;">
+        Upload the Fiji/ImageJ Results CSV:
+    </p>
+
+    <input
+        type="file"
+        id="fijiCSVInput"
+        accept=".csv,text/csv"
+        style="
+            padding:12px;
+            border:2px solid #35c1cf;
+            border-radius:8px;
+            background:white;
+            cursor:pointer;
+        "
+    >
+
+    <p style="font-size:14px;margin-top:10px;">
+        Export this from Fiji/ImageJ using
+        <strong>Results → Save As → CSV</strong>.
+    </p>
+`;
+
+analysisCard.appendChild(csvWrapper);
+
+const csvInput =
+    document.getElementById("fijiCSVInput");
 
 
-// ======================================
-// ENABLE BUTTON WHEN CSV IS SELECTED
-// ======================================
+// ----------------------------
+// Initial state
+// ----------------------------
+
+progressBar.style.width = "0%";
+percentText.textContent = "0%";
+statusText.textContent =
+    "Waiting for Fiji/ImageJ Results CSV...";
+
+
+// ----------------------------
+// CSV selected
+// ----------------------------
 
 csvInput.addEventListener("change", function () {
 
-    if (csvInput.files.length > 0) {
+    const file = csvInput.files[0];
 
-        analyzeBtn.disabled = false;
-
-        statusText.textContent =
-            "Fiji/ImageJ CSV selected. Ready to analyze.";
-
-    } else {
-
-        analyzeBtn.disabled = true;
-
-        statusText.textContent =
-            "Waiting for Fiji/ImageJ CSV...";
-
+    if (!file) {
+        return;
     }
+
+    if (!file.name.toLowerCase().endsWith(".csv")) {
+
+        alert("Please select a Fiji/ImageJ CSV file.");
+
+        return;
+    }
+
+    readFijiCSV(file);
 
 });
 
 
 // ======================================
-// ANALYZE BUTTON
+// READ FIJI CSV
 // ======================================
 
-analyzeBtn.addEventListener("click", function () {
-
-    if (!csvInput.files.length) {
-
-        alert("Please select the Fiji/ImageJ CSV file first.");
-
-        return;
-
-    }
-
-    const file = csvInput.files[0];
+function readFijiCSV(file) {
 
     statusText.textContent =
-        "Reading Fiji/ImageJ Results table...";
+        "Reading Fiji/ImageJ Results...";
 
-    analyzeBtn.disabled = true;
+    progressBar.style.width = "15%";
+    percentText.textContent = "15%";
 
     const reader = new FileReader();
-
 
     reader.onload = function (event) {
 
         const csvText = event.target.result;
 
-        processFijiCSV(csvText);
-
-    };
-
-
-    reader.onerror = function () {
-
-        alert("The CSV file could not be read.");
-
-        analyzeBtn.disabled = false;
-
-    };
-
-
-    reader.readAsText(file);
-
-});
-
-
-// ======================================
-// PROCESS FIJI CSV
-// ======================================
-
-function processFijiCSV(csvText) {
-
-    progressBar.style.width = "10%";
-    percentText.textContent = "10%";
-
-    statusText.textContent =
-        "Reading Fiji/ImageJ measurements...";
-
-
-    setTimeout(function () {
-
         progressBar.style.width = "30%";
         percentText.textContent = "30%";
 
         statusText.textContent =
-            "Counting detected particles...";
+            "Processing Fiji/ImageJ measurements...";
+
+        setTimeout(function () {
+
+            processFijiCSV(csvText);
+
+        }, 500);
+
+    };
+
+    reader.onerror = function () {
+
+        alert("Unable to read the Fiji/ImageJ CSV.");
+
+        statusText.textContent =
+            "Error reading CSV.";
+
+    };
+
+    reader.readAsText(file);
+
+}
 
 
-        const rows = parseCSV(csvText);
+// ======================================
+// PROCESS CSV
+// ======================================
+
+function processFijiCSV(csvText) {
+
+    const rows = parseCSV(csvText);
+
+    if (rows.length < 2) {
+
+        alert(
+            "The Fiji/ImageJ CSV does not contain enough Results data."
+        );
+
+        return;
+
+    }
+
+    const headers = rows[0].map(header =>
+        header.trim().toLowerCase()
+    );
+
+    const dataRows = rows.slice(1);
+
+    progressBar.style.width = "45%";
+    percentText.textContent = "45%";
+
+    statusText.textContent =
+        "Reading particle measurements...";
 
 
-        if (rows.length < 2) {
+    // ----------------------------
+    // Find important Fiji columns
+    // ----------------------------
 
-            alert(
-                "The Fiji/ImageJ CSV does not contain enough measurement data."
+    const areaIndex =
+        headers.indexOf("area");
+
+    const typeIndex =
+        headers.indexOf("type");
+
+    const imageIndex =
+        headers.indexOf("image");
+
+
+    // ----------------------------
+    // Check Area column
+    // ----------------------------
+
+    if (areaIndex === -1) {
+
+        alert(
+            "The Fiji/ImageJ Results CSV must contain an 'Area' column."
+        );
+
+        statusText.textContent =
+            "Missing Fiji/ImageJ Area column.";
+
+        return;
+
+    }
+
+
+    // ----------------------------
+    // Particle measurements
+    // ----------------------------
+
+    let particleCount = 0;
+
+    let totalArea = 0;
+
+    let validAreaMeasurements = 0;
+
+
+    // ----------------------------
+    // Microplastic types
+    // ----------------------------
+
+    let fragments = 0;
+    let fibers = 0;
+    let films = 0;
+    let foams = 0;
+    let pellets = 0;
+    let lines = 0;
+
+    let classifiedParticles = 0;
+
+
+    // ----------------------------
+    // Process every Fiji row
+    // ----------------------------
+
+    dataRows.forEach(row => {
+
+        if (!row || row.length === 0) {
+            return;
+        }
+
+        const areaValue =
+            parseFloat(
+                String(row[areaIndex] || "")
+                    .replace(/,/g, "")
             );
 
-            analyzeBtn.disabled = false;
 
-            return;
+        // Count particle if Area exists
+        if (!isNaN(areaValue)) {
+
+            particleCount++;
+
+            totalArea += areaValue;
+
+            validAreaMeasurements++;
 
         }
 
 
-        // First row = column headings
-        const headers = rows[0];
+        // ----------------------------
+        // Type classification
+        // ----------------------------
 
-        // Remaining rows = detected particles
-        const particleRows = rows.slice(1);
+        if (typeIndex !== -1) {
 
-
-        // Remove completely empty rows
-        const validRows = particleRows.filter(function (row) {
-
-            return row.some(function (value) {
-
-                return value.trim() !== "";
-
-            });
-
-        });
-
-
-        const particleCount = validRows.length;
-
-
-        progressBar.style.width = "55%";
-        percentText.textContent = "55%";
-
-        statusText.textContent =
-            "Calculating particle measurements...";
-
-
-        // ======================================
-        // FIND AREA COLUMN
-        // ======================================
-
-        let areaIndex = -1;
-
-        for (let i = 0; i < headers.length; i++) {
+            const type =
+                String(row[typeIndex] || "")
+                    .trim()
+                    .toLowerCase();
 
             if (
-                headers[i].trim().toLowerCase() === "area"
+                type === "fragment" ||
+                type === "fragments"
             ) {
 
-                areaIndex = i;
-                break;
+                fragments++;
+                classifiedParticles++;
+
+            }
+
+            else if (
+                type === "fiber" ||
+                type === "fibers"
+            ) {
+
+                fibers++;
+                classifiedParticles++;
+
+            }
+
+            else if (
+                type === "film" ||
+                type === "films"
+            ) {
+
+                films++;
+                classifiedParticles++;
+
+            }
+
+            else if (
+                type === "foam" ||
+                type === "foams"
+            ) {
+
+                foams++;
+                classifiedParticles++;
+
+            }
+
+            else if (
+                type === "pellet" ||
+                type === "pellets"
+            ) {
+
+                pellets++;
+                classifiedParticles++;
+
+            }
+
+            else if (
+                type === "line" ||
+                type === "lines" ||
+                type === "filament" ||
+                type === "filaments"
+            ) {
+
+                lines++;
+                classifiedParticles++;
 
             }
 
         }
 
-
-        let totalArea = 0;
-        let averageArea = 0;
+    });
 
 
-        if (areaIndex !== -1) {
+    // ----------------------------
+    // Calculate averages
+    // ----------------------------
 
-            let areaValues = [];
-
-            validRows.forEach(function (row) {
-
-                const value =
-                    parseFloat(row[areaIndex]);
-
-                if (!isNaN(value)) {
-
-                    areaValues.push(value);
-
-                    totalArea += value;
-
-                }
-
-            });
+    const average =
+        particleCount > 0
+            ? (particleCount / getImageCount()).toFixed(2)
+            : "0.00";
 
 
-            if (areaValues.length > 0) {
-
-                averageArea =
-                    totalArea / areaValues.length;
-
-            }
-
-        }
+    const averageArea =
+        validAreaMeasurements > 0
+            ? (totalArea / validAreaMeasurements).toFixed(2)
+            : "0.00";
 
 
-        progressBar.style.width = "75%";
-        percentText.textContent = "75%";
+    // ----------------------------
+    // Risk level
+    // ----------------------------
 
-        statusText.textContent =
-            "Generating MicroCount results...";
-
-
-        // ======================================
-        // IMAGE COUNT
-        // ======================================
-
-        const imageCount =
-            Number(localStorage.getItem("numImages")) || 1;
+    let riskLevel;
+    let riskText;
 
 
-        const average =
-            particleCount / imageCount;
+    if (particleCount <= 10) {
+
+        riskLevel = "LEVEL 1";
+        riskText = "Low";
+
+    }
+
+    else if (particleCount <= 30) {
+
+        riskLevel = "LEVEL 2";
+        riskText = "Moderate";
+
+    }
+
+    else if (particleCount <= 60) {
+
+        riskLevel = "LEVEL 3";
+        riskText = "High";
+
+    }
+
+    else {
+
+        riskLevel = "LEVEL 4";
+        riskText = "Very High";
+
+    }
 
 
-        // ======================================
-        // CONTAMINATION LEVEL
-        // ======================================
+    // ----------------------------
+    // Save Fiji results
+    // ----------------------------
 
-        let level;
-        let risk;
+    localStorage.setItem(
+        "numImages",
+        getImageCount()
+    );
+
+    localStorage.setItem(
+        "particles",
+        particleCount
+    );
+
+    localStorage.setItem(
+        "average",
+        average
+    );
+
+    localStorage.setItem(
+        "totalArea",
+        totalArea.toFixed(2)
+    );
+
+    localStorage.setItem(
+        "averageArea",
+        averageArea
+    );
+
+    localStorage.setItem(
+        "riskLevel",
+        riskLevel
+    );
+
+    localStorage.setItem(
+        "riskText",
+        riskText
+    );
 
 
-        if (average <= 10) {
+    // ----------------------------
+    // Save microplastic types
+    // ----------------------------
 
-            level = "LEVEL 1";
-            risk = "Low";
+    localStorage.setItem(
+        "fragment",
+        fragments
+    );
 
-        }
+    localStorage.setItem(
+        "fiber",
+        fibers
+    );
 
-        else if (average <= 30) {
+    localStorage.setItem(
+        "film",
+        films
+    );
 
-            level = "LEVEL 2";
-            risk = "Moderate";
+    localStorage.setItem(
+        "foam",
+        foams
+    );
 
-        }
+    localStorage.setItem(
+        "pellet",
+        pellets
+    );
 
-        else if (average <= 60) {
-
-            level = "LEVEL 3";
-            risk = "High";
-
-        }
-
-        else {
-
-            level = "LEVEL 4";
-            risk = "Very High";
-
-        }
+    localStorage.setItem(
+        "line",
+        lines
+    );
 
 
-        // ======================================
-        // SAVE FIJI RESULTS
-        // ======================================
+    // ----------------------------
+    // Classification status
+    // ----------------------------
+
+    if (typeIndex !== -1 && classifiedParticles > 0) {
 
         localStorage.setItem(
-            "particles",
-            particleCount
+            "classificationStatus",
+            "classified"
         );
+
+    }
+
+    else {
 
         localStorage.setItem(
-            "average",
-            average.toFixed(2)
+            "classificationStatus",
+            "not-classified"
         );
 
-        localStorage.setItem(
-            "totalArea",
-            totalArea.toFixed(2)
-        );
-
-        localStorage.setItem(
-            "averageArea",
-            averageArea.toFixed(2)
-        );
-
-        localStorage.setItem(
-            "riskLevel",
-            level
-        );
-
-        localStorage.setItem(
-            "riskText",
-            risk
-        );
+    }
 
 
-        // Save original CSV for this browser session
-        localStorage.setItem(
-            "fijiCSV",
-            csvText
-        );
+    // ----------------------------
+    // Save CSV
+    // ----------------------------
 
+    localStorage.setItem(
+        "fijiCSV",
+        csvText
+    );
+
+
+    // ----------------------------
+    // Finish
+    // ----------------------------
+
+    progressBar.style.width = "80%";
+    percentText.textContent = "80%";
+
+    statusText.textContent =
+        "Generating Fiji/ImageJ analysis report...";
+
+
+    setTimeout(function () {
 
         progressBar.style.width = "100%";
         percentText.textContent = "100%";
 
         statusText.textContent =
-            "Fiji/ImageJ analysis completed successfully.";
+            "Fiji/ImageJ analysis completed.";
 
-
-        // ======================================
-        // GO TO RESULTS
-        // ======================================
 
         setTimeout(function () {
 
-            window.location.href = "results.html";
+            window.location.href =
+                "results.html";
 
-        }, 1000);
+        }, 700);
 
-    }, 500);
+    }, 700);
+
+}
+
+
+// ======================================
+// GET NUMBER OF IMAGES
+// ======================================
+
+function getImageCount() {
+
+    return (
+        Number(
+            localStorage.getItem("numImages")
+        ) || 1
+    );
 
 }
 
@@ -337,86 +541,97 @@ function processFijiCSV(csvText) {
 
 function parseCSV(text) {
 
-    const lines = text
-        .replace(/\r/g, "")
-        .split("\n")
-        .filter(function (line) {
+    const rows = [];
 
-            return line.trim() !== "";
+    let row = [];
 
-        });
-
-
-    return lines.map(function (line) {
-
-        return parseCSVLine(line);
-
-    });
-
-}
-
-
-// ======================================
-// HANDLE COMMAS INSIDE QUOTES
-// ======================================
-
-function parseCSVLine(line) {
-
-    const result = [];
-
-    let current = "";
+    let value = "";
 
     let insideQuotes = false;
 
 
-    for (let i = 0; i < line.length; i++) {
+    for (let i = 0; i < text.length; i++) {
 
-        const character = line[i];
+        const character = text[i];
+
+        const nextCharacter =
+            text[i + 1];
+
+
+        // Quoted text
+        if (character === '"' && insideQuotes && nextCharacter === '"') {
+
+            value += '"';
+
+            i++;
+
+            continue;
+
+        }
 
 
         if (character === '"') {
 
-            if (
-                insideQuotes &&
-                line[i + 1] === '"'
-            ) {
+            insideQuotes = !insideQuotes;
 
-                current += '"';
-
-                i++;
-
-            }
-
-            else {
-
-                insideQuotes = !insideQuotes;
-
-            }
+            continue;
 
         }
 
-        else if (
+
+        // Comma
+        if (
             character === "," &&
             !insideQuotes
         ) {
 
-            result.push(current);
+            row.push(value);
 
-            current = "";
+            value = "";
+
+            continue;
+
+        }
+
+
+        // New line
+        if (
+            (character === "\n" || character === "\r") &&
+            !insideQuotes
+        ) {
+
+            if (character === "\r" && nextCharacter === "\n") {
+                i++;
+            }
+
+            row.push(value);
+
+            rows.push(row);
+
+            row = [];
+
+            value = "";
+
+            continue;
 
         }
 
-        else {
 
-            current += character;
-
-        }
+        value += character;
 
     }
 
 
-    result.push(current);
+    // Last value
+    if (value !== "" || row.length > 0) {
 
-    return result;
+        row.push(value);
+
+        rows.push(row);
+
+    }
+
+
+    return rows;
 
 }

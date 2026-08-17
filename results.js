@@ -148,6 +148,128 @@ else if (riskLevel === "LEVEL 4") {
 
 }
 
+// ======================================
+// MICROPLASTIC TYPE CLASSIFICATION
+// ======================================
+
+// These values should come from your Fiji/ImageJ
+// classification/measurement results.
+
+const fragments =
+    Number(localStorage.getItem("fragment")) || 0;
+
+const fibers =
+    Number(localStorage.getItem("fiber")) || 0;
+
+const films =
+    Number(localStorage.getItem("film")) || 0;
+
+const foams =
+    Number(localStorage.getItem("foam")) || 0;
+
+const pellets =
+    Number(localStorage.getItem("pellet")) || 0;
+
+const lines =
+    Number(localStorage.getItem("line")) || 0;
+
+
+// Calculate percentages
+function typePercentage(count) {
+
+    if (particleCount === 0) {
+        return "0.0%";
+    }
+
+    return ((count / particleCount) * 100).toFixed(1) + "%";
+}
+
+
+// Display classification results
+
+const fragmentCount =
+    document.getElementById("fragmentCount");
+
+const fragmentPercent =
+    document.getElementById("fragmentPercent");
+
+const fiberCount =
+    document.getElementById("fiberCount");
+
+const fiberPercent =
+    document.getElementById("fiberPercent");
+
+const filmCount =
+    document.getElementById("filmCount");
+
+const filmPercent =
+    document.getElementById("filmPercent");
+
+const foamCount =
+    document.getElementById("foamCount");
+
+const foamPercent =
+    document.getElementById("foamPercent");
+
+const pelletCount =
+    document.getElementById("pelletCount");
+
+const pelletPercent =
+    document.getElementById("pelletPercent");
+
+const lineCount =
+    document.getElementById("lineCount");
+
+const linePercent =
+    document.getElementById("linePercent");
+
+
+if (fragmentCount)
+    fragmentCount.textContent = fragments;
+
+if (fragmentPercent)
+    fragmentPercent.textContent =
+        typePercentage(fragments);
+
+
+if (fiberCount)
+    fiberCount.textContent = fibers;
+
+if (fiberPercent)
+    fiberPercent.textContent =
+        typePercentage(fibers);
+
+
+if (filmCount)
+    filmCount.textContent = films;
+
+if (filmPercent)
+    filmPercent.textContent =
+        typePercentage(films);
+
+
+if (foamCount)
+    foamCount.textContent = foams;
+
+if (foamPercent)
+    foamPercent.textContent =
+        typePercentage(foams);
+
+
+if (pelletCount)
+    pelletCount.textContent = pellets;
+
+if (pelletPercent)
+    pelletPercent.textContent =
+        typePercentage(pellets);
+
+
+if (lineCount)
+    lineCount.textContent = lines;
+
+if (linePercent)
+    linePercent.textContent =
+        typePercentage(lines);
 
 // ======================================
 // UPLOADED IMAGE
