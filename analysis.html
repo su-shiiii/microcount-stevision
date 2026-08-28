@@ -2,99 +2,2452 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Analysis | MicroCount STEVision</title>
 
     <link rel="icon" type="image/png" href="images/logo.png">
+
     <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .analysis-page {
+
+            min-height: calc(100vh - 110px);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 40px 20px;
+
+            background: #f5f8fc;
+
+            box-sizing: border-box;
+
+        }
+
+
+        .analysis-container {
+
+            width: 90%;
+
+            max-width: 1100px;
+
+            text-align: center;
+
+        }
+
+
+        .analysis-container h1 {
+
+            color: #183b6b;
+
+            font-size: 34px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        #analysisMessage {
+
+            color: #555;
+
+            font-size: 18px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .progress-bar {
+
+            width: 100%;
+
+            height: 25px;
+
+            background: #e3e3e3;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+        }
+
+
+        .progress-fill {
+
+            width: 0%;
+
+            height: 100%;
+
+            background: #32c0cf;
+
+            border-radius: 20px;
+
+            transition: width 0.2s ease;
+
+        }
+
+
+        #progressText {
+
+            margin-top: 15px;
+
+            color: #183b6b;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+        }
+
+
+        #analysisDetails {
+
+            margin-top: 25px;
+
+            color: #666;
+
+            min-height: 25px;
+
+        }
+
+
+        #imagePreview {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(280px, 1fr)
+                );
+
+            gap: 25px;
+
+            margin-top: 35px;
+
+        }
+
+
+        .result-image-card {
+
+            background: white;
+
+            padding: 15px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.08);
+
+        }
+
+
+        .result-image-card img {
+
+            width: 100%;
+
+            height: auto;
+
+            border-radius: 10px;
+
+            display: block;
+
+        }
+
+
+        .result-image-card p {
+
+            color: #183b6b;
+
+            font-weight: bold;
+
+        }
+
+
+        .image-counts {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 6px;
+
+            margin-top: 12px;
+
+            text-align: left;
+
+            font-size: 13px;
+
+        }
+
+
+        .image-counts div {
+
+            background: #f5f8fc;
+
+            padding: 7px;
+
+            border-radius: 6px;
+
+        }
+
+
+        #continueButton {
+
+            display: none;
+
+            margin-top: 30px;
+
+            padding: 14px 30px;
+
+            background: #183b6b;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        #continueButton:hover {
+
+            opacity: 0.9;
+
+        }
+
+
+        .error-box {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background: #fff1f1;
+
+            border-radius: 10px;
+
+            color: #9b2226;
+
+            text-align: left;
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
+
 <header>
+
     <nav class="navbar">
 
         <div class="logo">
-            <img src="images/logo.png" alt="MicroCount Logo">
-            <span>MicroCount <strong>STEVision</strong></span>
+
+            <img
+                src="images/logo.png"
+                alt="MicroCount Logo">
+
+            <h2>
+                MicroCount STEVision
+            </h2>
+
         </div>
 
+
         <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="sample.html">Sample</a></li>
-            <li><a href="analysis.html" class="active">Analysis</a></li>
-            <li><a href="results.html">Results</a></li>
-            <li><a href="about.html">About</a></li>
+
+            <li>
+                <a href="index.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="sample.html">
+                    Sample
+                </a>
+            </li>
+
+            <li>
+                <a href="upload.html">
+                    Upload
+                </a>
+            </li>
+
+            <li>
+                <a
+                    href="analysis.html"
+                    class="active">
+
+                    Analysis
+
+                </a>
+            </li>
+
+            <li>
+                <a href="results.html">
+                    Results
+                </a>
+            </li>
+
+            <li>
+                <a href="about.html">
+                    About
+                </a>
+            </li>
+
         </ul>
 
     </nav>
+
 </header>
 
 
-<section class="analysis-page">
-
-    <h1>Fiji/ImageJ Analysis</h1>
-
-    <p>
-        Upload the CSV Results Table exported from Fiji/ImageJ
-        after performing particle analysis on your microscope images.
-    </p>
+<main class="analysis-page">
 
 
-    <div class="analysis-card">
+    <div class="analysis-container">
 
-        <h2>Step 1 — Fiji/ImageJ</h2>
 
-        <p>
-            Open your microscope image in Fiji/ImageJ and use
-            <strong>Analyze → Analyze Particles</strong>.
-            Export the Results table as a CSV file.
+        <h1 id="analysisTitle">
+
+            Analyzing Microscope Images...
+
+        </h1>
+
+
+        <p id="analysisMessage">
+
+            Preparing image analysis...
+
         </p>
 
 
-        <h2>Step 2 — Upload Fiji/ImageJ Results</h2>
+        <div class="progress-bar">
 
-        <input
-            type="file"
-            id="csvInput"
-            accept=".csv,text/csv"
-        >
-
-        <br><br>
-
-        <button id="analyzeBtn" class="analyze-btn">
-            Analyze Fiji/ImageJ CSV →
-        </button>
-
-
-        <div id="statusBox" style="margin-top:25px;">
-
-            <h2 id="statusText">
-                Waiting for Fiji/ImageJ CSV...
-            </h2>
-
-            <div class="progress">
-
-                <div
-                    class="progress-bar"
-                    id="progressBar"
-                    style="width:0%;">
-                </div>
-
+            <div
+                class="progress-fill"
+                id="progressFill">
             </div>
-
-            <p id="percentText">0%</p>
 
         </div>
 
+
+        <div id="progressText">
+
+            0%
+
+        </div>
+
+
+        <div id="analysisDetails">
+        </div>
+
+
+        <div id="imagePreview">
+        </div>
+
+
+        <button
+            id="continueButton">
+
+            View Results
+
+        </button>
+
+
     </div>
 
-</section>
+</main>
 
 
-<script src="analysis.js"></script>
+<script>
+
+
+// =====================================================
+// MICROCOUNT STEVISION
+// BROWSER IMAGE ANALYSIS
+//
+// SCREENING / PROTOTYPE ALGORITHM
+//
+// Detected regions are SUSPECTED PARTICLES.
+// They are NOT laboratory-confirmed microplastics.
+// =====================================================
+
+
+
+// =====================================================
+// ELEMENTS
+// =====================================================
+
+
+const progressFill =
+    document.getElementById(
+        "progressFill"
+    );
+
+
+const progressText =
+    document.getElementById(
+        "progressText"
+    );
+
+
+const analysisMessage =
+    document.getElementById(
+        "analysisMessage"
+    );
+
+
+const analysisDetails =
+    document.getElementById(
+        "analysisDetails"
+    );
+
+
+const analysisTitle =
+    document.getElementById(
+        "analysisTitle"
+    );
+
+
+const imagePreview =
+    document.getElementById(
+        "imagePreview"
+    );
+
+
+const continueButton =
+    document.getElementById(
+        "continueButton"
+    );
+
+
+
+// =====================================================
+// PROGRESS
+// =====================================================
+
+
+function updateProgress(
+    percent,
+    message
+) {
+
+    progressFill.style.width =
+        percent + "%";
+
+
+    progressText.textContent =
+        Math.round(percent) + "%";
+
+
+    if (message) {
+
+        analysisMessage.textContent =
+            message;
+
+    }
+
+}
+
+
+
+// =====================================================
+// GET UPLOADED IMAGES
+// =====================================================
+
+
+const storedImages =
+    localStorage.getItem(
+        "uploadedImages"
+    );
+
+
+if (!storedImages) {
+
+    analysisTitle.textContent =
+        "No Images Found";
+
+
+    analysisMessage.textContent =
+        "No microscope images were found.";
+
+
+    analysisDetails.textContent =
+        "Please return to Upload and select your microscope images.";
+
+    throw new Error(
+        "No uploadedImages found."
+    );
+
+}
+
+
+
+let images;
+
+
+try {
+
+    images =
+        JSON.parse(
+            storedImages
+        );
+
+}
+catch (error) {
+
+    analysisTitle.textContent =
+        "Images Could Not Be Read";
+
+
+    analysisMessage.textContent =
+        "The uploaded images could not be read.";
+
+
+    analysisDetails.textContent =
+        "Please return to Upload and select the images again.";
+
+    throw error;
+
+}
+
+
+
+if (
+    !Array.isArray(images) ||
+    images.length === 0
+) {
+
+    throw new Error(
+        "uploadedImages is empty."
+    );
+
+}
+
+
+
+const imageCount =
+    images.length;
+
+
+
+// =====================================================
+// CLEAR OLD RESULTS
+// =====================================================
+
+
+localStorage.removeItem(
+    "perImageResults"
+);
+
+
+localStorage.removeItem(
+    "particles"
+);
+
+
+localStorage.removeItem(
+    "average"
+);
+
+
+localStorage.removeItem(
+    "totalArea"
+);
+
+
+localStorage.removeItem(
+    "averageArea"
+);
+
+
+localStorage.removeItem(
+    "riskLevel"
+);
+
+
+localStorage.removeItem(
+    "riskText"
+);
+
+
+localStorage.removeItem(
+    "recommendations"
+);
+
+
+localStorage.removeItem(
+    "fragment"
+);
+
+
+localStorage.removeItem(
+    "fiber"
+);
+
+
+localStorage.removeItem(
+    "film"
+);
+
+
+localStorage.removeItem(
+    "foam"
+);
+
+
+localStorage.removeItem(
+    "pellet"
+);
+
+
+localStorage.removeItem(
+    "line"
+);
+
+
+
+// =====================================================
+// TOTALS
+// =====================================================
+
+
+let totalParticles = 0;
+
+let totalArea = 0;
+
+
+let fragments = 0;
+
+let fibers = 0;
+
+let films = 0;
+
+let foams = 0;
+
+let pellets = 0;
+
+let lines = 0;
+
+
+
+// =====================================================
+// PER IMAGE RESULTS
+// =====================================================
+
+
+let perImageResults = [];
+
+
+
+// =====================================================
+// LOAD IMAGE
+// =====================================================
+
+
+function loadImage(
+    source
+) {
+
+    return new Promise(
+        (
+            resolve,
+            reject
+        ) => {
+
+            const img =
+                new Image();
+
+
+            img.onload =
+                function() {
+
+                    resolve(img);
+
+                };
+
+
+            img.onerror =
+                function() {
+
+                    reject(
+                        new Error(
+                            "Image could not be loaded."
+                        )
+                    );
+
+                };
+
+
+            img.src =
+                source;
+
+        }
+    );
+
+}
+
+
+
+// =====================================================
+// ANALYZE IMAGE
+// =====================================================
+
+
+function analyzeImage(
+    img
+) {
+
+    return new Promise(
+        resolve => {
+
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            const maxSize =
+                1000;
+
+
+            let width =
+                img.naturalWidth;
+
+
+            let height =
+                img.naturalHeight;
+
+
+            if (
+                !width ||
+                !height
+            ) {
+
+                resolve({
+
+                    particles: 0,
+
+                    area: 0,
+
+                    image: null,
+
+                    fragments: 0,
+
+                    fibers: 0,
+
+                    films: 0,
+
+                    foams: 0,
+
+                    pellets: 0,
+
+                    lines: 0
+
+                });
+
+                return;
+
+            }
+
+
+
+            // =================================================
+            // RESIZE IMAGE
+            // =================================================
+
+
+            if (
+                width > maxSize
+            ) {
+
+                const scale =
+                    maxSize /
+                    width;
+
+
+                width *=
+                    scale;
+
+
+                height *=
+                    scale;
+
+            }
+
+
+            if (
+                height > maxSize
+            ) {
+
+                const scale =
+                    maxSize /
+                    height;
+
+
+                height *=
+                    scale;
+
+
+                width *=
+                    scale;
+
+            }
+
+
+
+            canvas.width =
+                Math.max(
+                    1,
+                    Math.floor(width)
+                );
+
+
+            canvas.height =
+                Math.max(
+                    1,
+                    Math.floor(height)
+                );
+
+
+
+            const ctx =
+                canvas.getContext(
+                    "2d",
+                    {
+                        willReadFrequently:
+                            true
+                    }
+                );
+
+
+            if (!ctx) {
+
+                throw new Error(
+                    "Browser could not create the analysis canvas."
+                );
+
+            }
+
+
+
+            // =================================================
+            // DRAW IMAGE
+            // =================================================
+
+
+            ctx.drawImage(
+                img,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+
+            const imageData =
+                ctx.getImageData(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+
+            const data =
+                imageData.data;
+
+
+            const w =
+                canvas.width;
+
+
+            const h =
+                canvas.height;
+
+
+
+            // =================================================
+            // CREATE MASK
+            // =================================================
+
+
+            const mask =
+                new Uint8Array(
+                    w * h
+                );
+
+
+            for (
+                let i = 0, p = 0;
+                i < data.length;
+                i += 4, p++
+            ) {
+
+                const r =
+                    data[i];
+
+
+                const g =
+                    data[i + 1];
+
+
+                const b =
+                    data[i + 2];
+
+
+                const brightness =
+                    (
+                        r +
+                        g +
+                        b
+                    ) / 3;
+
+
+                if (
+                    brightness < 100
+                ) {
+
+                    mask[p] = 1;
+
+                }
+
+            }
+
+
+
+            // =================================================
+            // CONNECTED COMPONENTS
+            // =================================================
+
+
+            const visited =
+                new Uint8Array(
+                    w * h
+                );
+
+
+            const components =
+                [];
+
+
+            const queueX =
+                new Int32Array(
+                    w * h
+                );
+
+
+            const queueY =
+                new Int32Array(
+                    w * h
+                );
+
+
+            function index(
+                x,
+                y
+            ) {
+
+                return (
+                    y * w + x
+                );
+
+            }
+
+
+
+            // =================================================
+            // FIND PARTICLES
+            // =================================================
+
+
+            for (
+                let y = 1;
+                y < h - 1;
+                y++
+            ) {
+
+                for (
+                    let x = 1;
+                    x < w - 1;
+                    x++
+                ) {
+
+
+                    const start =
+                        index(
+                            x,
+                            y
+                        );
+
+
+                    if (
+                        !mask[start] ||
+                        visited[start]
+                    ) {
+
+                        continue;
+
+                    }
+
+
+                    let head =
+                        0;
+
+
+                    let tail =
+                        0;
+
+
+                    queueX[tail] =
+                        x;
+
+
+                    queueY[tail] =
+                        y;
+
+
+                    tail++;
+
+
+                    visited[start] =
+                        1;
+
+
+                    let area =
+                        0;
+
+
+                    let minX =
+                        x;
+
+
+                    let maxX =
+                        x;
+
+
+                    let minY =
+                        y;
+
+
+                    let maxY =
+                        y;
+
+
+
+                    while (
+                        head < tail
+                    ) {
+
+
+                        const cx =
+                            queueX[head];
+
+
+                        const cy =
+                            queueY[head];
+
+
+                        head++;
+
+
+                        area++;
+
+
+                        minX =
+                            Math.min(
+                                minX,
+                                cx
+                            );
+
+
+                        maxX =
+                            Math.max(
+                                maxX,
+                                cx
+                            );
+
+
+                        minY =
+                            Math.min(
+                                minY,
+                                cy
+                            );
+
+
+                        maxY =
+                            Math.max(
+                                maxY,
+                                cy
+                            );
+
+
+
+                        const neighbors = [
+
+                            [cx + 1, cy],
+
+                            [cx - 1, cy],
+
+                            [cx, cy + 1],
+
+                            [cx, cy - 1]
+
+                        ];
+
+
+
+                        for (
+                            const [
+                                nx,
+                                ny
+                            ]
+                            of neighbors
+                        ) {
+
+
+                            if (
+                                nx < 1 ||
+                                nx >= w - 1 ||
+                                ny < 1 ||
+                                ny >= h - 1
+                            ) {
+
+                                continue;
+
+                            }
+
+
+                            const ni =
+                                index(
+                                    nx,
+                                    ny
+                                );
+
+
+                            if (
+                                mask[ni] &&
+                                !visited[ni]
+                            ) {
+
+                                visited[ni] =
+                                    1;
+
+
+                                queueX[tail] =
+                                    nx;
+
+
+                                queueY[tail] =
+                                    ny;
+
+
+                                tail++;
+
+                            }
+
+                        }
+
+                    }
+
+
+
+                    // =================================================
+                    // FILTER
+                    // =================================================
+
+
+                    if (
+                        area < 20
+                    ) {
+
+                        continue;
+
+                    }
+
+
+                    if (
+                        area >
+                        w *
+                        h *
+                        0.15
+                    ) {
+
+                        continue;
+
+                    }
+
+
+
+                    components.push({
+
+                        area:
+                            area,
+
+                        minX:
+                            minX,
+
+                        maxX:
+                            maxX,
+
+                        minY:
+                            minY,
+
+                        maxY:
+                            maxY,
+
+                        width:
+                            maxX -
+                            minX +
+                            1,
+
+                        height:
+                            maxY -
+                            minY +
+                            1
+
+                    });
+
+                }
+
+            }
+
+
+
+            // =================================================
+            // IMAGE COUNTS
+            // =================================================
+
+
+            let imageFragments =
+                0;
+
+
+            let imageFibers =
+                0;
+
+
+            let imageFilms =
+                0;
+
+
+            let imageFoams =
+                0;
+
+
+            let imagePellets =
+                0;
+
+
+            let imageLines =
+                0;
+
+
+            let imageParticles =
+                0;
+
+
+            let imageArea =
+                0;
+
+
+
+            // =================================================
+            // CLASSIFY
+            // =================================================
+
+
+            components.forEach(
+                component => {
+
+
+                    const width =
+                        component.width;
+
+
+                    const height =
+                        component.height;
+
+
+                    const area =
+                        component.area;
+
+
+                    const longSide =
+                        Math.max(
+                            width,
+                            height
+                        );
+
+
+                    const shortSide =
+                        Math.max(
+                            1,
+                            Math.min(
+                                width,
+                                height
+                            )
+                        );
+
+
+                    const aspectRatio =
+                        longSide /
+                        shortSide;
+
+
+                    imageParticles++;
+
+
+                    imageArea +=
+                        area;
+
+
+
+                    // LINES / FILAMENTS
+
+                    if (
+                        aspectRatio >= 8
+                    ) {
+
+                        lines++;
+
+                        imageLines++;
+
+                    }
+
+
+                    // FIBERS
+
+                    else if (
+                        aspectRatio >= 3
+                    ) {
+
+                        fibers++;
+
+                        imageFibers++;
+
+                    }
+
+
+                    // PELLETS
+
+                    else if (
+                        aspectRatio <= 1.4 &&
+                        area >= 500
+                    ) {
+
+                        pellets++;
+
+                        imagePellets++;
+
+                    }
+
+
+                    // FILMS
+
+                    else if (
+                        area >= 1000 &&
+                        aspectRatio <= 2.5
+                    ) {
+
+                        films++;
+
+                        imageFilms++;
+
+                    }
+
+
+                    // FOAMS
+
+                    else if (
+                        area >= 700
+                    ) {
+
+                        foams++;
+
+                        imageFoams++;
+
+                    }
+
+
+                    // FRAGMENTS
+
+                    else {
+
+                        fragments++;
+
+                        imageFragments++;
+
+                    }
+
+                }
+            );
+
+
+
+            // =================================================
+            // DRAW CIRCLES
+            // =================================================
+
+
+            components.forEach(
+                (
+                    component,
+                    number
+                ) => {
+
+
+                    const centerX =
+                        (
+                            component.minX +
+                            component.maxX
+                        ) / 2;
+
+
+                    const centerY =
+                        (
+                            component.minY +
+                            component.maxY
+                        ) / 2;
+
+
+                    const radius =
+                        Math.max(
+                            component.width,
+                            component.height
+                        ) / 2 + 8;
+
+
+
+                    ctx.beginPath();
+
+
+                    ctx.arc(
+                        centerX,
+                        centerY,
+                        radius,
+                        0,
+                        Math.PI * 2
+                    );
+
+
+                    ctx.lineWidth =
+                        Math.max(
+                            2,
+                            w / 400
+                        );
+
+
+                    ctx.strokeStyle =
+                        "#ff0000";
+
+
+                    ctx.stroke();
+
+
+
+                    ctx.font =
+                        "bold 16px Arial";
+
+
+                    ctx.fillStyle =
+                        "#ff0000";
+
+
+                    ctx.fillText(
+                        String(
+                            number + 1
+                        ),
+                        centerX,
+                        centerY
+                    );
+
+                }
+            );
+
+
+
+            // =================================================
+            // ANNOTATED IMAGE
+            // =================================================
+
+
+            let annotatedImage =
+                null;
+
+
+            try {
+
+                annotatedImage =
+                    canvas.toDataURL(
+                        "image/jpeg",
+                        0.75
+                    );
+
+            }
+            catch (error) {
+
+                console.warn(
+                    "Could not create annotated image.",
+                    error
+                );
+
+            }
+
+
+
+            // =================================================
+            // RETURN
+            // =================================================
+
+
+            resolve({
+
+                particles:
+                    imageParticles,
+
+                area:
+                    imageArea,
+
+                image:
+                    annotatedImage,
+
+                fragments:
+                    imageFragments,
+
+                fibers:
+                    imageFibers,
+
+                films:
+                    imageFilms,
+
+                foams:
+                    imageFoams,
+
+                pellets:
+                    imagePellets,
+
+                lines:
+                    imageLines
+
+            });
+
+        }
+    );
+
+}
+
+
+
+// =====================================================
+// RISK
+// =====================================================
+
+
+function calculateRisk(
+    count
+) {
+
+
+    if (
+        count === 0
+    ) {
+
+        return {
+
+            level:
+                "LEVEL 1",
+
+            text:
+                "No suspected particles detected."
+
+        };
+
+    }
+
+
+    if (
+        count <= 10
+    ) {
+
+        return {
+
+            level:
+                "LEVEL 1",
+
+            text:
+                "Low detected particle count."
+
+        };
+
+    }
+
+
+    if (
+        count <= 30
+    ) {
+
+        return {
+
+            level:
+                "LEVEL 2",
+
+            text:
+                "Moderate detected particle count."
+
+        };
+
+    }
+
+
+    if (
+        count <= 60
+    ) {
+
+        return {
+
+            level:
+                "LEVEL 3",
+
+            text:
+                "High detected particle count."
+
+        };
+
+    }
+
+
+    return {
+
+        level:
+            "LEVEL 4",
+
+        text:
+            "Very high detected particle count."
+
+    };
+
+}
+
+
+
+// =====================================================
+// RECOMMENDATIONS
+// =====================================================
+
+
+function generateRecommendation(
+    risk,
+    waterCondition,
+    days
+) {
+
+
+    const recommendations =
+        [];
+
+
+    if (
+        risk.level === "LEVEL 3" ||
+        risk.level === "LEVEL 4"
+    ) {
+
+        recommendations.push(
+            "The sample showed a high detected particle count. Consider additional sampling and laboratory verification before drawing conclusions about the water source."
+        );
+
+    }
+
+    else if (
+        risk.level === "LEVEL 2"
+    ) {
+
+        recommendations.push(
+            "The sample showed a moderate detected particle count. Review the water source, container condition, storage practices, and handling procedures."
+        );
+
+    }
+
+    else {
+
+        recommendations.push(
+            "The sample showed a relatively low detected particle count. Continue proper water storage, handling, and regular monitoring."
+        );
+
+    }
+
+
+    if (
+        waterCondition ===
+        "Direct Sunlight"
+    ) {
+
+        recommendations.push(
+            "The water was reported to be exposed to direct sunlight. Store the water container away from direct sunlight."
+        );
+
+    }
+
+
+    if (
+        Number(days) >= 7
+    ) {
+
+        recommendations.push(
+            "The sample was stored for 7 or more days. Consider comparing it with freshly collected samples."
+        );
+
+    }
+
+
+    recommendations.push(
+        "Keep water containers clean, covered, and protected from unnecessary environmental exposure."
+    );
+
+
+    return recommendations;
+
+}
+
+
+
+// =====================================================
+// DISPLAY ANALYZED IMAGE
+// =====================================================
+
+
+function displayAnnotatedImage(
+    image,
+    number,
+    result
+) {
+
+
+    if (!image) {
+
+        return;
+
+    }
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "result-image-card";
+
+
+    const img =
+        document.createElement(
+            "img"
+        );
+
+
+    img.src =
+        image;
+
+
+    img.alt =
+        `Analyzed microscope image ${number}`;
+
+
+    const title =
+        document.createElement(
+            "p"
+        );
+
+
+    title.textContent =
+        `Microscope Image ${number} — ${result.particles} suspected particle(s)`;
+
+
+    card.appendChild(
+        img
+    );
+
+
+    card.appendChild(
+        title
+    );
+
+
+    const counts =
+        document.createElement(
+            "div"
+        );
+
+
+    counts.className =
+        "image-counts";
+
+
+    counts.innerHTML = `
+
+        <div>
+            Fragments:
+            <strong>${result.fragments}</strong>
+        </div>
+
+        <div>
+            Fibers:
+            <strong>${result.fibers}</strong>
+        </div>
+
+        <div>
+            Films:
+            <strong>${result.films}</strong>
+        </div>
+
+        <div>
+            Foams:
+            <strong>${result.foams}</strong>
+        </div>
+
+        <div>
+            Pellets:
+            <strong>${result.pellets}</strong>
+        </div>
+
+        <div>
+            Lines / Filaments:
+            <strong>${result.lines}</strong>
+        </div>
+
+    `;
+
+
+    card.appendChild(
+        counts
+    );
+
+
+    imagePreview.appendChild(
+        card
+    );
+
+}
+
+
+
+// =====================================================
+// MAIN ANALYSIS
+// =====================================================
+
+
+async function runAnalysis() {
+
+
+    try {
+
+
+        updateProgress(
+            5,
+            "Loading microscope images..."
+        );
+
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    300
+                )
+        );
+
+
+
+        // =================================================
+        // PROCESS EACH IMAGE
+        // =================================================
+
+
+        for (
+            let i = 0;
+            i < images.length;
+            i++
+        ) {
+
+
+            const percent =
+                10 +
+                (
+                    i /
+                    imageCount
+                ) *
+                70;
+
+
+            updateProgress(
+                percent,
+                `Analyzing microscope image ${i + 1} of ${imageCount}...`
+            );
+
+
+            analysisDetails.textContent =
+                "Detecting possible particle regions...";
+
+
+            const img =
+                await loadImage(
+                    images[i]
+                );
+
+
+            const result =
+                await analyzeImage(
+                    img
+                );
+
+
+
+            // =================================================
+            // CREATE PER IMAGE RECORD
+            // =================================================
+
+
+            const imageResult = {
+
+                imageNumber:
+                    i + 1,
+
+                particles:
+                    result.particles,
+
+                area:
+                    result.area,
+
+                fragments:
+                    result.fragments,
+
+                fibers:
+                    result.fibers,
+
+                films:
+                    result.films,
+
+                foams:
+                    result.foams,
+
+                pellets:
+                    result.pellets,
+
+                lines:
+                    result.lines
+
+            };
+
+
+
+            // =================================================
+            // ADD TO ARRAY
+            // =================================================
+
+
+            perImageResults.push(
+                imageResult
+            );
+
+
+
+            // =================================================
+            // SAVE IMMEDIATELY
+            //
+            // THIS IS THE IMPORTANT FIX
+            // =================================================
+
+
+            localStorage.setItem(
+                "perImageResults",
+                JSON.stringify(
+                    perImageResults
+                )
+            );
+
+
+            console.log(
+                "Saved image result:",
+                imageResult
+            );
+
+
+            console.log(
+                "All per-image results:",
+                perImageResults
+            );
+
+
+
+            // =================================================
+            // TOTALS
+            // =================================================
+
+
+            totalParticles +=
+                result.particles;
+
+
+            totalArea +=
+                result.area;
+
+
+            fragments +=
+                result.fragments;
+
+
+            fibers +=
+                result.fibers;
+
+
+            films +=
+                result.films;
+
+
+            foams +=
+                result.foams;
+
+
+            pellets +=
+                result.pellets;
+
+
+            lines +=
+                result.lines;
+
+
+
+            // =================================================
+            // SHOW IMAGE
+            // =================================================
+
+
+            displayAnnotatedImage(
+                result.image,
+                i + 1,
+                result
+            );
+
+
+
+            // =================================================
+            // SAVE CURRENT TOTALS
+            // =================================================
+
+
+            localStorage.setItem(
+                "particles",
+                totalParticles
+            );
+
+
+            localStorage.setItem(
+                "totalArea",
+                totalArea.toFixed(2)
+            );
+
+
+            localStorage.setItem(
+                "fragment",
+                fragments
+            );
+
+
+            localStorage.setItem(
+                "fiber",
+                fibers
+            );
+
+
+            localStorage.setItem(
+                "film",
+                films
+            );
+
+
+            localStorage.setItem(
+                "foam",
+                foams
+            );
+
+
+            localStorage.setItem(
+                "pellet",
+                pellets
+            );
+
+
+            localStorage.setItem(
+                "line",
+                lines
+            );
+
+
+
+            await new Promise(
+                resolve =>
+                    setTimeout(
+                        resolve,
+                        100
+                    )
+            );
+
+        }
+
+
+
+        // =================================================
+        // STATISTICS
+        // =================================================
+
+
+        updateProgress(
+            85,
+            "Calculating particle statistics..."
+        );
+
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    300
+                )
+        );
+
+
+        const average =
+            imageCount > 0
+                ? totalParticles /
+                  imageCount
+                : 0;
+
+
+        const averageArea =
+            totalParticles > 0
+                ? totalArea /
+                  totalParticles
+                : 0;
+
+
+        const risk =
+            calculateRisk(
+                totalParticles
+            );
+
+
+
+        // =================================================
+        // SAMPLE DATA
+        // =================================================
+
+
+        const waterCondition =
+            localStorage.getItem(
+                "waterCondition"
+            ) || "";
+
+
+        const daysStored =
+            localStorage.getItem(
+                "daysStored"
+            ) || "0";
+
+
+
+        // =================================================
+        // RECOMMENDATIONS
+        // =================================================
+
+
+        const recommendations =
+            generateRecommendation(
+                risk,
+                waterCondition,
+                daysStored
+            );
+
+
+
+        // =================================================
+        // SAVE FINAL RESULTS
+        // =================================================
+
+
+        localStorage.setItem(
+            "particles",
+            totalParticles
+        );
+
+
+        localStorage.setItem(
+            "average",
+            average.toFixed(2)
+        );
+
+
+        localStorage.setItem(
+            "totalArea",
+            totalArea.toFixed(2)
+        );
+
+
+        localStorage.setItem(
+            "averageArea",
+            averageArea.toFixed(2)
+        );
+
+
+        localStorage.setItem(
+            "riskLevel",
+            risk.level
+        );
+
+
+        localStorage.setItem(
+            "riskText",
+            risk.text
+        );
+
+
+        localStorage.setItem(
+            "fragment",
+            fragments
+        );
+
+
+        localStorage.setItem(
+            "fiber",
+            fibers
+        );
+
+
+        localStorage.setItem(
+            "film",
+            films
+        );
+
+
+        localStorage.setItem(
+            "foam",
+            foams
+        );
+
+
+        localStorage.setItem(
+            "pellet",
+            pellets
+        );
+
+
+        localStorage.setItem(
+            "line",
+            lines
+        );
+
+
+        localStorage.setItem(
+            "recommendations",
+            JSON.stringify(
+                recommendations
+            )
+        );
+
+
+
+        // =================================================
+        // FINAL PER IMAGE SAVE
+        // =================================================
+
+
+        localStorage.setItem(
+            "perImageResults",
+            JSON.stringify(
+                perImageResults
+            )
+        );
+
+
+
+        // =================================================
+        // SAVE FIRST ORIGINAL IMAGE ONLY
+        // =================================================
+
+
+        try {
+
+            localStorage.setItem(
+                "uploadedImage",
+                images[0]
+            );
+
+        }
+        catch (error) {
+
+            console.warn(
+                "Could not save first image.",
+                error
+            );
+
+        }
+
+
+
+        // =================================================
+        // VERIFY DATA
+        // =================================================
+
+
+        const verification =
+            localStorage.getItem(
+                "perImageResults"
+            );
+
+
+        console.log(
+            "FINAL PER-IMAGE DATA:",
+            verification
+        );
+
+
+        if (!verification) {
+
+            throw new Error(
+                "Per-image results could not be saved."
+            );
+
+        }
+
+
+
+        // =================================================
+        // COMPLETE
+        // =================================================
+
+
+        updateProgress(
+            100,
+            "Analysis completed successfully."
+        );
+
+
+        analysisTitle.textContent =
+            "Analysis Complete";
+
+
+        analysisDetails.textContent =
+            `${totalParticles} suspected particle region(s) detected across ${imageCount} microscope image(s).`;
+
+
+        continueButton.style.display =
+            "inline-block";
+
+    }
+
+
+    catch (error) {
+
+
+        console.error(
+            "MICROCOUNT ANALYSIS ERROR:",
+            error
+        );
+
+
+        analysisTitle.textContent =
+            "Analysis could not be completed.";
+
+
+        analysisMessage.textContent =
+            "There was a problem processing the microscope images.";
+
+
+        analysisDetails.innerHTML = `
+
+            <div class="error-box">
+
+                <strong>
+                    Error:
+                </strong>
+
+                ${error.message || error}
+
+                <br><br>
+
+                <small>
+
+                    Please return to Upload,
+                    select the microscope images again,
+                    and try again.
+
+                </small>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+// =====================================================
+// VIEW RESULTS
+// =====================================================
+
+
+continueButton.addEventListener(
+    "click",
+    function() {
+
+        window.location.href =
+            "results.html";
+
+    }
+);
+
+
+
+// =====================================================
+// START
+// =====================================================
+
+
+runAnalysis();
+
+
+</script>
+
 
 </body>
+
 </html>

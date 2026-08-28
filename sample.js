@@ -1,152 +1,373 @@
-// ==========================
+// ======================================
 // MicroCount STEVision
 // Sample Information
-// ==========================
+// ======================================
+
+
+// ======================================
+// ELEMENTS
+// ======================================
 
 const sampleForm = document.getElementById("sampleForm");
 
-// Field save buttons
-const schoolNameBtn = document.getElementById("schoolNameBtn");
-const sectionBtn = document.getElementById("sectionBtn");
-const sourceBtn = document.getElementById("sourceBtn");
-const waterConditionBtn = document.getElementById("waterConditionBtn");
-const populationBtn = document.getElementById("populationBtn");
-const numImagesBtn = document.getElementById("numImagesBtn");
-const magnificationBtn = document.getElementById("magnificationBtn");
+const schoolName = document.getElementById("schoolName");
+const section = document.getElementById("section");
 
-// Handle School Name save
-if (schoolNameBtn) {
-    schoolNameBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const value = document.getElementById("schoolName").value.trim();
-        localStorage.setItem("schoolName", value);
-        document.getElementById("schoolNameStatus").textContent = value ? "✓ Saved" : "";
-    });
-}
+const source = document.getElementById("source");
+const otherSource = document.getElementById("otherSource");
+const otherSourceGroup = document.getElementById("otherSourceGroup");
 
-// Handle Section save
-if (sectionBtn) {
-    sectionBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const value = document.getElementById("section").value.trim();
-        localStorage.setItem("section", value);
-        document.getElementById("sectionStatus").textContent = value ? "✓ Saved" : "";
-    });
-}
+const waterCondition =
+    document.getElementById("waterCondition");
 
-// Handle Water Source save
-if (sourceBtn) {
-    sourceBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const value = document.getElementById("source").value;
-        const otherValue = document.getElementById("otherSource").value.trim();
-        
-        if (value === "Other" && otherValue) {
-            localStorage.setItem("source", otherValue);
-            document.getElementById("sourceStatus").textContent = "✓ Saved";
-        } else if (value && value !== "Other") {
-            localStorage.setItem("source", value);
-            document.getElementById("sourceStatus").textContent = "✓ Saved";
-        }
-    });
-}
+const daysStored =
+    document.getElementById("daysStored");
 
-// Handle Water Condition save
-if (waterConditionBtn) {
-    waterConditionBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const value = document.getElementById("waterCondition").value;
-        if (value) {
-            localStorage.setItem("waterCondition", value);
-            document.getElementById("waterConditionStatus").textContent = "✓ Saved";
-        }
-    });
-}
+const numImages =
+    document.getElementById("numImages");
 
-// Handle Population save
-if (populationBtn) {
-    populationBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const value = document.getElementById("population").value.trim();
-        localStorage.setItem("population", value);
-        document.getElementById("populationStatus").textContent = value ? "✓ Saved" : "";
-    });
-}
+const eyepiece =
+    document.getElementById("eyepiece");
 
-// Handle Number of Images save
-if (numImagesBtn) {
-    numImagesBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const value = document.getElementById("numImages").value;
-        if (value && value >= 1 && value <= 20) {
-            localStorage.setItem("numImages", value);
-            document.getElementById("numImagesStatus").textContent = "✓ Saved";
-        } else {
-            alert("Please enter a number between 1 and 20.");
-        }
-    });
-}
+const objective =
+    document.getElementById("objective");
 
-// Handle Magnification save
-if (magnificationBtn) {
-    magnificationBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const eyepiece = document.getElementById("eyepiece").value;
-        const objective = document.getElementById("objective").value;
-        
-        if (eyepiece && objective) {
-            const totalMagnification = Number(eyepiece) * Number(objective);
-            localStorage.setItem("eyepiece", eyepiece);
-            localStorage.setItem("objective", objective);
-            localStorage.setItem("totalMagnification", totalMagnification);
-            document.getElementById("magnificationStatus").textContent = "✓ Saved";
-        }
-    });
-}
+const totalMagnification =
+    document.getElementById("totalMagnification");
 
-// Handle Source field display for "Other"
-const sourceSelect = document.getElementById("source");
-const otherSourceInput = document.getElementById("otherSource");
+const dataPrivacyConsent =
+    document.getElementById("dataPrivacyConsent");
 
-if (sourceSelect && otherSourceInput) {
-    sourceSelect.addEventListener("change", () => {
-        if (sourceSelect.value === "Other") {
-            otherSourceInput.style.display = "block";
-        } else {
-            otherSourceInput.style.display = "none";
-        }
-    });
-}
+const researchParticipationConsent =
+    document.getElementById("researchParticipationConsent");
 
-// Update total magnification display
-const eyepieceSelect = document.getElementById("eyepiece");
-const objectiveSelect = document.getElementById("objective");
-const totalMagnificationDisplay = document.getElementById("totalMagnification");
 
-if (eyepieceSelect && objectiveSelect && totalMagnificationDisplay) {
-    const updateMagnification = () => {
-        if (eyepieceSelect.value && objectiveSelect.value) {
-            const total = Number(eyepieceSelect.value) * Number(objectiveSelect.value);
-            totalMagnificationDisplay.textContent = total + "x";
-        } else {
-            totalMagnificationDisplay.textContent = "—";
-        }
-    };
-    
-    eyepieceSelect.addEventListener("change", updateMagnification);
-    objectiveSelect.addEventListener("change", updateMagnification);
-}
+// ======================================
+// SAVE SAMPLE INFORMATION
+// ======================================
 
-// Handle form submission
-sampleForm.addEventListener("submit", function (event) {
-    // All fields are optional now, so we just save the numImages and proceed
-    const numImages = document.getElementById("numImages").value || "10";
-    
-    localStorage.setItem("numImages", numImages);
-    localStorage.setItem("researchParticipationConsent", 
-        document.getElementById("researchParticipationConsent").checked ? "true" : "false"
+function saveSampleData() {
+
+    localStorage.setItem(
+        "schoolName",
+        schoolName.value
     );
 
-    // Go to upload page
-    window.location.href = "upload.html";
+    localStorage.setItem(
+        "section",
+        section.value
+    );
+
+    localStorage.setItem(
+        "source",
+        source.value
+    );
+
+    localStorage.setItem(
+        "otherSource",
+        otherSource.value
+    );
+
+    localStorage.setItem(
+        "waterCondition",
+        waterCondition.value
+    );
+
+    localStorage.setItem(
+        "daysStored",
+        daysStored.value
+    );
+
+    localStorage.setItem(
+        "numImages",
+        numImages.value
+    );
+
+    localStorage.setItem(
+        "eyepiece",
+        eyepiece.value
+    );
+
+    localStorage.setItem(
+        "objective",
+        objective.value
+    );
+
+    localStorage.setItem(
+        "totalMagnification",
+        totalMagnification.textContent
+    );
+
+    localStorage.setItem(
+        "dataPrivacyConsent",
+        dataPrivacyConsent.checked
+    );
+
+    localStorage.setItem(
+        "researchParticipationConsent",
+        researchParticipationConsent.checked
+    );
+
+}
+
+
+// ======================================
+// LOAD SAVED INFORMATION
+// ======================================
+
+function loadSampleData() {
+
+    schoolName.value =
+        localStorage.getItem("schoolName") || "";
+
+    section.value =
+        localStorage.getItem("section") || "";
+
+    source.value =
+        localStorage.getItem("source") || "";
+
+    otherSource.value =
+        localStorage.getItem("otherSource") || "";
+
+    waterCondition.value =
+        localStorage.getItem("waterCondition") || "";
+
+    daysStored.value =
+        localStorage.getItem("daysStored") || "";
+
+    numImages.value =
+        localStorage.getItem("numImages") || "";
+
+    eyepiece.value =
+        localStorage.getItem("eyepiece") || "";
+
+    objective.value =
+        localStorage.getItem("objective") || "";
+
+    dataPrivacyConsent.checked =
+        localStorage.getItem("dataPrivacyConsent") === "true";
+
+    researchParticipationConsent.checked =
+        localStorage.getItem("researchParticipationConsent") === "true";
+
+
+    updateOtherSource();
+
+    calculateMagnification(false);
+
+}
+
+
+// ======================================
+// OTHER WATER SOURCE
+// ======================================
+
+function updateOtherSource() {
+
+    if (source.value === "Other") {
+
+        otherSourceGroup.style.display = "block";
+
+        otherSource.required = true;
+
+    } else {
+
+        otherSourceGroup.style.display = "none";
+
+        otherSource.required = false;
+
+        otherSource.value = "";
+
+    }
+
+}
+
+
+// ======================================
+// CALCULATE MAGNIFICATION
+// ======================================
+
+function calculateMagnification(save = true) {
+
+    const eye =
+        Number(eyepiece.value);
+
+    const obj =
+        Number(objective.value);
+
+
+    if (eye > 0 && obj > 0) {
+
+        const total =
+            eye * obj;
+
+        totalMagnification.textContent =
+            total + "x";
+
+    } else {
+
+        totalMagnification.textContent =
+            "—";
+
+    }
+
+
+    if (save) {
+        saveSampleData();
+    }
+
+}
+
+
+// ======================================
+// SAVE WHEN USER CHANGES INFORMATION
+// ======================================
+
+const fields = [
+
+    schoolName,
+    section,
+    source,
+    otherSource,
+    waterCondition,
+    daysStored,
+    numImages,
+    eyepiece,
+    objective,
+    dataPrivacyConsent,
+    researchParticipationConsent
+
+];
+
+
+fields.forEach(field => {
+
+    if (!field) return;
+
+    field.addEventListener(
+        "input",
+        saveSampleData
+    );
+
+    field.addEventListener(
+        "change",
+        saveSampleData
+    );
+
 });
+
+
+// ======================================
+// WATER SOURCE CHANGE
+// ======================================
+
+source.addEventListener(
+    "change",
+    function () {
+
+        updateOtherSource();
+
+        saveSampleData();
+
+    }
+);
+
+
+// ======================================
+// MAGNIFICATION CHANGE
+// ======================================
+
+eyepiece.addEventListener(
+    "change",
+    function () {
+
+        calculateMagnification(true);
+
+    }
+);
+
+
+objective.addEventListener(
+    "change",
+    function () {
+
+        calculateMagnification(true);
+
+    }
+);
+
+
+// ======================================
+// FORM SUBMIT
+// ======================================
+
+sampleForm.addEventListener(
+    "submit",
+    function (event) {
+
+        event.preventDefault();
+
+
+        // Save everything before leaving
+
+        saveSampleData();
+
+
+        // ==================================
+        // CREATE SUBMISSION / SAMPLE CODE
+        // ==================================
+
+        if (!localStorage.getItem("sampleID")) {
+
+            const date =
+                new Date();
+
+            const year =
+                date.getFullYear();
+
+            const month =
+                String(
+                    date.getMonth() + 1
+                ).padStart(2, "0");
+
+            const day =
+                String(
+                    date.getDate()
+                ).padStart(2, "0");
+
+
+            const randomCode =
+                Math.random()
+                    .toString(36)
+                    .substring(2, 6)
+                    .toUpperCase();
+
+
+            const sampleID =
+                `MC-${year}${month}${day}-${randomCode}`;
+
+
+            localStorage.setItem(
+                "sampleID",
+                sampleID
+            );
+
+        }
+
+
+        // ==================================
+        // GO TO UPLOAD PAGE
+        // ==================================
+
+        window.location.href =
+            "upload.html";
+
+    }
+);
+
+
+// ======================================
+// LOAD SAVED DATA WHEN PAGE OPENS
+// ======================================
+
+loadSampleData();

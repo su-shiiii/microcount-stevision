@@ -1,57 +1,527 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
     <title>Upload | MicroCount STEVision</title>
-    <link rel="icon" type="image/png" href="images/logo.png">
-    <link rel="stylesheet" href="style.css">
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+    <style>
+
+        .upload-page {
+
+            min-height: calc(100vh - 110px);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 40px 20px;
+
+            background: #f5f8fc;
+
+        }
+
+
+        .upload-container {
+
+            width: 90%;
+
+            max-width: 900px;
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 20px;
+
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+
+            text-align: center;
+
+        }
+
+
+        .upload-container h1 {
+
+            color: #183b6b;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .upload-container p {
+
+            color: #666;
+
+        }
+
+
+        .upload-box {
+
+            margin-top: 30px;
+
+            padding: 40px;
+
+            border: 2px dashed #32c0cf;
+
+            border-radius: 15px;
+
+            background: #f8fdff;
+
+        }
+
+
+        #imageInput {
+
+            display: none;
+
+        }
+
+
+        .choose-button {
+
+            display: inline-block;
+
+            padding: 14px 25px;
+
+            background: #32c0cf;
+
+            color: white;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+
+        .choose-button:hover {
+
+            opacity: 0.9;
+
+        }
+
+
+        #fileList {
+
+            margin-top: 20px;
+
+            text-align: left;
+
+        }
+
+
+        .file-item {
+
+            background: #f3f6f9;
+
+            padding: 10px 15px;
+
+            margin-bottom: 8px;
+
+            border-radius: 8px;
+
+        }
+
+
+        #startAnalysis {
+
+            margin-top: 25px;
+
+            padding: 14px 30px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #183b6b;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            display: none;
+
+        }
+
+
+        #startAnalysis:hover {
+
+            opacity: 0.9;
+
+        }
+
+
+        #uploadStatus {
+
+            margin-top: 15px;
+
+            color: #555;
+
+        }
+
+    </style>
+
 </head>
+
+
 <body>
 
+
 <header>
+
     <nav class="navbar">
+
         <div class="logo">
-            <img src="images/logo.png" alt="Logo">
-            <span>MicroCount <strong>STEVision</strong></span>
+
+            <img
+                src="images/logo.png"
+                alt="MicroCount Logo">
+
+            <h2>
+                MicroCount STEVision
+            </h2>
+
         </div>
+
 
         <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="sample.html">Sample</a></li>
-            <li><a href="upload.html" class="active">Upload</a></li>
-            <li><a href="analysis.html">Analysis</a></li>
-            <li><a href="results.html">Results</a></li>
-            <li><a href="about.html">About</a></li>
+
+            <li>
+                <a href="index.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="sample.html">
+                    Sample
+                </a>
+            </li>
+
+            <li>
+                <a href="upload.html"
+                   class="active">
+                    Upload
+                </a>
+            </li>
+
+            <li>
+                <a href="results.html">
+                    Results
+                </a>
+            </li>
+
+            <li>
+                <a href="about.html">
+                    About
+                </a>
+            </li>
+
         </ul>
+
     </nav>
+
 </header>
 
-<section class="upload-page">
+
+<main class="upload-page">
+
+
     <div class="upload-container">
-        <h1>Upload Microscope Images</h1>
+
+
+        <h1>
+            Upload Microscope Images
+        </h1>
+
+
         <p>
-            Upload the number of microscope images you selected on the Sample page. Recommended: 10 images for a more reliable analysis.
+            Select the microscope images you want MicroCount STEVision to analyze.
         </p>
 
-        <div class="upload-box" id="dropArea">
-            <div class="upload-icon">☁️</div>
-            <h2>Upload Images</h2>
-            <p>Drag & Drop or Click to Browse</p>
-            <input id="fileInput" type="file" accept="image/*" multiple hidden>
-            <label class="browse-btn" for="fileInput">Browse Files</label>
+
+        <div class="upload-box">
+
+
+            <label
+                for="imageInput"
+                class="choose-button">
+
+                Choose Microscope Images
+
+            </label>
+
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                multiple>
+
+
+            <div id="uploadStatus">
+                No images selected.
+            </div>
+
+
+            <div id="fileList">
+            </div>
+
+
+            <button
+                id="startAnalysis">
+
+                Start Analysis
+
+            </button>
+
+
         </div>
 
-        <div id="previewContainer" class="preview-container"></div>
 
-        <button id="analyzeBtn" class="analyze-btn" type="button">Detect Particles →</button>
-
-        <div class="upload-next-container">
-            <button type="button" id="nextBtn">Proceed to Analysis →</button>
-        </div>
     </div>
-</section>
 
-<script src="upload.js"></script>
+</main>
+
+
+<script>
+
+
+const imageInput =
+    document.getElementById("imageInput");
+
+
+const fileList =
+    document.getElementById("fileList");
+
+
+const uploadStatus =
+    document.getElementById("uploadStatus");
+
+
+const startAnalysis =
+    document.getElementById("startAnalysis");
+
+
+
+/*
+    Convert an image File into a Base64 data URL.
+
+    This is important because File objects themselves
+    cannot be reliably stored in localStorage.
+*/
+
+function fileToDataURL(file) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                () => resolve(reader.result);
+
+
+            reader.onerror =
+                () => reject(
+                    new Error(
+                        "Could not read image file."
+                    )
+                );
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+
+
+imageInput.addEventListener(
+    "change",
+    async function () {
+
+
+        const files =
+            Array.from(
+                imageInput.files
+            );
+
+
+        fileList.innerHTML = "";
+
+
+        if (files.length === 0) {
+
+            uploadStatus.textContent =
+                "No images selected.";
+
+            startAnalysis.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        uploadStatus.textContent =
+            `Reading ${files.length} microscope image(s)...`;
+
+
+        try {
+
+
+            const imageData = [];
+
+
+            for (
+                let i = 0;
+                i < files.length;
+                i++
+            ) {
+
+
+                const file =
+                    files[i];
+
+
+                if (
+                    !file.type.startsWith("image/")
+                ) {
+
+                    continue;
+
+                }
+
+
+                const dataURL =
+                    await fileToDataURL(
+                        file
+                    );
+
+
+                imageData.push(
+                    dataURL
+                );
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "file-item";
+
+
+                item.textContent =
+                    `${i + 1}. ${file.name}`;
+
+
+                fileList.appendChild(
+                    item
+                );
+
+            }
+
+
+            if (
+                imageData.length === 0
+            ) {
+
+                throw new Error(
+                    "No valid image files were selected."
+                );
+
+            }
+
+
+            /*
+                Store the actual image data.
+            */
+
+            localStorage.setItem(
+                "uploadedImages",
+                JSON.stringify(
+                    imageData
+                )
+            );
+
+
+            localStorage.setItem(
+                "numImages",
+                imageData.length
+            );
+
+
+            uploadStatus.textContent =
+                `${imageData.length} microscope image(s) ready for analysis.`;
+
+
+            startAnalysis.style.display =
+                "inline-block";
+
+
+        }
+        catch (error) {
+
+
+            console.error(error);
+
+
+            uploadStatus.textContent =
+                "There was a problem reading the images.";
+
+
+            startAnalysis.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+
+startAnalysis.addEventListener(
+    "click",
+    function () {
+
+        window.location.href =
+            "analysis.html";
+
+    }
+);
+
+
+</script>
+
+
 </body>
+
 </html>

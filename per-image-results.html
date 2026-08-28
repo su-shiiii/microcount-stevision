@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Per-Image Results | MicroCount STEVision
+    </title>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="images/logo.png">
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+
+    <style>
+
+        .per-image-page {
+
+            min-height: calc(100vh - 110px);
+
+            padding: 50px 20px;
+
+            background: #f5f8fc;
+
+            box-sizing: border-box;
+
+        }
+
+
+        .per-image-container {
+
+            width: 95%;
+
+            max-width: 1200px;
+
+            margin: auto;
+
+        }
+
+
+        .per-image-container h1 {
+
+            text-align: center;
+
+            color: #183b6b;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .page-description {
+
+            text-align: center;
+
+            color: #555;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .table-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.08);
+
+            overflow-x: auto;
+
+        }
+
+
+        .per-image-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            text-align: center;
+
+        }
+
+
+        .per-image-table th {
+
+            background: #183b6b;
+
+            color: white;
+
+            padding: 14px 10px;
+
+        }
+
+
+        .per-image-table td {
+
+            padding: 13px 10px;
+
+            border-bottom:
+                1px solid #ddd;
+
+        }
+
+
+        .per-image-table tr:nth-child(even) {
+
+            background: #f5f8fc;
+
+        }
+
+
+        .per-image-table tr:hover {
+
+            background: #eef5fb;
+
+        }
+
+
+        .total-row {
+
+            font-weight: bold;
+
+            background: #e8f3f8 !important;
+
+        }
+
+
+        .no-data {
+
+            text-align: center;
+
+            padding: 30px;
+
+            color: #777;
+
+        }
+
+
+        .back-button {
+
+            display: block;
+
+            width: fit-content;
+
+            margin: 30px auto 0;
+
+            padding: 13px 25px;
+
+            background: #183b6b;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-weight: bold;
+
+        }
+
+
+        .back-button:hover {
+
+            opacity: 0.9;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <img
+                src="images/logo.png"
+                alt="MicroCount Logo">
+
+            <h2>
+                MicroCount STEVision
+            </h2>
+
+        </div>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="index.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="sample.html">
+                    Sample
+                </a>
+            </li>
+
+            <li>
+                <a href="upload.html">
+                    Upload
+                </a>
+            </li>
+
+            <li>
+                <a href="analysis.html">
+                    Analysis
+                </a>
+            </li>
+
+            <li>
+                <a
+                    href="results.html"
+                    class="active">
+
+                    Results
+
+                </a>
+            </li>
+
+            <li>
+                <a href="about.html">
+                    About
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+
+<main class="per-image-page">
+
+
+    <div class="per-image-container">
+
+
+        <h1>
+            Per-Image Microplastic Analysis
+        </h1>
+
+
+        <p class="page-description">
+
+            The table below shows the number of suspected
+            microplastic particles detected in each uploaded
+            microscope image according to their classified morphology.
+
+        </p>
+
+
+        <div class="table-card">
+
+
+            <table
+                class="per-image-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Image
+                        </th>
+
+                        <th>
+                            Fragments
+                        </th>
+
+                        <th>
+                            Fibers
+                        </th>
+
+                        <th>
+                            Films
+                        </th>
+
+                        <th>
+                            Foams
+                        </th>
+
+                        <th>
+                            Pellets
+                        </th>
+
+                        <th>
+                            Lines / Filaments
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="perImageTableBody">
+
+                </tbody>
+
+
+            </table>
+
+
+            <div
+                id="noData"
+                class="no-data"
+                style="display:none;">
+
+                No per-image analysis data was found.
+
+                <br><br>
+
+                Please return to the Upload page
+                and analyze the microscope images again.
+
+            </div>
+
+
+        </div>
+
+
+        <a
+            href="results.html"
+            class="back-button">
+
+            ← Back to Results
+
+        </a>
+
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+
+// =====================================================
+// GET SAVED PER-IMAGE DATA
+// =====================================================
+
+
+const storedData =
+    localStorage.getItem(
+        "perImageResults"
+    );
+
+
+const tableBody =
+    document.getElementById(
+        "perImageTableBody"
+    );
+
+
+const noData =
+    document.getElementById(
+        "noData"
+    );
+
+
+
+// =====================================================
+// CHECK DATA
+// =====================================================
+
+
+if (
+    !storedData
+) {
+
+    noData.style.display =
+        "block";
+
+    tableBody.style.display =
+        "none";
+
+}
+else {
+
+
+    let data;
+
+
+    try {
+
+        data =
+            JSON.parse(
+                storedData
+            );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Could not read per-image results:",
+            error
+        );
+
+        noData.style.display =
+            "block";
+
+        tableBody.style.display =
+            "none";
+
+    }
+
+
+
+    if (
+        Array.isArray(data) &&
+        data.length > 0
+    ) {
+
+
+        let totalFragments = 0;
+
+        let totalFibers = 0;
+
+        let totalFilms = 0;
+
+        let totalFoams = 0;
+
+        let totalPellets = 0;
+
+        let totalLines = 0;
+
+        let totalParticles = 0;
+
+
+
+        // =================================================
+        // CREATE ROWS
+        // =================================================
+
+
+        data.forEach(
+            result => {
+
+
+                const fragments =
+                    Number(
+                        result.fragments
+                    ) || 0;
+
+
+                const fibers =
+                    Number(
+                        result.fibers
+                    ) || 0;
+
+
+                const films =
+                    Number(
+                        result.films
+                    ) || 0;
+
+
+                const foams =
+                    Number(
+                        result.foams
+                    ) || 0;
+
+
+                const pellets =
+                    Number(
+                        result.pellets
+                    ) || 0;
+
+
+                const lines =
+                    Number(
+                        result.lines
+                    ) || 0;
+
+
+                const total =
+                    fragments +
+                    fibers +
+                    films +
+                    foams +
+                    pellets +
+                    lines;
+
+
+
+                totalFragments +=
+                    fragments;
+
+
+                totalFibers +=
+                    fibers;
+
+
+                totalFilms +=
+                    films;
+
+
+                totalFoams +=
+                    foams;
+
+
+                totalPellets +=
+                    pellets;
+
+
+                totalLines +=
+                    lines;
+
+
+                totalParticles +=
+                    total;
+
+
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+                        Image ${result.imageNumber}
+                    </td>
+
+                    <td>
+                        ${fragments}
+                    </td>
+
+                    <td>
+                        ${fibers}
+                    </td>
+
+                    <td>
+                        ${films}
+                    </td>
+
+                    <td>
+                        ${foams}
+                    </td>
+
+                    <td>
+                        ${pellets}
+                    </td>
+
+                    <td>
+                        ${lines}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${total}
+                        </strong>
+                    </td>
+
+                `;
+
+
+                tableBody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+
+
+        // =================================================
+        // TOTAL ROW
+        // =================================================
+
+
+        const totalRow =
+            document.createElement(
+                "tr"
+            );
+
+
+        totalRow.className =
+            "total-row";
+
+
+        totalRow.innerHTML = `
+
+            <td>
+                TOTAL
+            </td>
+
+            <td>
+                ${totalFragments}
+            </td>
+
+            <td>
+                ${totalFibers}
+            </td>
+
+            <td>
+                ${totalFilms}
+            </td>
+
+            <td>
+                ${totalFoams}
+            </td>
+
+            <td>
+                ${totalPellets}
+            </td>
+
+            <td>
+                ${totalLines}
+            </td>
+
+            <td>
+                ${totalParticles}
+            </td>
+
+        `;
+
+
+        tableBody.appendChild(
+            totalRow
+        );
+
+
+    }
+    else {
+
+
+        noData.style.display =
+            "block";
+
+        tableBody.style.display =
+            "none";
+
+    }
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

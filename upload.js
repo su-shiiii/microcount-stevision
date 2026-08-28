@@ -1,232 +1,418 @@
-// ===============================
+// ======================================
 // MicroCount STEVision
 // Upload Page
-// ===============================
-
-const dropArea = document.getElementById("dropArea");
-const fileInput = document.getElementById("fileInput");
-const previewContainer = document.getElementById("previewContainer");
-const analyzeBtn = document.getElementById("analyzeBtn");
-const nextBtn = document.getElementById("nextBtn");
+// ======================================
 
 
-// Hide buttons initially
-if (analyzeBtn) {
-    analyzeBtn.style.display = "none";
-}
+// ======================================
+// ELEMENTS
+// ======================================
 
-if (nextBtn) {
-    nextBtn.style.display = "none";
-}
+const uploadBox =
+    document.getElementById("uploadBox");
 
+const imageInput =
+    document.getElementById("imageInput");
 
-// ===============================
-// CLICK UPLOAD AREA
-// ===============================
+const browseBtn =
+    document.getElementById("browseBtn");
 
-dropArea.addEventListener("click", () => {
-    fileInput.click();
-});
+const imagePreview =
+    document.getElementById("imagePreview");
 
+const imageCount =
+    document.getElementById("imageCount");
 
-// ===============================
-// FILE SELECTED
-// ===============================
-
-fileInput.addEventListener("change", () => {
-
-    previewFiles(fileInput.files);
-
-});
+const proceedAnalysisBtn =
+    document.getElementById("proceedAnalysisBtn");
 
 
-// ===============================
-// DRAG & DROP
-// ===============================
+// ======================================
+// BROWSE BUTTON
+// ======================================
 
-["dragenter", "dragover", "dragleave", "drop"].forEach(event => {
+browseBtn.addEventListener("click", function (event) {
 
-    dropArea.addEventListener(event, e => {
+    event.stopPropagation();
 
-        e.preventDefault();
-        e.stopPropagation();
-
-    });
+    imageInput.click();
 
 });
 
 
-["dragenter", "dragover"].forEach(event => {
+// ======================================
+// CLICK UPLOAD BOX
+// ======================================
 
-    dropArea.addEventListener(event, () => {
+uploadBox.addEventListener("click", function (event) {
 
-        dropArea.classList.add("dragover");
+    // Don't trigger the file picker twice
+    // when the Browse Files button is clicked.
 
-    });
-
-});
-
-
-["dragleave", "drop"].forEach(event => {
-
-    dropArea.addEventListener(event, () => {
-
-        dropArea.classList.remove("dragover");
-
-    });
-
-});
-
-
-dropArea.addEventListener("drop", e => {
-
-    previewFiles(e.dataTransfer.files);
-
-});
-
-
-// ===============================
-// PREVIEW FILES
-// ===============================
-
-function previewFiles(files) {
-
-    previewContainer.innerHTML = "";
-
-    if (files.length === 0) {
+    if (event.target === browseBtn) {
         return;
     }
 
-    // Check maximum number of images (20)
+    imageInput.click();
+
+});
+
+
+// ======================================
+// FILE SELECTION
+// ======================================
+
+imageInput.addEventListener(
+    "change",
+    function () {
+
+        handleImages(imageInput.files);
+
+    }
+);
+
+
+// ======================================
+// DRAG AND DROP
+// ======================================
+
+uploadBox.addEventListener(
+    "dragover",
+    function (event) {
+
+        event.preventDefault();
+
+        uploadBox.classList.add("dragover");
+
+    }
+);
+
+
+uploadBox.addEventListener(
+    "dragleave",
+    function () {
+
+        uploadBox.classList.remove("dragover");
+
+    }
+);
+
+
+uploadBox.addEventListener(
+    "drop",
+    function (event) {
+
+        event.preventDefault();
+
+        uploadBox.classList.remove("dragover");
+
+        handleImages(
+            event.dataTransfer.files
+        );
+
+    }
+);
+
+
+// ======================================
+// PROCESS IMAGES
+// ======================================
+
+function handleImages(files) {
+
+    // Clear previous preview
+    imagePreview.innerHTML = "";
+
+    imageCount.textContent = "";
+
+    proceedAnalysisBtn.disabled = true;
+
+
+    // No files selected
+    if (!files || files.length === 0) {
+
+        return;
+
+    }
+
+
+    // ==================================
+    // MAXIMUM 20 IMAGES
+    // ==================================
+
     if (files.length > 20) {
-        alert("Maximum 20 microscope images allowed. Please upload up to 20 images.");
+
+        alert(
+            "Maximum 20 microscope images are allowed."
+        );
+
+        imageInput.value = "";
+
         return;
+
     }
 
-    // Save number of images
-    localStorage.setItem("numImages", files.length);
+
+    // ==================================
+    // ONLY IMAGE FILES
+    // ==================================
+
+    const imageFiles =
+        Array.from(files).filter(
+            file =>
+                file.type.startsWith("image/")
+        );
 
 
-    let finished = 0;
+    if (imageFiles.length === 0) {
+
+        alert(
+            "Please select microscope image files."
+        );
+
+        return;
+
+    }
+
+
+    // ==================================
+    // READ ALL IMAGES
+    // ==================================
 
     const uploadedImages = [];
 
-
-    Array.from(files).forEach((file, index) => {
-
-        if (!file.type.startsWith("image/")) {
-            return;
-        }
+    let completed = 0;
 
 
-        const reader = new FileReader();
+    imageFiles.forEach(
+        function (file, index) {
+
+            const reader =
+                new FileReader();
 
 
-        reader.onload = function(e) {
+            reader.onload = function (event) {
 
-            const imageData = e.target.result;
+                uploadedImages[index] = {
 
-            uploadedImages.push(imageData);
+                    name: file.name,
 
+                    data: event.target.result
 
-            // Create preview card
-            const card = document.createElement("div");
-
-            card.className = "preview-card";
-
-            card.innerHTML = `
-                <img src="${imageData}" alt="Microscope Image ${index + 1}">
-                <p>Image ${index + 1}</p>
-            `;
-
-            previewContainer.appendChild(card);
+                };
 
 
-            finished++;
+                completed++;
 
 
-            // When all images are processed
-            if (finished === files.length) {
+                // ==================================
+                // WAIT FOR ALL IMAGES
+                // ==================================
 
-                // Save all images
-                localStorage.setItem(
-                    "uploadedImages",
-                    JSON.stringify(uploadedImages)
-                );
+                if (
+                    completed === imageFiles.length
+                ) {
 
-
-                // Keep first image for compatibility
-                localStorage.setItem(
-                    "uploadedImage",
-                    uploadedImages[0]
-                );
+                    // Display images
+                    displayUploadedImages(
+                        uploadedImages
+                    );
 
 
-                console.log("Images saved:", uploadedImages.length);
+                    // ==================================
+                    // SAVE ALL IMAGES
+                    // ==================================
+
+                    localStorage.setItem(
+                        "uploadedImages",
+                        JSON.stringify(
+                            uploadedImages
+                        )
+                    );
 
 
-                // Show buttons
-                if (analyzeBtn) {
-                    analyzeBtn.style.display = "inline-block";
+                    // ==================================
+                    // SAVE FIRST IMAGE
+                    // FOR COMPATIBILITY
+                    // ==================================
+
+                    localStorage.setItem(
+                        "uploadedImage",
+                        uploadedImages[0].data
+                    );
+
+
+                    // ==================================
+                    // SAVE IMAGE COUNT
+                    // ==================================
+
+                    localStorage.setItem(
+                        "numImages",
+                        uploadedImages.length
+                    );
+
+
+                    // ==================================
+                    // UPDATE COUNTER
+                    // ==================================
+
+                    imageCount.textContent =
+                        uploadedImages.length +
+                        " microscope image(s) selected.";
+
+
+                    // ==================================
+                    // ENABLE BUTTON
+                    // ==================================
+
+                    proceedAnalysisBtn.disabled =
+                        false;
+
                 }
 
-                if (nextBtn) {
-                    nextBtn.style.display = "inline-block";
-                }
-
-            }
-
-        };
+            };
 
 
-        reader.readAsDataURL(file);
+            reader.onerror = function () {
 
-    });
+                alert(
+                    "Unable to read image: " +
+                    file.name
+                );
+
+            };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
 
 }
 
 
-// ===============================
-// ANALYZE BUTTON
-// ===============================
+// ======================================
+// DISPLAY ALL UPLOADED IMAGES
+// ======================================
 
-if (analyzeBtn) {
+function displayUploadedImages(images) {
 
-    analyzeBtn.addEventListener("click", () => {
+    imagePreview.innerHTML = "";
 
-        if (!localStorage.getItem("uploadedImages")) {
 
-            alert("Please wait for the images to finish loading.");
+    images.forEach(
+        function (image, index) {
+
+            // ==================================
+            // CARD
+            // ==================================
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "preview-card";
+
+
+            // ==================================
+            // IMAGE
+            // ==================================
+
+            const img =
+                document.createElement("img");
+
+            img.src =
+                image.data;
+
+            img.alt =
+                "Microscope Image " +
+                (index + 1);
+
+
+            // ==================================
+            // IMAGE NAME
+            // ==================================
+
+            const name =
+                document.createElement("p");
+
+            name.textContent =
+                "Image " +
+                (index + 1) +
+                ": " +
+                image.name;
+
+
+            // ==================================
+            // ADD TO CARD
+            // ==================================
+
+            card.appendChild(img);
+
+            card.appendChild(name);
+
+
+            // ==================================
+            // ADD TO PREVIEW
+            // ==================================
+
+            imagePreview.appendChild(card);
+
+        }
+    );
+
+}
+
+
+// ======================================
+// PROCEED TO ANALYSIS
+// ======================================
+
+proceedAnalysisBtn.addEventListener(
+    "click",
+    function () {
+
+        const images =
+            localStorage.getItem(
+                "uploadedImages"
+            );
+
+
+        if (!images) {
+
+            alert(
+                "Please upload at least one microscope image."
+            );
 
             return;
 
         }
 
-        window.location.href = "analysis.html";
 
-    });
-
-}
+        const parsedImages =
+            JSON.parse(images);
 
 
-// ===============================
-// NEXT BUTTON
-// ===============================
+        if (
+            !parsedImages ||
+            parsedImages.length === 0
+        ) {
 
-if (nextBtn) {
-
-    nextBtn.addEventListener("click", () => {
-
-        if (!localStorage.getItem("uploadedImages")) {
-
-            alert("Please upload your microscope images first.");
+            alert(
+                "Please upload at least one microscope image."
+            );
 
             return;
 
         }
 
-        window.location.href = "analysis.html";
 
-    });
+        // ==================================
+        // GO TO ANALYSIS
+        // ==================================
 
-}
+        window.location.href =
+            "analysis.html";
+
+    }
+);

@@ -429,873 +429,201 @@ button{
     margin-top:15px;
 }
 }
-/* =======================
-   Upload Page
-======================= */
 
-.upload-page{
-    max-width:1100px;
-    margin:55px auto;
-    padding:0 25px;
-}
-
-.upload-page h1{
-    font-size:52px;
-    color:#1d2f5f;
-    margin-bottom:10px;
-}
-
-.upload-subtitle{
-    font-size:20px;
-    color:#666;
-    margin-bottom:35px;
-}
-
-.upload-card{
-    background:white;
-    border:2px dashed #d7d7d7;
-    border-radius:20px;
-
-    padding:70px 40px;
-
-    text-align:center;
-
-    box-shadow:0 12px 30px rgba(0,0,0,.08);
-
-    transition:.3s;
-}
-
-.upload-card:hover{
-    border-color:#31c4cf;
-}
-
-.upload-icon{
-    font-size:70px;
-    color:#777;
-    margin-bottom:20px;
-}
-
-.upload-card h2{
-    font-size:34px;
-    color:#1d2f5f;
-    margin-bottom:12px;
-}
-
-.upload-card p{
-    color:#777;
-    font-size:18px;
-    margin-bottom:30px;
-}
-
-.browse-btn{
-    display:inline-block;
-
-    background:#2ec7cf;
-    color:white;
-
-    padding:15px 35px;
-
-    border-radius:10px;
-
-    font-size:18px;
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:.3s;
-}
-
-.browse-btn:hover{
-    background:#14aeb8;
-}
-
-#previewContainer{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
-
-    gap:20px;
-
-    margin-top:35px;
-
-}
-
-.preview-card{
-
-    background:white;
-
-    border-radius:12px;
-
-    box-shadow:0 8px 18px rgba(0,0,0,.08);
-
-    overflow:hidden;
-
-    text-align:center;
-
-}
-
-.preview-card img{
-
-    width:100%;
-
-    height:140px;
-
-    object-fit:cover;
-
-}
-
-.preview-card p{
-
-    padding:12px;
-
-    font-weight:600;
-
-}
-/* UPLOAD PAGE */
-
-.upload-page{
-    padding:70px 20px;
-    background:#f5f8fc;
-    min-height:100vh;
-}
-
-.upload-container{
-    max-width:1100px;
-    margin:auto;
-}
-
-.upload-container h1{
-    font-size:48px;
-    color:#16325c;
-    margin-bottom:15px;
-}
-
-.upload-container p{
-    color:#666;
-    font-size:18px;
-    margin-bottom:30px;
-}
-
-.upload-box{
-    width:100%;
-    min-height:340px;
-    border:3px dashed #d9d9d9;
-    border-radius:18px;
-    background:#fff;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    transition:.3s;
-}
-
-.upload-box:hover{
-    border-color:#36c5cf;
-}
-
-.upload-icon{
-    font-size:70px;
-    margin-bottom:20px;
-}
-
-.browse-btn{
-    margin-top:20px;
-    background:#36c5cf;
-    color:#fff;
-    padding:14px 35px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.preview-container{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-    gap:20px;
-    margin-top:35px;
-}
-
-.preview-card{
-    background:white;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 5px 20px rgba(0,0,0,.1);
-}
-
-.preview-card img{
-    width:100%;
-    height:160px;
-    object-fit:cover;
-}
-
-.preview-card p{
-    padding:12px;
-    text-align:center;
-    font-weight:bold;
-}
-
-.analyze-btn{
-    display:none;
-    margin:35px auto 0;
-    background:#16325c;
-    color:white;
-    border:none;
-    padding:18px 40px;
-    border-radius:10px;
-    font-size:18px;
-    cursor:pointer;
-}
-.dragover{
-    border:3px dashed #2fc7c9 !important;
-    background:#eefcff;
-    transform:scale(1.02);
-    transition:.3s;
-}
-/* Highlight upload area while dragging */
-
-.dragover{
-    background:#e8fcff;
-    border:3px dashed #2fc7c9 !important;
-    box-shadow:0 0 25px rgba(47,199,201,.35);
-    transform:scale(1.02);
-    transition:all .25s ease;
-}
-/* ===========================
-   RESULTS PAGE
-=========================== */
-
-.results-page{
-    max-width:1200px;
-    margin:50px auto;
-    padding:0 30px;
-}
-
-.results-page h1{
-    font-size:42px;
-    color:#0d2b5a;
-    margin-bottom:8px;
-}
-
-.results-page p{
-    color:#666;
-    margin-bottom:30px;
-}
-
-.results-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:25px;
-    margin-bottom:25px;
-}
-
-.card{
-    background:white;
-    border-radius:18px;
-    padding:25px;
-    box-shadow:0 6px 20px rgba(0,0,0,.08);
-}
-
-.card h2{
-    color:#0d2b5a;
-    margin-bottom:18px;
-    font-size:24px;
-}
-
-.card table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-.card td{
-    padding:12px 0;
-    border-bottom:1px solid #eee;
-    font-size:16px;
-}
-
-.card td:first-child{
-    font-weight:600;
-    color:#0d2b5a;
-}
-
-.card td:last-child{
-    text-align:right;
-    color:#555;
-}
-
-/* ===========================
-   RISK CARD
-=========================== */
-
-.risk-card{
-    display:grid;
-    grid-template-columns:320px 1fr;
-    gap:25px;
-    margin-bottom:30px;
-}
-
-.risk-box,
-.interpretation{
-    background:white;
-    border-radius:18px;
-    padding:25px;
-    box-shadow:0 6px 20px rgba(0,0,0,.08);
-}
-
-.risk-box h3,
-.interpretation h3{
-    color:#0d2b5a;
-    margin-bottom:18px;
-}
-
-.risk-level{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:20px;
-    border-radius:15px;
-    padding:25px;
-    font-size:20px;
-}
-
-.risk-level strong{
-    font-size:24px;
-}
-
-.risk-level.moderate{
-    background:#ffd75c;
-}
-
-.interpretation p{
-    line-height:1.8;
-    color:#555;
-}
-
-/* ===========================
-   RISK SCALE
-=========================== */
-
-.risk-scale{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:18px;
-    margin-bottom:35px;
-}
-
-.level{
-    padding:18px;
-    border-radius:15px;
-    text-align:center;
-    color:#222;
-    font-weight:600;
-}
-
-.level p{
-    margin:8px 0;
-    font-size:18px;
-    color:inherit;
-}
-
-.green{
-    background:#b7ef9b;
-}
-
-.yellow{
-    background:#ffe36b;
-}
-
-.orange{
-    background:#ffb457;
-}
-
-.red{
-    background:#ff8b8b;
-}
-
-/* ===========================
-   BUTTONS
-=========================== */
-
-.results-buttons{
-    display:flex;
-    justify-content:space-between;
-    margin-top:25px;
-}
-
-.download-btn,
-.new-btn{
-
-    background:#0d2b5a;
-    color:white;
-    border:none;
-    padding:16px 34px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:16px;
-    font-weight:600;
-    transition:.3s;
-}
-
-.download-btn:hover,
-.new-btn:hover{
-    background:#16c6d6;
-}
-
-/* ===========================
-   MOBILE
-=========================== */
-
-@media(max-width:900px){
-
-.results-grid{
-    grid-template-columns:1fr;
-}
-
-.risk-card{
-    grid-template-columns:1fr;
-}
-
-.risk-scale{
-    grid-template-columns:1fr 1fr;
-}
-
-.results-buttons{
-    flex-direction:column;
-    gap:15px;
-}
-
-.download-btn,
-.new-btn{
-    width:100%;
-}
-
-}
-/* ===========================
-   RESULT IMAGE
-=========================== */
-
-.image-preview-card{
-
-    background:white;
-
-    border-radius:18px;
-
-    padding:25px;
-
-    margin-bottom:30px;
-
-    text-align:center;
-
-    box-shadow:0 6px 20px rgba(0,0,0,.08);
-
-}
-
-.image-preview-card h2{
-
-    color:#0d2b5a;
-
-    margin-bottom:20px;
-
-}
-
-#resultImage{
-
-    width:100%;
-
-    max-width:550px;
-
-    border-radius:15px;
-
-    border:2px solid #ddd;
-
-}
-/* ===========================
-   ANALYSIS PAGE
-=========================== */
-
-.analysis-page{
-
-max-width:900px;
-
-margin:70px auto;
-
-text-align:center;
-
-padding:20px;
-
-}
-
-.analysis-page h1{
-
-font-size:44px;
-
-color:#123566;
-
-margin-bottom:15px;
-
-}
-
-.analysis-page p{
-
-color:#666;
-
-font-size:18px;
-
-}
-
-.analysis-card{
-
-margin-top:45px;
-
-background:white;
-
-padding:50px;
-
-border-radius:20px;
-
-box-shadow:0 8px 25px rgba(0,0,0,.08);
-
-}
-
-.loader{
-
-width:90px;
-
-height:90px;
-
-margin:auto;
-
-border:8px solid #ddd;
-
-border-top:8px solid #28c7d4;
-
-border-radius:50%;
-
-animation:spin 1s linear infinite;
-
-}
-
-@keyframes spin{
-
-100%{
-
-transform:rotate(360deg);
-
-}
-
-}
-
-.progress{
-
-width:100%;
-
-height:18px;
-
-background:#eee;
-
-border-radius:50px;
-
-margin-top:35px;
-
-overflow:hidden;
-
-}
-
-.progress-bar{
-
-width:0%;
-
-height:100%;
-
-background:#28c7d4;
-
-transition:.3s;
-
-}
-
-#percentText{
-
-font-size:24px;
-
-font-weight:bold;
-
-margin-top:20px;
-
-color:#123566;
-
-}
-/* ===========================
-   RESULTS PAGE
-=========================== */
-
-.results-page{
-    max-width:1200px;
-    margin:40px auto;
-    padding:20px;
-}
-
-.results-page h1{
-    text-align:center;
-    font-size:38px;
-    margin-bottom:10px;
-}
-
-.results-page>p{
-    text-align:center;
-    color:#666;
-    margin-bottom:35px;
-}
-
-.results-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:30px;
-    align-items:start;
-}
-
-.result-image-card,
-.card{
-
-    background:white;
-
-    border-radius:18px;
-
-    padding:25px;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-
-}
-
-.result-image-card img{
-
-    width:100%;
-
-    border-radius:15px;
-
-    margin-top:15px;
-
-}
-
-.results-info{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:20px;
-
-}
-
-.card h2{
-
-    color:#0b7285;
-
-    margin-bottom:15px;
-
-}
-
-.card p{
-
-    margin:10px 0;
-
-    line-height:1.6;
-
-}
-
-/* ===========================
-   RISK LEVEL
-=========================== */
-
-.risk-level{
-
-    border-radius:15px;
-
-    text-align:center;
-
-    padding:25px;
-
-    color:white;
-
-    font-weight:bold;
+/* =====================================================
+   UPLOAD PAGE
+===================================================== */
 
+.upload-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 70px 20px;
+    min-height: 100vh;
+    background: #f5f8fc;
 }
 
-.risk-level h3{
-
-    font-size:34px;
-
-    margin-bottom:10px;
-
-}
-
-.risk-level p{
-
-    font-size:20px;
-
-}
-
-/* ===========================
-   QUANTITY SCALE
-=========================== */
-/* LEVEL 1 */
-.level1{
-    background:#E8F5E9;
-    color:#1B5E20;
-    border:2px solid #81C784;
-}
-
-/* LEVEL 2 */
-.level2{
-    background:#FFF8E1;
-    color:#8D6E00;
-    border:2px solid #FFD54F;
-}
-
-/* LEVEL 3 */
-.level3{
-    background:#FFF3E0;
-    color:#E65100;
-    border:2px solid #FFB74D;
+.upload-container {
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
-/* LEVEL 4 */
-.level4{
-    background:#FFEBEE;
-    color:#B71C1C;
-    border:2px solid #EF5350;
+.upload-container h1 {
+    font-size: 48px;
+    color: #16325c;
+    margin-bottom: 15px;
 }
-
-/* ===========================
-   INTERPRETATION
-=========================== */
-
-.interpretation-card{
 
-    margin-top:30px;
-
+.upload-container > p,
+.upload-subtitle {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 30px;
 }
-
-.interpretation-card p{
-
-    font-size:17px;
 
-    line-height:1.8;
-
+.upload-box {
+    width: 100%;
+    min-height: 340px;
+    border: 3px dashed #d9d9d9;
+    border-radius: 18px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: .3s;
 }
-
-/* ===========================
-   BUTTONS
-=========================== */
-
-.download-section{
 
-    margin-top:35px;
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:20px;
-
+.upload-box:hover {
+    border-color: #36c5cf;
 }
-
-.download-btn{
-
-    background:#0b7285;
-
-    color:white;
-
-    border:none;
-
-    padding:14px 30px;
-
-    border-radius:10px;
 
-    cursor:pointer;
-
-    font-size:16px;
-
-    transition:.3s;
-
+.upload-icon {
+    font-size: 70px;
+    color: #777;
+    margin-bottom: 20px;
 }
-
-.download-btn:hover{
-
-    background:#095c69;
 
+.upload-box h2 {
+    font-size: 34px;
+    color: #1d2f5f;
+    margin-bottom: 12px;
 }
 
-/* ===========================
-   MOBILE
-=========================== */
-
-@media(max-width:900px){
-
-.results-grid{
-
-grid-template-columns:1fr;
-
+.upload-box p {
+    color: #777;
+    font-size: 18px;
+    margin-bottom: 30px;
 }
-
-.risk-scale{
-
-grid-template-columns:1fr 1fr;
 
+.browse-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background: #36c5cf;
+    color: #fff;
+    padding: 14px 35px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    transition: .3s;
 }
 
-a{
-    text-decoration: none;
-    color: inherit;
+.browse-btn:hover {
+    background: #14aeb8;
 }
-/* =========================================
-   RESULTS - RECOMMENDATIONS
-========================================= */
 
-.recommendations-card {
+.preview-container,
+#previewContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
     margin-top: 35px;
-    padding: 35px;
-    background: rgba(255, 255, 255, 0.97);
-    border-radius: 22px;
-    border-left: 6px solid #35c3cf;
-    box-shadow: 0 10px 30px rgba(23, 50, 92, 0.10);
 }
 
-.recommendations-card > h2 {
-    color: #17325c;
-    font-size: 30px;
-    margin-bottom: 25px;
+.preview-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,.10);
 }
 
-.recommendation-item {
-    background: #f5fafc;
-    border: 1px solid #e4f0f4;
-    border-radius: 16px;
-    padding: 22px;
-    margin-top: 18px;
+.preview-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
 }
 
-.recommendation-item h3 {
-    color: #087f8c;
-    font-size: 20px;
-    margin-bottom: 10px;
+.preview-card p {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
 }
 
-.recommendation-item p {
-    color: #555;
-    line-height: 1.7;
-    margin: 0;
+.analyze-btn {
+    display: none;
+    margin: 35px auto 0;
+    background: #16325c;
+    color: white;
+    border: none;
+    padding: 18px 40px;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
 }
 
-.recommendation-item ul {
-    margin: 0;
-    padding-left: 25px;
-    color: #555;
-    line-height: 1.8;
+.dragover {
+    background: #e8fcff;
+    border: 3px dashed #2fc7c9 !important;
+    box-shadow: 0 0 25px rgba(47,199,201,.35);
+    transform: scale(1.02);
+    transition: all .25s ease;
 }
 
-.recommendation-item li {
-    margin-bottom: 7px;
+.upload-next-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 60px;
 }
+
+#nextBtn {
+    background: #35c1cf;
+    color: white;
+    border: none;
+    padding: 16px 35px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#nextBtn:hover {
+    background: #25aebb;
+}
+
+/* =====================================================
+   ANALYSIS PAGE
+   Uses style.css only — no separate analysis.css needed.
+===================================================== */
+
+.analysis-page {
+    min-height: calc(100vh - 110px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.loading-container {
+    width: 80%;
+    max-width: 900px;
+    text-align: center;
+}
+
+.loading-container h2 {
+    margin-bottom: 35px;
+    color: #183b6b;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #e9e9e9;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: 20px;
+    background: #32c0cf;
+    transition: width .05s linear;
+}
+
 /* =====================================================
    MICROCOUNT STEVISION
    RESULTS PAGE DESIGN
@@ -1820,4 +1148,479 @@ a{
 
 #nextBtn:hover {
     background: #25aebb;
+}
+.analysis-page {
+    min-height: calc(100vh - 110px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.loading-container {
+    width: 80%;
+    max-width: 900px;
+    text-align: center;
+}
+
+.loading-container h2 {
+    margin-bottom: 35px;
+    color: #183b6b;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #e9e9e9;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: 20px;
+    background: #32c0cf;
+    transition: width 0.05s linear;
+}
+/* =====================================================
+   SAMPLE INFORMATION PAGE
+   ===================================================== */
+
+.sample-page {
+    min-height: calc(100vh - 110px);
+    padding: 55px 8%;
+    background: #f5f8fc;
+    box-sizing: border-box;
+}
+
+.sample-left {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.sample-left h1 {
+    color: #fdfdfd;
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.sample-left > p {
+    color: #fdfdfd;
+    font-size: 18px;
+    margin-bottom: 35px;
+}
+
+#sampleForm {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.field-group {
+    margin-bottom: 25px;
+}
+
+.field-group > label {
+    display: block;
+    font-weight: 700;
+    color: #011765;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.field-group input[type="text"],
+.field-group input[type="number"],
+.field-group select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 15px;
+    border: 1px solid #d5dce5;
+    border-radius: 10px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    outline: none;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+    border-color: #29bcc9;
+    box-shadow: 0 0 0 3px rgba(41, 188, 201, 0.12);
+}
+
+/* OTHER SOURCE */
+
+#otherSource {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 15px;
+    border: 1px solid #d5dce5;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+/* SMALL TEXT */
+
+.field-group small {
+    display: block;
+    color: #666;
+    margin-top: 7px;
+    line-height: 1.5;
+}
+
+/* =====================================================
+   MAGNIFICATION
+   ===================================================== */
+
+.magnification-box {
+    background: #f5f8fc;
+    border: 1px solid #dce5ef;
+    border-radius: 15px;
+    padding: 22px;
+}
+
+.magnification-instruction {
+    margin-top: 0;
+    color: #666;
+}
+
+.magnification-selects {
+    display: flex;
+    align-items: end;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.magnification-selects > div:not(.multiply-sign) {
+    flex: 1;
+}
+
+.magnification-selects label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.magnification-selects select {
+    width: 100%;
+}
+
+.multiply-sign {
+    font-size: 28px;
+    font-weight: bold;
+    color: #183b6b;
+    padding-bottom: 8px;
+}
+
+.total-magnification {
+    margin-top: 22px;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-magnification span {
+    font-weight: 600;
+    color: #555;
+}
+
+.total-magnification strong {
+    color: #18aebd;
+    font-size: 20px;
+}
+
+/* =====================================================
+   MAGNIFICATION HELP LINK
+   ===================================================== */
+
+.magnification-help-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: #159eac;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.magnification-help-link:hover {
+    text-decoration: underline;
+}
+
+/* =====================================================
+   CONSENT
+   ===================================================== */
+
+.consent-section {
+    margin-top: 35px;
+    padding: 25px;
+    background: #f5f8fc;
+    border-radius: 15px;
+    border: 1px solid #e0e6ed;
+}
+
+.consent-section h2 {
+    color: #183b6b;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.consent-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.consent-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 4px;
+    flex-shrink: 0;
+    accent-color: #22b8c6;
+}
+
+.consent-item strong {
+    color: #183b6b;
+}
+
+/* =====================================================
+   CONTINUE BUTTON
+   ===================================================== */
+
+#continueBtn {
+    margin-top: 30px;
+    padding: 16px 30px;
+    border: none;
+    border-radius: 12px;
+    background: #2bbcc8;
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#continueBtn:hover {
+    background: #159eac;
+    transform: translateY(-1px);
+}
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    .sample-page {
+        padding: 35px 18px;
+    }
+
+    .sample-left h1 {
+        font-size: 32px;
+    }
+
+    #sampleForm {
+        padding: 25px;
+    }
+
+    .magnification-selects {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .multiply-sign {
+        text-align: center;
+        padding: 0;
+    }
+
+    .total-magnification {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+}
+/* ======================================
+   MICROSCOPE IMAGE GALLERY
+====================================== */
+
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.image-result-card {
+    background: #f8fbff;
+    border: 1px solid #dce7f2;
+    border-radius: 14px;
+    padding: 15px;
+    text-align: center;
+}
+
+.image-result-card h3 {
+    margin: 0 0 12px;
+    color: #183b6b;
+    font-size: 16px;
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #111;
+}
+
+.image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.detection-circle {
+    position: absolute;
+    border: 3px solid red;
+    border-radius: 50%;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.detection-label {
+    position: absolute;
+    background: red;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 4px;
+    transform: translate(-50%, -100%);
+    pointer-events: none;
+}
+
+.results-note {
+    color: #555;
+    line-height: 1.6;
+}
+.analyzed-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.analyzed-image-card {
+    background: #f7f9fc;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.analyzed-image-card h3 {
+    margin-bottom: 15px;
+    color: #16345f;
+}
+
+.image-canvas-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #111;
+}
+
+.image-canvas-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.image-canvas-wrapper canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.particle-info {
+    margin-top: 12px;
+    font-size: 15px;
+    color: #333;
+}
+
+.particle-count {
+    font-weight: bold;
+    color: #e53935;
+}
+/* ======================================
+   SAMPLE PAGE BACKGROUND
+====================================== */
+
+.sample-page {
+    min-height: calc(100vh - 110px);
+
+    padding: 55px 8%;
+
+    background-image:
+        linear-gradient(
+            rgba(10, 35, 70, 0.55),
+            rgba(10, 35, 70, 0.55)
+        ),
+        url("images/sample-background.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    background-attachment: fixed;
+
+    box-sizing: border-box;
+}
+/* ======================================
+   POSSIBLE HEALTH CONSIDERATIONS
+====================================== */
+
+.health-effects {
+    margin-top: 25px;
+    padding: 22px;
+    background: #f7f9fc;
+    border: 1px solid #dfe7ef;
+    border-radius: 14px;
+}
+
+.health-effects h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #183b6b;
+    font-size: 21px;
+}
+
+.health-effects p {
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.health-effects ul {
+    margin: 10px 0 0 20px;
+    padding: 0;
+}
+
+.health-effects li {
+    margin-bottom: 10px;
+    line-height: 1.5;
 }
