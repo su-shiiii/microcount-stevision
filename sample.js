@@ -371,3 +371,77 @@ sampleForm.addEventListener(
 // ======================================
 
 loadSampleData();
+const numImagesInput =
+    document.getElementById("numImages");
+
+if (numImagesInput) {
+
+    numImagesInput.addEventListener("input", function () {
+
+        const value = Number(this.value);
+
+        if (value < 10) {
+            this.setCustomValidity(
+                "Please enter at least 10 microscope images."
+            );
+        }
+
+        else if (value > 20) {
+            this.setCustomValidity(
+                "You can upload a maximum of 20 microscope images."
+            );
+        }
+
+        else {
+            this.setCustomValidity("");
+        }
+
+    });
+
+}
+// =====================================================
+// IMAGE RECOMMENDATION LINK
+// =====================================================
+
+const imageRecommendationLink =
+    document.getElementById("imageRecommendationLink");
+
+const imageRecommendation =
+    document.getElementById("imageRecommendation");
+
+
+if (
+    imageRecommendationLink &&
+    imageRecommendation
+) {
+
+    imageRecommendationLink.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            if (
+                imageRecommendation.style.display === "none"
+            ) {
+
+                imageRecommendation.style.display = "block";
+
+                imageRecommendationLink.textContent =
+                    "📷 Hide image recommendation";
+
+            }
+
+            else {
+
+                imageRecommendation.style.display = "none";
+
+                imageRecommendationLink.textContent =
+                    "📷 Recommended number of images per water sample: 10 or more";
+
+            }
+
+        }
+    );
+
+}

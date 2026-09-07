@@ -1,12 +1,46 @@
-// ======================================
+// =====================================================
 // MicroCount STEVision
-// Results Page
-// ======================================
+// RESULTS.JS
+// =====================================================
 
 
-// ======================================
-// GET STORED SAMPLE DATA
-// ======================================
+// =====================================================
+// HELPER: SAFE NUMBER
+// =====================================================
+
+function getNumber(key, fallback = 0) {
+
+    const value = Number(
+        localStorage.getItem(key)
+    );
+
+    return Number.isFinite(value)
+        ? value
+        : fallback;
+}
+
+
+// =====================================================
+// HELPER: SET TEXT
+// =====================================================
+
+function setText(id, value) {
+
+    const element =
+        document.getElementById(id);
+
+    if (element) {
+
+        element.textContent = value;
+
+    }
+
+}
+
+
+// =====================================================
+// SAMPLE INFORMATION
+// =====================================================
 
 const schoolName =
     localStorage.getItem("schoolName") ||
@@ -25,7 +59,7 @@ const waterCondition =
     "N/A";
 
 const daysStored =
-    Number(localStorage.getItem("daysStored")) || 0;
+    getNumber("daysStored");
 
 const totalMagnification =
     localStorage.getItem("totalMagnification") ||
@@ -35,389 +69,593 @@ const sampleID =
     localStorage.getItem("sampleID") ||
     "N/A";
 
-const imageCount =
-    Number(localStorage.getItem("numImages")) || 0;
+
+// =====================================================
+// NUMBER OF IMAGES
+// =====================================================
+
+let imageCount =
+    getNumber("numImages");
 
 
-// ======================================
-// GET ANALYSIS DATA
-// ======================================
+// =====================================================
+// LOAD PER-IMAGE RESULTS
+// =====================================================
 
-const particleCount =
-    Number(localStorage.getItem("particles")) || 0;
+let perImageResults = [];
 
-const average =
-    localStorage.getItem("average") ||
-    "0";
+try {
+
+    perImageResults =
+        JSON.parse(
+            localStorage.getItem(
+                "perImageResults"
+            ) || "[]"
+        );
+
+}
+catch (error) {
+
+    console.error(
+        "Could not read perImageResults:",
+        error
+    );
+
+    perImageResults = [];
+
+}
+
+
+// =====================================================
+// IF NUMIMAGES IS EMPTY, USE PER-IMAGE DATA
+// =====================================================
+
+if (
+    imageCount === 0 &&
+    Array.isArray(perImageResults)
+) {
+
+    imageCount =
+        perImageResults.length;
+
+}
+
+
+// =====================================================
+// GET TOTAL PARTICLE COUNT
+// =====================================================
+
+let particleCount =
+    getNumber("particles");
+
+
+// =====================================================
+// IF TOTAL PARTICLES IS MISSING,
+// CALCULATE IT FROM PER-IMAGE RESULTS
+// =====================================================
+
+if (
+    particleCount === 0 &&
+    Array.isArray(perImageResults) &&
+    perImageResults.length > 0
+) {
+
+    particleCount = 0;
+
+
+    perImageResults.forEach(
+        function(result) {
+
+            const fragments =
+                Number(result.fragments) || 0;
+
+            const fibers =
+                Number(result.fibers) || 0;
+
+            const films =
+                Number(result.films) || 0;
+
+            const foams =
+                Number(result.foams) || 0;
+
+            const pellets =
+                Number(result.pellets) || 0;
+
+            const lines =
+                Number(result.lines) || 0;
+
+
+            let particles =
+                Number(result.particles);
+
+
+            if (
+                !Number.isFinite(particles)
+            ) {
+
+                particles =
+                    fragments +
+                    fibers +
+                    films +
+                    foams +
+                    pellets +
+                    lines;
+
+            }
+
+
+            particleCount +=
+                particles;
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// GET AVERAGE
+// IMPORTANT:
+// RISK WILL USE THIS VALUE
+// =====================================================
+
+let average =
+    Number(
+        localStorage.getItem("average")
+    );
+
+
+// =====================================================
+// IF AVERAGE IS MISSING,
+// CALCULATE IT FROM TOTAL / NUMBER OF IMAGES
+// =====================================================
+
+if (
+    !Number.isFinite(average)
+) {
+
+    if (imageCount > 0) {
+
+        average =
+            particleCount /
+            imageCount;
+
+    }
+
+    else {
+
+        average = 0;
+
+    }
+
+}
+
+
+// =====================================================
+// AREA RESULTS
+// =====================================================
 
 const totalArea =
-    localStorage.getItem("totalArea") ||
-    "0";
+    getNumber("totalArea");
 
 const averageArea =
-    localStorage.getItem("averageArea") ||
-    "0";
-
-const riskLevel =
-    localStorage.getItem("riskLevel") ||
-    "N/A";
-
-const riskText =
-    localStorage.getItem("riskText") ||
-    "N/A";
+    getNumber("averageArea");
 
 
-// ======================================
-// SAMPLE INFORMATION
-// ======================================
+// =====================================================
+// =====================================================
+// MICROPLASTIC TYPE TOTALS
+// =====================================================
+// First try the direct localStorage values.
+// If they are missing/zero, calculate them from
+// perImageResults.
+// =====================================================
 
-const schoolNameElement =
-    document.getElementById("schoolName");
+let fragments =
+    getNumber("fragments");
 
-if (schoolNameElement) {
-    schoolNameElement.textContent = schoolName;
+let fibers =
+    getNumber("fibers");
+
+let films =
+    getNumber("films");
+
+let foams =
+    getNumber("foams");
+
+let pellets =
+    getNumber("pellets");
+
+let lines =
+    getNumber("lines");
+
+
+// =====================================================
+// CHECK WHETHER DIRECT TYPE DATA EXISTS
+// =====================================================
+
+const directTypeDataExists =
+
+    localStorage.getItem("fragments") !== null ||
+    localStorage.getItem("fibers") !== null ||
+    localStorage.getItem("films") !== null ||
+    localStorage.getItem("foams") !== null ||
+    localStorage.getItem("pellets") !== null ||
+    localStorage.getItem("lines") !== null;
+
+
+// =====================================================
+// CALCULATE TYPE TOTALS FROM PER-IMAGE RESULTS
+// =====================================================
+
+if (
+    !directTypeDataExists &&
+    Array.isArray(perImageResults) &&
+    perImageResults.length > 0
+) {
+
+    fragments = 0;
+    fibers = 0;
+    films = 0;
+    foams = 0;
+    pellets = 0;
+    lines = 0;
+
+
+    perImageResults.forEach(
+        function(result) {
+
+            fragments +=
+                Number(result.fragments) || 0;
+
+            fibers +=
+                Number(result.fibers) || 0;
+
+            films +=
+                Number(result.films) || 0;
+
+            foams +=
+                Number(result.foams) || 0;
+
+            pellets +=
+                Number(result.pellets) || 0;
+
+            lines +=
+                Number(result.lines) || 0;
+
+        }
+    );
+
 }
 
 
-const sectionElement =
-    document.getElementById("section");
+// =====================================================
+// FALLBACK:
+// IF DIRECT TYPE VALUES EXIST BUT ARE ALL ZERO,
+// TRY PER-IMAGE DATA
+// =====================================================
 
-if (sectionElement) {
-    sectionElement.textContent = section;
+if (
+    fragments === 0 &&
+    fibers === 0 &&
+    films === 0 &&
+    foams === 0 &&
+    pellets === 0 &&
+    lines === 0 &&
+    Array.isArray(perImageResults) &&
+    perImageResults.length > 0
+) {
+
+    perImageResults.forEach(
+        function(result) {
+
+            fragments +=
+                Number(result.fragments) || 0;
+
+            fibers +=
+                Number(result.fibers) || 0;
+
+            films +=
+                Number(result.films) || 0;
+
+            foams +=
+                Number(result.foams) || 0;
+
+            pellets +=
+                Number(result.pellets) || 0;
+
+            lines +=
+                Number(result.lines) || 0;
+
+        }
+    );
+
 }
 
 
-const sourceElement =
-    document.getElementById("source");
+// =====================================================
+// SAVE CORRECT TYPE TOTALS
+// =====================================================
 
-if (sourceElement) {
-    sourceElement.textContent = source;
+localStorage.setItem(
+    "fragments",
+    fragments
+);
+
+localStorage.setItem(
+    "fibers",
+    fibers
+);
+
+localStorage.setItem(
+    "films",
+    films
+);
+
+localStorage.setItem(
+    "foams",
+    foams
+);
+
+localStorage.setItem(
+    "pellets",
+    pellets
+);
+
+localStorage.setItem(
+    "lines",
+    lines
+);
+
+
+// =====================================================
+// RISK CALCULATION
+// =====================================================
+// IMPORTANT:
+// RISK IS BASED ONLY ON AVERAGE PARTICLES/IMAGE.
+// NOT TOTAL PARTICLES.
+// =====================================================
+
+function calculateRisk(averageValue) {
+
+    const value =
+        Number(averageValue) || 0;
+
+
+    if (value === 0) {
+
+        return {
+
+            level: "LEVEL 1",
+
+            text:
+                "No suspected particles detected on average."
+
+        };
+
+    }
+
+
+    if (value <= 10) {
+
+        return {
+
+            level: "LEVEL 1",
+
+            text:
+                "Low average detected particle level."
+
+        };
+
+    }
+
+
+    if (value <= 30) {
+
+        return {
+
+            level: "LEVEL 2",
+
+            text:
+                "Moderate average detected particle level."
+
+        };
+
+    }
+
+
+    if (value <= 60) {
+
+        return {
+
+            level: "LEVEL 3",
+
+            text:
+                "High average detected particle level."
+
+        };
+
+    }
+
+
+    return {
+
+        level: "LEVEL 4",
+
+        text:
+            "Very high average detected particle level."
+
+    };
+
 }
 
 
-const waterConditionElement =
-    document.getElementById("waterCondition");
+// =====================================================
+// CALCULATE RISK USING AVERAGE
+// =====================================================
 
-if (waterConditionElement) {
-    waterConditionElement.textContent =
-        waterCondition;
-}
-
-
-const daysStoredElement =
-    document.getElementById("daysStored");
-
-if (daysStoredElement) {
-    daysStoredElement.textContent =
-        daysStored + " day(s)";
-}
+const risk =
+    calculateRisk(average);
 
 
-const magnificationElement =
-    document.getElementById("magnification");
+// =====================================================
+// SAVE RISK
+// =====================================================
 
-if (magnificationElement) {
-    magnificationElement.textContent =
-        totalMagnification;
-}
+localStorage.setItem(
+    "riskLevel",
+    risk.level
+);
 
-
-const sampleIDElement =
-    document.getElementById("sampleID");
-
-if (sampleIDElement) {
-    sampleIDElement.textContent = sampleID;
-}
+localStorage.setItem(
+    "riskText",
+    risk.text
+);
 
 
-// ======================================
-// ANALYSIS SUMMARY
-// ======================================
+// =====================================================
+// DISPLAY SAMPLE INFORMATION
+// =====================================================
 
-const numImagesElement =
-    document.getElementById("numImages");
+setText(
+    "schoolName",
+    schoolName
+);
 
-if (numImagesElement) {
-    numImagesElement.textContent =
-        imageCount;
-}
+setText(
+    "section",
+    section
+);
 
+setText(
+    "source",
+    source
+);
 
-const particleCountElement =
-    document.getElementById("particleCount");
+setText(
+    "waterCondition",
+    waterCondition
+);
 
-if (particleCountElement) {
-    particleCountElement.textContent =
-        particleCount;
-}
+setText(
+    "daysStored",
+    daysStored + " day(s)"
+);
 
+setText(
+    "magnification",
+    totalMagnification
+);
 
-const averageElement =
-    document.getElementById("average");
-
-if (averageElement) {
-    averageElement.textContent =
-        average + " particles/image";
-}
-
-
-const totalAreaElement =
-    document.getElementById("totalArea");
-
-if (totalAreaElement) {
-    totalAreaElement.textContent =
-        totalArea + " Fiji/ImageJ area units";
-}
-
-
-const averageAreaElement =
-    document.getElementById("averageArea");
-
-if (averageAreaElement) {
-    averageAreaElement.textContent =
-        averageArea + " Fiji/ImageJ area units";
-}
+setText(
+    "sampleID",
+    sampleID
+);
 
 
-// ======================================
-// RISK LEVEL
-// ======================================
+// =====================================================
+// DISPLAY ANALYSIS SUMMARY
+// =====================================================
 
-const riskLevelElement =
-    document.getElementById("riskLevel");
+setText(
+    "numImages",
+    imageCount
+);
 
-if (riskLevelElement) {
-    riskLevelElement.textContent =
-        riskLevel;
-}
+setText(
+    "particleCount",
+    particleCount
+);
+
+setText(
+    "average",
+    average.toFixed(2) +
+    " particles/image"
+);
+
+setText(
+    "totalArea",
+    totalArea +
+    " Fiji/ImageJ area units"
+);
+
+setText(
+    "averageArea",
+    averageArea +
+    " Fiji/ImageJ area units"
+);
 
 
-const riskTextElement =
-    document.getElementById("riskText");
+// =====================================================
+// DISPLAY RISK
+// =====================================================
 
-if (riskTextElement) {
-    riskTextElement.textContent =
-        riskText;
-}
+setText(
+    "riskLevel",
+    risk.level
+);
+
+setText(
+    "riskText",
+    risk.text
+);
 
 
 const riskBox =
-    document.getElementById("riskBox");
+    document.getElementById(
+        "riskBox"
+    );
 
 
 if (riskBox) {
 
-    if (riskLevel === "LEVEL 1") {
-
-        riskBox.style.background = "#4CAF50";
-
-    }
-
-    else if (riskLevel === "LEVEL 2") {
-
-        riskBox.style.background = "#FFC107";
-
-    }
-
-    else if (riskLevel === "LEVEL 3") {
-
-        riskBox.style.background = "#FF9800";
-
-    }
-
-    else if (riskLevel === "LEVEL 4") {
-
-        riskBox.style.background = "#F44336";
-
-    }
-
-}
-// ======================================
-// POSSIBLE HEALTH CONSIDERATIONS
-// ======================================
-
-const healthEffects =
-    document.getElementById("healthEffects");
+    riskBox.classList.remove(
+        "risk-level-1",
+        "risk-level-2",
+        "risk-level-3",
+        "risk-level-4"
+    );
 
 
-if (healthEffects) {
-
-    let healthHTML = `
-        <h3>Possible Health Considerations</h3>
-
-        <p>
-            This section provides a general interpretation of the
-            current scientific evidence on potential health effects
-            of microplastic exposure. It is not a diagnosis and does
-            not predict what will happen to an individual person.
-        </p>
-    `;
-
-
-    if (riskLevel === "LEVEL 1") {
-
-        healthHTML += `
-
-            <p>
-                <strong>Low detected particle level:</strong>
-                The analysis indicates a relatively low number of
-                suspected particles in the examined images.
-            </p>
-
-            <ul>
-                <li>
-                    Current evidence suggests that possible effects
-                    can involve inflammation, oxidative stress,
-                    and other biological responses, but the long-term
-                    health significance in humans remains uncertain.
-                </li>
-                <li>
-                    Continue proper water storage and reduce avoidable
-                    exposure to plastic particles.
-                </li>
-            </ul>
-
-        `;
-
-    }
-
-
-    else if (riskLevel === "LEVEL 2") {
-
-        healthHTML += `
-
-            <p>
-                <strong>Moderate detected particle level:</strong>
-                The analysis indicates a moderate number of suspected
-                particles.
-            </p>
-
-            <ul>
-                <li>
-                    Experimental and human observational research has
-                    reported possible associations involving inflammation,
-                    oxidative stress, endocrine-related changes, and
-                    gastrointestinal or reproductive biomarkers.
-                </li>
-                <li>
-                    These findings do not establish that this sample will
-                    cause a specific disease or that a particular amount
-                    will produce a specific health outcome.
-                </li>
-            </ul>
-
-        `;
-
-    }
-
-
-    else if (
-        riskLevel === "LEVEL 3" ||
-        riskLevel === "LEVEL 4"
-    ) {
-
-        healthHTML += `
-
-            <p>
-                <strong>High detected particle level:</strong>
-                The analysis indicates a high number of suspected
-                particles in the examined microscope images.
-            </p>
-
-            <ul>
-                <li>
-                    Research has reported biological responses such as
-                    oxidative stress, inflammation, cellular stress,
-                    and possible disruption of normal biological functions.
-                </li>
-                <li>
-                    Human studies have also reported associations between
-                    micro/nanoplastic burden and some cardiovascular,
-                    gastrointestinal, respiratory, and reproductive findings,
-                    although causation and the magnitude of long-term risk
-                    remain uncertain.
-                </li>
-                <li>
-                    A 2024 human observational study found that patients
-                    with micro/nanoplastics detected in carotid plaque had
-                    a higher risk of a combined outcome of myocardial
-                    infarction, stroke, or death during approximately
-                    34 months of follow-up. This does not establish a
-                    20-year prediction or a specific ingestion threshold.
-                </li>
-            </ul>
-
-        `;
-
-    }
-
-
-    healthHTML += `
-
-        <p>
-            <strong>Important:</strong>
-            MicroCount results represent detected or suspected particles
-            in microscope images. They do not by themselves measure the
-            amount of microplastic actually absorbed by the body, establish
-            a medical diagnosis, or determine an individual's lifetime
-            disease risk.
-        </p>
-
-    `;
-
-
-    healthEffects.innerHTML =
-        healthHTML;
+    riskBox.classList.add(
+        "risk-" +
+        risk.level
+            .toLowerCase()
+            .replace(" ", "-")
+    );
 
 }
 
 
-// ======================================
-// MICROPLASTIC TYPE CLASSIFICATION
-// ======================================
-
-// These values are read from localStorage.
-// Fiji/ImageJ or another analysis system
-// must provide these values.
-
-const fragments =
-    Number(localStorage.getItem("fragment")) || 0;
-
-const fibers =
-    Number(localStorage.getItem("fiber")) || 0;
-
-const films =
-    Number(localStorage.getItem("film")) || 0;
-
-const foams =
-    Number(localStorage.getItem("foam")) || 0;
-
-const pellets =
-    Number(localStorage.getItem("pellet")) || 0;
-
-const lines =
-    Number(localStorage.getItem("line")) || 0;
-
-
-// ======================================
-// TYPE PERCENTAGE
-// ======================================
+// =====================================================
+// TYPE PERCENTAGES
+// =====================================================
 
 function typePercentage(count) {
 
-    if (particleCount === 0) {
+    if (particleCount <= 0) {
+
         return "0.0%";
+
     }
 
+
     return (
-        (count / particleCount) * 100
+
+        (
+            Number(count) /
+            particleCount
+        ) *
+        100
+
     ).toFixed(1) + "%";
+
 }
 
 
-// ======================================
-// DISPLAY MICROPLASTIC TYPES
-// ======================================
+// =====================================================
+// DISPLAY TYPE
+// =====================================================
 
 function displayType(
     countID,
@@ -425,21 +663,15 @@ function displayType(
     count
 ) {
 
-    const countElement =
-        document.getElementById(countID);
+    setText(
+        countID,
+        count
+    );
 
-    const percentElement =
-        document.getElementById(percentID);
-
-    if (countElement) {
-        countElement.textContent =
-            count;
-    }
-
-    if (percentElement) {
-        percentElement.textContent =
-            typePercentage(count);
-    }
+    setText(
+        percentID,
+        typePercentage(count)
+    );
 
 }
 
@@ -481,54 +713,14 @@ displayType(
 );
 
 
-// ======================================
-// UPLOADED IMAGE
-// ======================================
-
-const imageData =
-    localStorage.getItem("uploadedImage");
-
-const uploadedImage =
-    document.getElementById("uploadedImage");
-
-const imageMessage =
-    document.getElementById("imageMessage");
-
-
-if (uploadedImage && imageMessage) {
-
-    if (imageData) {
-
-        uploadedImage.src =
-            imageData;
-
-        uploadedImage.style.display =
-            "block";
-
-        imageMessage.textContent =
-            "";
-
-    }
-
-    else {
-
-        uploadedImage.style.display =
-            "none";
-
-        imageMessage.textContent =
-            "No microscope image was saved for this analysis.";
-
-    }
-
-}
-
-
-// ======================================
+// =====================================================
 // INTERPRETATION
-// ======================================
+// =====================================================
 
 const interpretation =
-    document.getElementById("interpretation");
+    document.getElementById(
+        "interpretation"
+    );
 
 
 if (interpretation) {
@@ -536,1091 +728,2052 @@ if (interpretation) {
     interpretation.innerHTML = `
 
         Fiji/ImageJ was used as the
-        image-analysis and
-        particle-quantification method.
+        image-analysis and particle-quantification
+        method.
 
         <br><br>
 
-        <strong>${particleCount}</strong>
-        detected particle measurements
-        were recorded from the image-analysis
-        results.
+        <strong>
+            ${particleCount}
+        </strong>
+        suspected particle measurements were
+        recorded from
 
-        <br><br>
-
-        The analysis included
-        <strong>${imageCount}</strong>
+        <strong>
+            ${imageCount}
+        </strong>
         microscope image(s).
 
         <br><br>
 
         The calculated average was
-        <strong>${average} particles/image</strong>.
+
+        <strong>
+            ${average.toFixed(2)}
+            particles/image
+        </strong>.
 
         <br><br>
 
-        The calculated assessment level was
-        <strong>${riskLevel}</strong>
-        (${riskText}).
+        The risk assessment is based on the
+        <strong>
+            average number of suspected particles
+            detected per image
+        </strong>,
+        rather than the total number of particles.
+
+        <br><br>
+
+        The calculated assessment was
+
+        <strong>
+            ${risk.level}
+        </strong>:
+
+        ${risk.text}
 
     `;
 
 }
+// =====================================================
+// RECOMMENDATIONS
+// BASED ON AVERAGE PARTICLES PER IMAGE
+// =====================================================
 
-
-// ======================================
-// SMART RECOMMENDATIONS
-// ======================================
-
-const recommendation =
+const recommendationElement =
     document.getElementById("recommendationText");
 
-let recommendations = [];
+
+if (recommendationElement) {
+
+    let recommendationHTML = "";
 
 
-// ======================================
-// SAMPLE INFORMATION
-// ======================================
+    // =================================================
+    // LEVEL 1
+    // =================================================
 
-const condition =
-    waterCondition.toLowerCase();
+    if (risk.level === "LEVEL 1") {
 
-const waterSource =
-    source.toLowerCase();
+        recommendationHTML = `
+
+            <p>
+                <strong>Risk assessment:</strong>
+                The average detected particle level is low.
+            </p>
+
+            <ul>
+
+                <li>
+                    Continue using clean and properly covered
+                    water containers.
+                </li>
+
+                <li>
+                    Keep drinking-water containers away from
+                    dust, plastic debris, and other possible
+                    sources of contamination.
+                </li>
+
+                <li>
+                    Continue monitoring the water sample
+                    periodically if possible.
+                </li>
+
+                <li>
+                    If future samples show increasing particle
+                    counts, further investigation is recommended.
+                </li>
+
+            </ul>
+
+        `;
+
+    }
 
 
-// ======================================
-// 1. MICROPLASTIC CONTAMINATION LEVEL
-// ======================================
+    // =================================================
+    // LEVEL 2
+    // =================================================
+
+    else if (risk.level === "LEVEL 2") {
+
+        recommendationHTML = `
+
+            <p>
+                <strong>Risk assessment:</strong>
+                The average detected particle level is moderate.
+            </p>
+
+            <ul>
+
+                <li>
+                    Review how the water is stored, transported,
+                    and handled to reduce possible contamination.
+                </li>
+
+                <li>
+                    Use clean, covered, food-grade containers
+                    whenever possible.
+                </li>
+
+                <li>
+                    Avoid prolonged storage of drinking water
+                    in plastic containers when suitable
+                    alternatives are available.
+                </li>
+
+                <li>
+                    Consider repeating the microscope analysis
+                    using additional samples to determine whether
+                    the detected level is consistent.
+                </li>
+
+                <li>
+                    If elevated results continue, consider
+                    additional laboratory testing for confirmation.
+                </li>
+
+            </ul>
+
+        `;
+
+    }
+
+
+    // =================================================
+    // LEVEL 3
+    // =================================================
+
+    else if (risk.level === "LEVEL 3") {
+
+        recommendationHTML = `
+
+            <p>
+                <strong>Risk assessment:</strong>
+                The average detected particle level is high.
+            </p>
+
+            <ul>
+
+                <li>
+                    Investigate possible sources of particle
+                    contamination in the water source, containers,
+                    storage conditions, and handling process.
+                </li>
+
+                <li>
+                    Review and improve water storage and handling
+                    practices.
+                </li>
+
+                <li>
+                    Use clean, covered containers intended for
+                    drinking-water storage.
+                </li>
+
+                <li>
+                    Consider repeating the analysis with additional
+                    microscope images and water samples.
+                </li>
+
+                <li>
+                    Consider confirmatory laboratory testing to
+                    determine whether the suspected particles are
+                    actually microplastics.
+                </li>
+
+            </ul>
+
+            <p>
+                The MicroCount result should not by itself be
+                interpreted as proof that the water will cause
+                illness.
+            </p>
+
+        `;
+
+    }
+
+
+    // =================================================
+    // LEVEL 4
+    // =================================================
+
+    else {
+
+        recommendationHTML = `
+
+            <p>
+                <strong>Risk assessment:</strong>
+                The average detected particle level is very high.
+            </p>
+
+            <ul>
+
+                <li>
+                    Investigate the possible sources of particle
+                    contamination as soon as practical.
+                </li>
+
+                <li>
+                    Review the water source, storage containers,
+                    transportation, and handling procedures.
+                </li>
+
+                <li>
+                    Check whether the detected particles could have
+                    originated from sampling equipment, containers,
+                    clothing fibers, laboratory materials, or other
+                    environmental sources.
+                </li>
+
+                <li>
+                    Repeat the analysis using additional samples
+                    and microscope images to determine whether the
+                    result is reproducible.
+                </li>
+
+                <li>
+                    Confirm suspected particles using an appropriate
+                    laboratory identification method before making
+                    conclusions about microplastic contamination.
+                </li>
+
+                <li>
+                    Consider additional water-quality testing if
+                    elevated results continue.
+                </li>
+
+            </ul>
+
+            <p>
+                A high MicroCount result indicates a high number of
+                <strong>suspected particles detected in the images</strong>.
+                It does not by itself establish a human health risk
+                or prove that the particles are microplastics.
+            </p>
+
+        `;
+
+    }
+
+
+    // =================================================
+    // COMMON RECOMMENDATION
+    // =================================================
+
+    recommendationHTML += `
+
+        <div class="recommendation-note">
+
+            <p>
+                <strong>Important:</strong>
+                Recommendations are based on the detected average
+                particles per microscope image. MicroCount is an
+                image-analysis screening method and does not measure
+                the amount of microplastic absorbed by the human body.
+            </p>
+
+        </div>
+
+    `;
+
+
+    recommendationElement.innerHTML =
+        recommendationHTML;
+
+}
+
+
+// =====================================================
+// LONG-TERM HEALTH CONSIDERATIONS
+// =====================================================
+
+const healthEffects =
+    document.getElementById(
+        "healthEffects"
+    );
+
+
+if (healthEffects) {
+
+    let healthHTML = `
+
+        <div class="health-intro">
+
+            <h3>
+                Long-Term Health Considerations
+            </h3>
+
+            <p>
+
+                The current MicroCount result shows an
+                average of
+
+                <strong>
+                    ${average.toFixed(2)}
+                    suspected particles/image
+                </strong>.
+
+            </p>
+
+            <div class="health-evidence-box">
+
+                <h4>
+                    Important Scientific Limitation
+                </h4>
+
+                <p>
+
+                    MicroCount detects suspected particles
+                    visible in microscope images. The result
+                    is <strong>not a measurement of the amount
+                    of microplastic absorbed by the human
+                    body</strong> and cannot diagnose disease.
+
+                </p>
+
+                <p>
+
+                    The current scientific evidence does not
+                    allow a specific disease to be predicted
+                    after exactly 1, 5, or 10 years based only
+                    on a microscope particle count.
+
+                    Therefore, the information below describes
+                    <strong>potential health considerations</strong>,
+                    not guaranteed future health effects.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    // =================================================
+    // LEVEL 1
+    // =================================================
+
+    if (risk.level === "LEVEL 1") {
+
+        healthHTML += `
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 1 Year
+                </h3>
+
+                <p>
+
+                    If a similarly low detected level were
+                    repeatedly observed, continued exposure
+                    to suspected particles would remain a
+                    consideration.
+
+                    There is not enough evidence to predict
+                    a specific disease from this result.
+
+                </p>
+
+            </div>
+
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 5 Years
+                </h3>
+
+                <p>
+
+                    Continued exposure over several years
+                    would represent repeated contact with
+                    suspected particles.
+
+                    Laboratory research has investigated
+                    oxidative stress, inflammation, and
+                    cellular responses, although the relevance
+                    of these findings to real-world drinking
+                    water exposure remains uncertain.
+
+                </p>
+
+            </div>
+
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 10 Years
+                </h3>
+
+                <p>
+
+                    Long-term health effects cannot currently
+                    be predicted from this particle count.
+
+                    Continued research is needed to determine
+                    the possible consequences of prolonged
+                    exposure.
+
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    // =================================================
+    // LEVEL 2
+    // =================================================
+
+    else if (risk.level === "LEVEL 2") {
+
+        healthHTML += `
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 1 Year
+                </h3>
+
+                <p>
+
+                    If a similarly moderate detected level
+                    continued, repeated exposure to suspected
+                    particles would occur.
+
+                    Experimental studies have investigated
+                    oxidative stress, inflammation, and
+                    cellular responses following exposure.
+
+                </p>
+
+            </div>
+
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 5 Years
+                </h3>
+
+                <p>
+
+                    Continued exposure for several years could
+                    increase the duration of contact with
+                    suspected particles.
+
+                    Researchers have investigated possible
+                    effects involving digestive, respiratory,
+                    and reproductive systems.
+
+                </p>
+
+                <p>
+
+                    However, these findings do not establish
+                    that this particular water sample will
+                    cause disease.
+
+                </p>
+
+            </div>
+
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 10 Years
+                </h3>
+
+                <p>
+
+                    A decade of repeated exposure would
+                    represent a longer period of potential
+                    contact with suspected particles.
+
+                    Current evidence does not establish a
+                    specific disease outcome based on this
+                    microscope particle count.
+
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    // =================================================
+    // LEVEL 3
+    // =================================================
+
+    else if (risk.level === "LEVEL 3") {
+
+        healthHTML += `
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 1 Year
+                </h3>
+
+                <p>
+
+                    MicroCount detected a
+
+                    <strong>
+                        high average of
+                        ${average.toFixed(2)}
+                        suspected particles/image.
+                    </strong>
+
+                    If similarly elevated results were
+                    repeatedly observed, continued exposure
+                    would represent a greater potential
+                    concern.
+
+                </p>
+
+                <p>
+
+                    Experimental research has investigated
+                    biological responses including
+
+                    <strong>
+                        oxidative stress, inflammation,
+                        and cellular stress.
+                    </strong>
+
+                </p>
+
+            </div>
+
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 5 Years
+                </h3>
+
+                <p>
+
+                    If a similarly elevated detected level
+                    persisted for several years, repeated
+                    exposure would remain an area of concern.
+
+                    Research has investigated possible
+                    effects involving the
+
+                    <strong>
+                        digestive, respiratory, and
+                        reproductive systems.
+                    </strong>
+
+                </p>
+
+                <p>
+
+                    Human evidence remains limited and
+                    cannot establish a direct cause-and-effect
+                    relationship for this sample.
+
+                </p>
+
+            </div>
+
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 10 Years
+                </h3>
+
+                <p>
+
+                    If similarly elevated results continued
+                    for approximately ten years, the prolonged
+                    duration of exposure would remain an
+                    important research concern.
+
+                </p>
+
+                <p>
+
+                    However, this result cannot be used to
+                    predict that a person will develop a
+                    particular disease after ten years.
+
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    // =================================================
+    // LEVEL 4
+    // =================================================
+
+    else {
+
+        healthHTML += `
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 1 Year
+                </h3>
+
+                <p>
+
+                    MicroCount detected a
+
+                    <strong>
+                        very high average of
+                        ${average.toFixed(2)}
+                        suspected particles/image.
+                    </strong>
+
+                    If similarly elevated results were
+                    repeatedly observed, continued exposure
+                    would represent a greater potential
+                    concern.
+
+                </p>
+
+                <p>
+
+                    Experimental research has investigated
+                    oxidative stress, inflammation, cellular
+                    stress, and changes in cellular function.
+
+                </p>
+
+            </div>
+
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 5 Years
+                </h3>
+
+                <p>
+
+                    Continued exposure at a similarly
+                    elevated detected level could result
+                    in a longer period of potential contact
+                    with suspected particles.
+
+                </p>
+
+                <p>
+
+                    Potential biological effects being
+                    investigated include responses involving
+                    the digestive, respiratory, and
+                    reproductive systems.
+
+                    Human evidence remains limited.
+
+                </p>
+
+            </div>
+
+
+            <div class="health-time">
+
+                <h3>
+                    Approximately 10 Years
+                </h3>
+
+                <p>
+
+                    Prolonged exposure over approximately
+                    a decade would remain a potential
+                    concern because of the duration of
+                    repeated exposure.
+
+                </p>
+
+                <p>
+
+                    Nevertheless, current evidence cannot
+                    determine a specific disease outcome
+                    for an individual using only a microscope
+                    particle count.
+
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    // =================================================
+    // EVIDENCE CLASSIFICATION
+    // =================================================
+
+    healthHTML += `
+
+        <div class="health-evidence">
+
+            <h3>
+                Evidence Classification
+            </h3>
+
+            <ul>
+
+                <li>
+
+                    <strong>
+                        Established:
+                    </strong>
+
+                    Micro- and nanoplastics have been
+                    detected in human biological samples.
+
+                </li>
+
+
+                <li>
+
+                    <strong>
+                        Emerging:
+                    </strong>
+
+                    Human research is investigating possible
+                    associations between micro/nanoplastics
+                    and health outcomes.
+
+                </li>
+
+
+                <li>
+
+                    <strong>
+                        Potential:
+                    </strong>
+
+                    Laboratory and animal studies have
+                    reported oxidative stress, inflammation,
+                    and cellular responses.
+
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <p class="health-disclaimer">
+
+            <strong>
+                Important:
+            </strong>
+
+            MicroCount results represent suspected
+            particles detected in microscope images.
+            They do not represent a human exposure dose,
+            absorbed dose, or individual disease risk.
+
+        </p>
+
+    `;
+
+
+    healthEffects.innerHTML =
+        healthHTML;
+
+}
+
+
+// =====================================================
+// DISPLAY ANALYZED MICROSCOPE IMAGES
+// =====================================================
+
+const analyzedImagesContainer =
+    document.getElementById(
+        "analyzedImages"
+    );
+
+
+let storedImages = [];
+
+try {
+
+    storedImages =
+        JSON.parse(
+            localStorage.getItem(
+                "microscopeImages"
+            ) || "[]"
+        );
+
+}
+catch (error) {
+
+    console.error(
+        "Could not read microscopeImages:",
+        error
+    );
+
+    storedImages = [];
+
+}
+
+
+let fijiResults = [];
+
+try {
+
+    fijiResults =
+        JSON.parse(
+            localStorage.getItem(
+                "fijiResults"
+            ) || "[]"
+        );
+
+}
+catch (error) {
+
+    console.error(
+        "Could not read fijiResults:",
+        error
+    );
+
+    fijiResults = [];
+
+}
+
+
+// =====================================================
+// DRAW PARTICLE CIRCLES
+// =====================================================
+
+function drawParticleCircles(
+    ctx,
+    particles
+) {
+
+    particles.forEach(
+        function(particle, index) {
+
+            const x =
+                Number(particle.x);
+
+            const y =
+                Number(particle.y);
+
+            const radius =
+                Number(particle.radius) || 15;
+
+
+            if (
+                !Number.isFinite(x) ||
+                !Number.isFinite(y)
+            ) {
+
+                return;
+
+            }
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                radius,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.lineWidth = 4;
+
+            ctx.strokeStyle = "red";
+
+            ctx.stroke();
+
+
+            ctx.fillStyle = "red";
+
+            ctx.font =
+                "bold 18px Arial";
+
+
+            ctx.fillText(
+                String(index + 1),
+                x + radius + 5,
+                y
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// DISPLAY ANALYZED IMAGES
+// =====================================================
+
+function displayAnalyzedImages() {
+
+    if (!analyzedImagesContainer) {
+
+        return;
+
+    }
+
+
+    analyzedImagesContainer.innerHTML =
+        "";
+
+
+    if (
+        !Array.isArray(storedImages) ||
+        storedImages.length === 0
+    ) {
+
+        analyzedImagesContainer.innerHTML = `
+
+            <p>
+                No microscope images were uploaded.
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    storedImages.forEach(
+        function(imageData, imageIndex) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "analyzed-image-card";
+
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+            title.textContent =
+                "Microscope Image " +
+                (imageIndex + 1);
+
+
+            const wrapper =
+                document.createElement(
+                    "div"
+                );
+
+            wrapper.className =
+                "image-canvas-wrapper";
+
+
+            const img =
+                document.createElement(
+                    "img"
+                );
+
+            img.src =
+                imageData;
+
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            wrapper.appendChild(img);
+
+            wrapper.appendChild(canvas);
+
+
+            const info =
+                document.createElement(
+                    "div"
+                );
+
+            info.className =
+                "particle-info";
+
+
+            card.appendChild(title);
+
+            card.appendChild(wrapper);
+
+            card.appendChild(info);
+
+
+            analyzedImagesContainer.appendChild(
+                card
+            );
+
+
+            img.onload =
+                function() {
+
+                    canvas.width =
+                        img.naturalWidth;
+
+                    canvas.height =
+                        img.naturalHeight;
+
+
+                    const ctx =
+                        canvas.getContext(
+                            "2d"
+                        );
+
+
+                    const result =
+                        fijiResults[
+                            imageIndex
+                        ];
+
+
+                    if (
+                        !result ||
+                        !Array.isArray(
+                            result.particles
+                        )
+                    ) {
+
+                        info.innerHTML = `
+
+                            <span class="particle-count">
+
+                                No particle coordinates
+                                available
+
+                            </span>
+
+                        `;
+
+                        return;
+
+                    }
+
+
+                    const particles =
+                        result.particles;
+
+
+                    info.innerHTML = `
+
+                        Detected particles:
+
+                        <span class="particle-count">
+
+                            ${particles.length}
+
+                        </span>
+
+                    `;
+
+
+                    drawParticleCircles(
+                        ctx,
+                        particles
+                    );
+
+                };
+
+        }
+    );
+
+}
+
+
+displayAnalyzedImages();
+
+
+// =====================================================
+// PER-IMAGE RESULTS
+// =====================================================
+// FIXED:
+// Your HTML uses "perImageLink",
+// not "viewPerImageResults".
+// =====================================================
+
+const perImageLink =
+    document.getElementById(
+        "perImageLink"
+    );
+
+
+const perImageContainer =
+    document.getElementById(
+        "perImageResults"
+    );
+
+
+const perImageTableBody =
+    document.getElementById(
+        "perImageTableBody"
+    );
+
 
 if (
-    riskLevel === "LEVEL 4"
+    perImageLink &&
+    perImageContainer &&
+    perImageTableBody
 ) {
 
-    recommendations.push(`
+    perImageLink.addEventListener(
+        "click",
+        function(event) {
 
-        <strong>Very High Microplastic Contamination:</strong>
+            event.preventDefault();
 
-        The analyzed sample showed a very high
-        level of detected particle contamination.
 
-        Because the particles detected by
-        Fiji/ImageJ are suspected particles,
-        additional sampling and laboratory
-        verification are recommended before
-        making conclusions about the water
-        quality.
+            if (
+                perImageContainer.style.display ===
+                "block"
+            ) {
 
-        Review the water source, storage
-        conditions, container, and handling
-        practices.
+                perImageContainer.style.display =
+                    "none";
 
-    `);
+                perImageLink.textContent =
+                    "→ View detailed results per image";
 
-}
+                return;
 
-else if (
-    riskLevel === "LEVEL 3"
-) {
+            }
 
-    recommendations.push(`
 
-        <strong>High Microplastic Contamination:</strong>
+            if (
+                !Array.isArray(perImageResults) ||
+                perImageResults.length === 0
+            ) {
 
-        The analyzed sample showed a high
-        level of detected particle contamination.
+                perImageTableBody.innerHTML = `
 
-        Review the water source, storage
-        container, handling practices, and
-        surrounding environment.
+                    <tr>
 
-        Additional sampling and laboratory
-        verification are recommended.
+                        <td
+                            colspan="8"
+                            class="per-image-no-data">
 
-    `);
+                            No per-image analysis data
+                            was found.
 
-}
+                        </td>
 
-else if (
-    riskLevel === "LEVEL 2"
-) {
+                    </tr>
 
-    recommendations.push(`
+                `;
 
-        <strong>Moderate Microplastic Contamination:</strong>
+                perImageContainer.style.display =
+                    "block";
 
-        The analyzed sample showed a moderate
-        level of detected particles.
+                perImageLink.textContent =
+                    "← Hide detailed results per image";
 
-        Improve storage and handling practices
-        and continue monitoring through
-        additional samples.
+                return;
 
-    `);
+            }
 
-}
 
-else if (
-    riskLevel === "LEVEL 1"
-) {
+            perImageTableBody.innerHTML =
+                "";
 
-    recommendations.push(`
 
-        <strong>Low Microplastic Contamination:</strong>
+            let totalFragments = 0;
+            let totalFibers = 0;
+            let totalFilms = 0;
+            let totalFoams = 0;
+            let totalPellets = 0;
+            let totalLines = 0;
+            let totalParticles = 0;
 
-        The analyzed sample showed a relatively
-        low number of detected particles.
 
-        Continue proper storage, handling,
-        and regular monitoring of the water.
+            perImageResults.forEach(
+                function(result, index) {
 
-    `);
+                    const imageNumber =
+                        result.imageNumber ||
+                        (index + 1);
 
-}
 
+                    const imageFragments =
+                        Number(
+                            result.fragments
+                        ) || 0;
 
-// ======================================
-// 2. DIRECT SUNLIGHT
-// ======================================
 
-if (
-    condition.includes("sun") ||
-    condition.includes("light")
-) {
+                    const imageFibers =
+                        Number(
+                            result.fibers
+                        ) || 0;
 
-    recommendations.push(`
 
-        <strong>Direct Sunlight Exposure:</strong>
+                    const imageFilms =
+                        Number(
+                            result.films
+                        ) || 0;
 
-        The sample was stored in an environment
-        exposed to direct sunlight.
 
-        Move the water dispenser or storage
-        container to a shaded indoor area
-        away from direct sunlight.
+                    const imageFoams =
+                        Number(
+                            result.foams
+                        ) || 0;
 
-        Avoid placing the water container near
-        windows or other areas where it can be
-        exposed to prolonged sunlight or heat.
 
-    `);
+                    const imagePellets =
+                        Number(
+                            result.pellets
+                        ) || 0;
 
-}
 
+                    const imageLines =
+                        Number(
+                            result.lines
+                        ) || 0;
 
-// ======================================
-// 3. STORAGE DURATION
-// ======================================
 
-if (daysStored >= 7) {
+                    let imageParticles =
+                        Number(
+                            result.particles
+                        );
 
-    recommendations.push(`
 
-        <strong>Extended Storage:</strong>
+                    if (
+                        !Number.isFinite(
+                            imageParticles
+                        )
+                    ) {
 
-        The sample was stored for ${daysStored}
-        day(s).
+                        imageParticles =
+                            imageFragments +
+                            imageFibers +
+                            imageFilms +
+                            imageFoams +
+                            imagePellets +
+                            imageLines;
 
-        Avoid unnecessarily long storage periods.
-        Keep the water container clean, covered,
-        and properly maintained during storage.
+                    }
 
-    `);
 
-}
+                    totalFragments +=
+                        imageFragments;
 
-else if (daysStored >= 3) {
+                    totalFibers +=
+                        imageFibers;
 
-    recommendations.push(`
+                    totalFilms +=
+                        imageFilms;
 
-        <strong>Storage Duration:</strong>
+                    totalFoams +=
+                        imageFoams;
 
-        The sample was stored for ${daysStored}
-        day(s).
+                    totalPellets +=
+                        imagePellets;
 
-        Maintain a clean and covered container
-        and avoid unnecessary exposure to heat,
-        sunlight, dust, and surrounding materials.
+                    totalLines +=
+                        imageLines;
 
-    `);
+                    totalParticles +=
+                        imageParticles;
 
-}
 
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
 
-// ======================================
-// 4. WATER SOURCE
-// ======================================
 
-if (
-    waterSource.includes("refilling")
-) {
+                    row.innerHTML = `
 
-    recommendations.push(`
+                        <td class="image-name">
+                            Image ${imageNumber}
+                        </td>
 
-        <strong>Water Refilling Station:</strong>
+                        <td>
+                            ${imageFragments}
+                        </td>
 
-        Ensure that the dispenser, storage
-        container, and dispensing area are
-        regularly cleaned and properly covered.
+                        <td>
+                            ${imageFibers}
+                        </td>
 
-        Avoid placing the dispenser where it is
-        exposed to direct sunlight, dust, or
-        excessive heat.
+                        <td>
+                            ${imageFilms}
+                        </td>
 
-    `);
+                        <td>
+                            ${imageFoams}
+                        </td>
 
-}
+                        <td>
+                            ${imagePellets}
+                        </td>
 
-else if (
-    waterSource.includes("fountain")
-) {
+                        <td>
+                            ${imageLines}
+                        </td>
 
-    recommendations.push(`
+                        <td>
+                            <strong>
+                                ${imageParticles}
+                            </strong>
+                        </td>
 
-        <strong>Water Fountain:</strong>
+                    `;
 
-        Keep the fountain outlet and surrounding
-        area clean.
 
-        Regularly inspect the fountain for
-        visible dirt, damaged plastic components,
-        or other possible sources of particles.
+                    perImageTableBody.appendChild(
+                        row
+                    );
 
-    `);
+                }
+            );
 
-}
 
-else if (
-    waterSource.includes("tap")
-) {
+            const totalRow =
+                document.createElement(
+                    "tr"
+                );
 
-    recommendations.push(`
 
-        <strong>Tap Water:</strong>
+            totalRow.className =
+                "per-image-total-row";
 
-        Inspect the faucet, plumbing fixtures,
-        and nearby plastic components for
-        possible sources of particle contamination.
 
-        Keep the faucet outlet clean and consider
-        additional water-quality testing if high
-        particle counts persist.
+            totalRow.innerHTML = `
 
-    `);
+                <td>
+                    TOTAL
+                </td>
 
-}
+                <td>
+                    ${totalFragments}
+                </td>
 
-else if (
-    waterSource.includes("mineral")
-) {
+                <td>
+                    ${totalFibers}
+                </td>
 
-    recommendations.push(`
+                <td>
+                    ${totalFilms}
+                </td>
 
-        <strong>Mineral Water:</strong>
+                <td>
+                    ${totalFoams}
+                </td>
 
-        Store the water container away from
-        sunlight and excessive heat.
+                <td>
+                    ${totalPellets}
+                </td>
 
-        Inspect the bottle or container for
-        damage, excessive wear, or other
-        possible sources of particle contamination.
+                <td>
+                    ${totalLines}
+                </td>
 
-    `);
+                <td>
+                    ${totalParticles}
+                </td>
 
-}
+            `;
 
 
-// ======================================
-// 5. FIBER-LIKE PARTICLES
-// ======================================
+            perImageTableBody.appendChild(
+                totalRow
+            );
 
-if (fibers > 0) {
 
-    recommendations.push(`
+            perImageContainer.style.display =
+                "block";
 
-        <strong>Fiber-like Particles Detected:</strong>
 
-        ${fibers} fiber-like particle(s) were
-        detected.
+            perImageLink.textContent =
+                "← Hide detailed results per image";
 
-        Keep the water container covered and
-        minimize exposure to dust, cloth,
-        clothing fibers, carpets, and other
-        surrounding materials that may introduce
-        fiber-like particles.
-
-    `);
-
-}
-
-
-// ======================================
-// 6. FRAGMENT-LIKE PARTICLES
-// ======================================
-
-if (fragments > 0) {
-
-    recommendations.push(`
-
-        <strong>Fragment-like Particles Detected:</strong>
-
-        ${fragments} fragment-like particle(s)
-        were detected.
-
-        Inspect the water dispenser, storage
-        container, plastic components, and
-        surrounding materials for possible
-        sources of plastic wear or breakage.
-
-        Replace visibly damaged or deteriorated
-        plastic containers when appropriate.
-
-    `);
+        }
+    );
 
 }
 
 
-// ======================================
-// 7. FILM-LIKE PARTICLES
-// ======================================
+// =====================================================
+// NEW ANALYSIS
+// =====================================================
 
-if (films > 0) {
-
-    recommendations.push(`
-
-        <strong>Film-like Particles Detected:</strong>
-
-        ${films} film-like particle(s) were
-        detected.
-
-        Inspect plastic bags, wrappers,
-        containers, covers, and other plastic
-        materials that may come into contact
-        with the water.
-
-        Keep unnecessary plastic materials
-        away from the water container.
-
-    `);
-
-}
+const newAnalysisBtn =
+    document.getElementById(
+        "newAnalysisBtn"
+    );
 
 
-// ======================================
-// 8. FOAM-LIKE PARTICLES
-// ======================================
+if (newAnalysisBtn) {
 
-if (foams > 0) {
+    newAnalysisBtn.addEventListener(
+        "click",
+        function() {
 
-    recommendations.push(`
+            window.location.href =
+                "upload.html";
 
-        <strong>Foam-like Particles Detected:</strong>
-
-        ${foams} foam-like particle(s) were
-        detected.
-
-        Inspect nearby packaging, foam materials,
-        insulation, and other lightweight plastic
-        materials for possible sources of
-        contamination.
-
-        Keep these materials away from the
-        water storage area.
-
-    `);
+        }
+    );
 
 }
 
 
-// ======================================
-// 9. PELLET-LIKE PARTICLES
-// ======================================
-
-if (pellets > 0) {
-
-    recommendations.push(`
-
-        <strong>Pellet-like Particles Detected:</strong>
-
-        ${pellets} pellet-like particle(s) were
-        detected.
-
-        Inspect the water storage and surrounding
-        area for possible plastic resin or
-        plastic-material sources.
-
-        Keep plastic debris and damaged plastic
-        materials away from the water container.
-
-    `);
-
-}
-
-
-// ======================================
-// 10. GENERAL HIGH-CONTAMINATION ACTION
-// ======================================
-
-if (
-    (riskLevel === "LEVEL 3" ||
-     riskLevel === "LEVEL 4") &&
-    (
-        condition.includes("sun") ||
-        condition.includes("light")
-    )
-) {
-
-    recommendations.push(`
-
-        <strong>Priority Action:</strong>
-
-        Because the sample showed a high level
-        of detected particles and was exposed
-        to direct sunlight, move the water
-        dispenser or storage container to a
-        shaded indoor area away from direct
-        sunlight and excessive heat.
-
-        Re-sampling under improved storage
-        conditions is recommended to determine
-        whether the storage environment is
-        associated with the observed particle
-        count.
-
-    `);
-
-}
-
-
-// ======================================
-// 11. IF NO SPECIFIC RECOMMENDATIONS
-// ======================================
-
-if (recommendations.length === 0) {
-
-    recommendations.push(`
-
-        <strong>General Recommendation:</strong>
-
-        Maintain clean, covered water containers
-        and keep the water away from direct
-        sunlight, excessive heat, dust, and
-        unnecessary contact with plastic materials.
-
-        Continue monitoring through additional
-        samples.
-
-    `);
-
-}
-
-
-// ======================================
-// DISPLAY RECOMMENDATIONS
-// ======================================
-
-if (recommendation) {
-
-    recommendation.innerHTML =
-        recommendations
-            .map(item => `<p>${item}</p>`)
-            .join("");
-
-}
-
-
-// ======================================
-// DOWNLOAD PDF REPORT
-// ======================================
+// =====================================================
+// DOWNLOAD PDF
+// =====================================================
 
 const downloadBtn =
-    document.getElementById("downloadBtn");
+    document.getElementById(
+        "downloadBtn"
+    );
 
 
 if (downloadBtn) {
 
-    downloadBtn.addEventListener("click", function () {
+    downloadBtn.addEventListener(
+        "click",
+        function() {
 
-        try {
+            try {
 
-            downloadBtn.disabled = true;
-            downloadBtn.textContent = "Creating Report...";
+                downloadBtn.disabled =
+                    true;
 
-            const { jsPDF } = window.jspdf;
-
-            const pdf = new jsPDF({
-                orientation: "portrait",
-                unit: "mm",
-                format: "a4"
-            });
-
-            const pageWidth =
-                pdf.internal.pageSize.getWidth();
-
-            const pageHeight =
-                pdf.internal.pageSize.getHeight();
-
-            const margin = 18;
-
-            const contentWidth =
-                pageWidth - (margin * 2);
-
-            let y = 20;
+                downloadBtn.textContent =
+                    "Creating Report...";
 
 
-            function checkPage(space = 10) {
+                const {
+                    jsPDF
+                } =
+                    window.jspdf;
 
-                if (y + space > pageHeight - 18) {
 
-                    pdf.addPage();
+                if (!jsPDF) {
 
-                    y = 20;
+                    throw new Error(
+                        "jsPDF was not loaded."
+                    );
 
                 }
 
-            }
+
+                const pdf =
+                    new jsPDF({
+                        orientation: "portrait",
+                        unit: "mm",
+                        format: "a4"
+                    });
 
 
-            function heading(text) {
+                const pageWidth =
+                    pdf.internal.pageSize.getWidth();
 
-                checkPage(14);
-
-                pdf.setFont("helvetica", "bold");
-
-                pdf.setFontSize(13);
-
-                pdf.text(text, margin, y);
-
-                y += 8;
-
-            }
+                const pageHeight =
+                    pdf.internal.pageSize.getHeight();
 
 
-            function textLine(text) {
+                const margin = 18;
 
-                checkPage(10);
+                const contentWidth =
+                    pageWidth -
+                    margin * 2;
 
-                pdf.setFont("helvetica", "normal");
 
-                pdf.setFontSize(10);
+                let y = 20;
 
-                const lines =
-                    pdf.splitTextToSize(
-                        String(text),
-                        contentWidth
+
+                function checkPage(
+                    space = 10
+                ) {
+
+                    if (
+                        y + space >
+                        pageHeight - 18
+                    ) {
+
+                        pdf.addPage();
+
+                        y = 20;
+
+                    }
+
+                }
+
+
+                function heading(text) {
+
+                    checkPage(14);
+
+                    pdf.setFont(
+                        "helvetica",
+                        "bold"
                     );
 
-                pdf.text(lines, margin, y);
+                    pdf.setFontSize(13);
 
-                y += (lines.length * 5) + 3;
+                    pdf.text(
+                        text,
+                        margin,
+                        y
+                    );
 
-            }
+                    y += 8;
 
+                }
 
-            function labelValue(label, value) {
 
-                checkPage(8);
+                function textLine(text) {
 
-                pdf.setFont("helvetica", "bold");
+                    checkPage(10);
 
-                pdf.setFontSize(10);
+                    pdf.setFont(
+                        "helvetica",
+                        "normal"
+                    );
 
-                pdf.text(
-                    label + ":",
-                    margin,
-                    y
-                );
+                    pdf.setFontSize(10);
 
-                const labelWidth =
-                    pdf.getTextWidth(label + ": ");
 
-                pdf.setFont("helvetica", "normal");
-
-                pdf.text(
-                    String(value),
-                    margin + labelWidth,
-                    y
-                );
-
-                y += 6;
-
-            }
-
-
-            function divider() {
-
-                checkPage(5);
-
-                pdf.line(
-                    margin,
-                    y,
-                    pageWidth - margin,
-                    y
-                );
-
-                y += 7;
-
-            }
-
-
-            // ==================================
-            // HEADER
-            // ==================================
-
-            pdf.setFont("helvetica", "bold");
-
-            pdf.setFontSize(22);
-
-            pdf.text(
-                "MicroCount STEVision",
-                pageWidth / 2,
-                y,
-                { align: "center" }
-            );
-
-            y += 9;
-
-            pdf.setFont("helvetica", "normal");
-
-            pdf.setFontSize(11);
-
-            pdf.text(
-                "Microplastic Analysis Report",
-                pageWidth / 2,
-                y,
-                { align: "center" }
-            );
-
-            y += 10;
-
-            divider();
-
-
-            // ==================================
-            // SAMPLE INFORMATION
-            // ==================================
-
-            heading("Sample Information");
-
-            labelValue("School Name", schoolName);
-            labelValue("Section", section);
-            labelValue("Water Source", source);
-            labelValue("Water Condition", waterCondition);
-            labelValue("Days Stored", daysStored + " day(s)");
-            labelValue("Microscope Magnification", totalMagnification);
-            labelValue("Sample ID", sampleID);
-
-            divider();
-
-
-            // ==================================
-            // ANALYSIS SUMMARY
-            // ==================================
-
-            heading("Analysis Summary");
-
-            labelValue("Number of Images", imageCount);
-            labelValue("Detected Particles", particleCount);
-            labelValue(
-                "Average Count",
-                average + " particles/image"
-            );
-
-            labelValue(
-                "Total Particle Area",
-                totalArea + " Fiji/ImageJ area units"
-            );
-
-            labelValue(
-                "Average Particle Area",
-                averageArea + " Fiji/ImageJ area units"
-            );
-
-            labelValue(
-                "Detection Method",
-                "Fiji/ImageJ Analyze Particles"
-            );
-
-            divider();
-
-
-            // ==================================
-            // RISK ASSESSMENT
-            // ==================================
-
-            heading("Risk Assessment");
-
-            labelValue("Risk Level", riskLevel);
-
-            textLine(
-                "Assessment: " + riskText
-            );
-
-            divider();
-
-
-            // ==================================
-            // MICROPLASTIC TYPES
-            // ==================================
-
-            heading("Microplastic Types Identified");
-
-            const types = [
-
-                ["Fragments", fragments],
-                ["Fibers", fibers],
-                ["Films", films],
-                ["Foams", foams],
-                ["Pellets", pellets],
-                ["Lines / Filaments", lines]
-
-            ];
-
-
-            types.forEach(function (item) {
-
-                checkPage(8);
-
-                const name = item[0];
-
-                const count = item[1];
-
-                pdf.setFont("helvetica", "normal");
-
-                pdf.setFontSize(10);
-
-                pdf.text(
-                    name +
-                    ": " +
-                    count +
-                    " (" +
-                    typePercentage(count) +
-                    ")",
-                    margin,
-                    y
-                );
-
-                y += 7;
-
-            });
-
-
-            divider();
-
-
-            // ==================================
-            // INTERPRETATION
-            // ==================================
-
-            heading("Interpretation");
-
-            textLine(
-                "Fiji/ImageJ was used as the image-analysis and particle-quantification method."
-            );
-
-            textLine(
-                particleCount +
-                " detected particle measurements were recorded from " +
-                imageCount +
-                " microscope image(s)."
-            );
-
-            textLine(
-                "The calculated average was " +
-                average +
-                " particles/image."
-            );
-
-            textLine(
-                "The calculated assessment level was " +
-                riskLevel +
-                " (" +
-                riskText +
-                ")."
-            );
-
-            divider();
-
-
-            // ==================================
-            // RECOMMENDATIONS
-            // ==================================
-
-            heading("Recommendations");
-
-
-            const recommendationElement =
-                document.getElementById(
-                    "recommendationText"
-                );
-
-
-            if (
-                recommendationElement &&
-                recommendationElement.innerText.trim()
-            ) {
-
-                const recommendationLines =
-                    recommendationElement.innerText
-                        .trim()
-                        .split("\n")
-                        .filter(
-                            line =>
-                                line.trim() !== ""
+                    const lines =
+                        pdf.splitTextToSize(
+                            String(text),
+                            contentWidth
                         );
 
 
-                recommendationLines.forEach(
-                    function (item) {
+                    pdf.text(
+                        lines,
+                        margin,
+                        y
+                    );
+
+
+                    y +=
+                        lines.length * 5 +
+                        3;
+
+                }
+
+
+                function labelValue(
+                    label,
+                    value
+                ) {
+
+                    checkPage(8);
+
+                    pdf.setFont(
+                        "helvetica",
+                        "bold"
+                    );
+
+                    pdf.setFontSize(10);
+
+
+                    pdf.text(
+                        label + ":",
+                        margin,
+                        y
+                    );
+
+
+                    const labelWidth =
+                        pdf.getTextWidth(
+                            label + ": "
+                        );
+
+
+                    pdf.setFont(
+                        "helvetica",
+                        "normal"
+                    );
+
+
+                    pdf.text(
+                        String(value),
+                        margin +
+                        labelWidth,
+                        y
+                    );
+
+
+                    y += 6;
+
+                }
+
+
+                function divider() {
+
+                    checkPage(5);
+
+                    pdf.line(
+                        margin,
+                        y,
+                        pageWidth - margin,
+                        y
+                    );
+
+                    y += 7;
+
+                }
+
+
+                // HEADER
+
+                pdf.setFont(
+                    "helvetica",
+                    "bold"
+                );
+
+                pdf.setFontSize(22);
+
+
+                pdf.text(
+                    "MicroCount STEVision",
+                    pageWidth / 2,
+                    y,
+                    {
+                        align: "center"
+                    }
+                );
+
+
+                y += 9;
+
+
+                pdf.setFont(
+                    "helvetica",
+                    "normal"
+                );
+
+                pdf.setFontSize(11);
+
+
+                pdf.text(
+                    "Microplastic Analysis Report",
+                    pageWidth / 2,
+                    y,
+                    {
+                        align: "center"
+                    }
+                );
+
+
+                y += 10;
+
+
+                divider();
+
+
+                // SAMPLE INFORMATION
+
+                heading(
+                    "Sample Information"
+                );
+
+
+                labelValue(
+                    "School Name",
+                    schoolName
+                );
+
+                labelValue(
+                    "Section",
+                    section
+                );
+
+                labelValue(
+                    "Water Source",
+                    source
+                );
+
+                labelValue(
+                    "Water Condition",
+                    waterCondition
+                );
+
+                labelValue(
+                    "Days Stored",
+                    daysStored + " day(s)"
+                );
+
+                labelValue(
+                    "Microscope Magnification",
+                    totalMagnification
+                );
+
+                labelValue(
+                    "Sample ID",
+                    sampleID
+                );
+
+
+                divider();
+
+
+                // ANALYSIS SUMMARY
+
+                heading(
+                    "Analysis Summary"
+                );
+
+
+                labelValue(
+                    "Number of Images",
+                    imageCount
+                );
+
+                labelValue(
+                    "Detected Particles",
+                    particleCount
+                );
+
+                labelValue(
+                    "Average Count",
+                    average.toFixed(2) +
+                    " particles/image"
+                );
+
+                labelValue(
+                    "Total Particle Area",
+                    totalArea +
+                    " Fiji/ImageJ area units"
+                );
+
+                labelValue(
+                    "Average Particle Area",
+                    averageArea +
+                    " Fiji/ImageJ area units"
+                );
+
+                labelValue(
+                    "Detection Method",
+                    "Fiji/ImageJ Analyze Particles"
+                );
+
+
+                divider();
+
+
+                // RISK
+
+                heading(
+                    "Risk Assessment"
+                );
+
+
+                labelValue(
+                    "Average Particles/Image",
+                    average.toFixed(2)
+                );
+
+                labelValue(
+                    "Risk Level",
+                    risk.level
+                );
+
+
+                textLine(
+                    "Assessment: " +
+                    risk.text
+                );
+
+
+                textLine(
+                    "Risk classification is based on the average number of suspected particles detected per microscope image, not the total particle count."
+                );
+
+
+                divider();
+
+
+                // TYPES
+
+                heading(
+                    "Microplastic Types Identified"
+                );
+
+
+                const types = [
+
+                    ["Fragments", fragments],
+
+                    ["Fibers", fibers],
+
+                    ["Films", films],
+
+                    ["Foams", foams],
+
+                    ["Pellets", pellets],
+
+                    [
+                        "Lines / Filaments",
+                        lines
+                    ]
+
+                ];
+
+
+                types.forEach(
+                    function(item) {
 
                         textLine(
-                            "• " + item.trim()
+                            item[0] +
+                            ": " +
+                            item[1] +
+                            " (" +
+                            typePercentage(
+                                item[1]
+                            ) +
+                            ")"
                         );
 
                     }
                 );
 
-            }
 
-            else {
+                divider();
+
+
+                // INTERPRETATION
+
+                heading(
+                    "Interpretation"
+                );
+
 
                 textLine(
-                    "No recommendations were generated."
+                    particleCount +
+                    " suspected particle measurements were recorded from " +
+                    imageCount +
+                    " microscope image(s)."
+                );
+
+
+                textLine(
+                    "The calculated average was " +
+                    average.toFixed(2) +
+                    " particles/image."
+                );
+
+
+                textLine(
+                    "The risk classification was based on the average particles detected per image."
+                );
+
+
+                textLine(
+                    "Assessment: " +
+                    risk.level +
+                    " (" +
+                    risk.text +
+                    ")."
+                );
+
+
+                divider();
+
+
+                // LONG TERM CONSIDERATIONS
+
+                heading(
+                    "Long-Term Health Considerations"
+                );
+
+
+                textLine(
+                    "MicroCount detects suspected particles visible in microscope images. The result is not a measurement of absorbed microplastic dose or individual disease risk."
+                );
+
+
+                textLine(
+                    "Current evidence does not allow a specific disease to be predicted after exactly 1, 5, or 10 years based only on this microscope particle count."
+                );
+
+
+                textLine(
+                    "Long-term research has investigated potential biological responses including oxidative stress, inflammation, and cellular responses."
+                );
+
+
+                divider();
+
+
+                // RECOMMENDATIONS
+
+                heading(
+                    "Recommendations"
+                );
+
+
+                const recommendationElement =
+                    document.getElementById(
+                        "recommendationText"
+                    );
+
+
+                if (
+                    recommendationElement
+                ) {
+
+                    const recommendationText =
+                        recommendationElement.innerText
+                            .trim();
+
+
+                    if (
+                        recommendationText &&
+                        !recommendationText.includes(
+                            "will appear here"
+                        )
+                    ) {
+
+                        textLine(
+                            recommendationText
+                        );
+
+                    }
+
+                    else {
+
+                        textLine(
+                            "Maintain clean and covered water containers and continue monitoring."
+                        );
+
+                    }
+
+                }
+
+
+                divider();
+
+
+                // FOOTER
+
+                checkPage(15);
+
+
+                pdf.setFontSize(8);
+
+                pdf.setFont(
+                    "helvetica",
+                    "normal"
+                );
+
+
+                pdf.text(
+                    "MicroCount STEVision | Fiji/ImageJ-assisted analysis",
+                    pageWidth / 2,
+                    pageHeight - 10,
+                    {
+                        align: "center"
+                    }
+                );
+
+
+                pdf.save(
+                    "MicroCount_STEVision_" +
+                    sampleID +
+                    "_Report.pdf"
                 );
 
             }
 
 
-            divider();
+            catch (error) {
+
+                console.error(
+                    "PDF generation error:",
+                    error
+                );
 
 
-            // ==================================
-            // FOOTER
-            // ==================================
+                alert(
+                    "The report could not be generated. Please try again."
+                );
 
-            checkPage(15);
-
-            pdf.setFontSize(8);
-
-            pdf.setFont("helvetica", "normal");
-
-            pdf.text(
-                "MicroCount STEVision | Fiji/ImageJ-assisted analysis",
-                pageWidth / 2,
-                pageHeight - 10,
-                { align: "center" }
-            );
-
-
-            // ==================================
-            // DOWNLOAD
-            // ==================================
-
-            pdf.save(
-                "MicroCount_STEVision_" +
-                sampleID +
-                "_Report.pdf"
-            );
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "PDF generation error:",
-                error
-            );
-
-            alert(
-                "The report could not be generated. Please try again."
-            );
-
-        }
-
-        finally {
-
-            downloadBtn.disabled = false;
-
-            downloadBtn.textContent =
-                "📄 Download Report";
-
-        }
-
-    });
-
-}
-// ======================================
-// MicroCount STEVision
-// Results Page - Image Display
-// ======================================
-
-const analyzedImagesContainer =
-    document.getElementById("analyzedImages");
-
-
-// ======================================
-// GET UPLOADED IMAGES
-// ======================================
-
-// Images should have been saved during the upload process.
-const storedImages =
-    JSON.parse(localStorage.getItem("microscopeImages") || "[]");
-
-
-// ======================================
-// GET FIJI PARTICLE DATA
-// ======================================
-
-// Example expected format:
-//
-// [
-//   {
-//      image: "image1.jpg",
-//      particles: [
-//          { x: 120, y: 85, radius: 15 },
-//          { x: 300, y: 180, radius: 12 }
-//      ]
-//   }
-// ]
-
-const fijiResults =
-    JSON.parse(localStorage.getItem("fijiResults") || "[]");
-
-
-// ======================================
-// DISPLAY IMAGES
-// ======================================
-
-function displayAnalyzedImages() {
-
-    analyzedImagesContainer.innerHTML = "";
-
-    if (storedImages.length === 0) {
-        analyzedImagesContainer.innerHTML = `
-            <p>No microscope images were uploaded.</p>
-        `;
-        return;
-    }
-
-    storedImages.forEach((imageData, imageIndex) => {
-
-        const card = document.createElement("div");
-        card.className = "analyzed-image-card";
-
-        const title = document.createElement("h3");
-        title.textContent = `Microscope Image ${imageIndex + 1}`;
-
-        const wrapper = document.createElement("div");
-        wrapper.className = "image-canvas-wrapper";
-
-        const img = document.createElement("img");
-
-        img.src = imageData;
-
-        const canvas = document.createElement("canvas");
-
-        wrapper.appendChild(img);
-        wrapper.appendChild(canvas);
-
-        const info = document.createElement("div");
-        info.className = "particle-info";
-
-        card.appendChild(title);
-        card.appendChild(wrapper);
-        card.appendChild(info);
-
-        analyzedImagesContainer.appendChild(card);
-
-        img.onload = function () {
-
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
-
-            const ctx = canvas.getContext("2d");
-
-            const result = fijiResults[imageIndex];
-
-            if (!result || !result.particles) {
-                info.innerHTML = `
-                    <span class="particle-count">
-                        No particle coordinates available
-                    </span>
-                `;
-                return;
             }
 
-            const particles = result.particles;
 
-            info.innerHTML = `
-                Detected particles:
-                <span class="particle-count">
-                    ${particles.length}
-                </span>
-            `;
+            finally {
 
-            drawParticleCircles(
-                ctx,
-                particles,
-                canvas.width,
-                canvas.height
-            );
-        };
-    });
+                downloadBtn.disabled =
+                    false;
+
+                downloadBtn.textContent =
+                    "📄 Download Report";
+
+            }
+
+        }
+    );
+
 }
-
-
-// ======================================
-// DRAW PARTICLE CIRCLES
-// ======================================
-
-function drawParticleCircles(
-    ctx,
-    particles,
-    imageWidth,
-    imageHeight
-) {
-
-    particles.forEach((particle, index) => {
-
-        const x = Number(particle.x);
-        const y = Number(particle.y);
-
-        // Use Fiji radius if available.
-        // Otherwise use a default circle size.
-        const radius =
-            Number(particle.radius) || 15;
-
-        // Circle
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.lineWidth = 4;
-        ctx.strokeStyle = "red";
-        ctx.stroke();
-
-
-        // Particle number
-        ctx.fillStyle = "red";
-        ctx.font = "bold 18px Arial";
-
-        ctx.fillText(
-            `${index + 1}`,
-            x + radius + 5,
-            y
-        );
-    });
-}
-
-
-// ======================================
-// START
-// ======================================
-
-displayAnalyzedImages();

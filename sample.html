@@ -230,30 +230,56 @@
             <!-- ============================= -->
             <!-- NUMBER OF IMAGES -->
             <!-- ============================= -->
+<!-- NUMBER OF MICROSCOPE IMAGES -->
 
-            <div class="field-group">
+<div class="form-group">
 
-                <label for="numImages">
-                    Number of Microscope Images <span>*</span>
-                </label>
+    <label for="numImages">
+        Number of Microscope Images *
+    </label>
 
-                <input
-                    type="number"
-                    id="numImages"
-                    name="numImages"
-                    placeholder="Enter number of images"
-                    min="1"
-                    max="20"
-                    inputmode="numeric"
-                    required
-                >
+    <input
+        type="number"
+        id="numImages"
+        name="numImages"
+        min="10"
+        max="20"
+        value="10"
+        required
+    >
 
-                <small>
-                    Upload 1–20 microscope images.
-                </small>
+<a href="#" id="imageRecommendationLink" class="info-link">
+    📷 Recommended number of images per water sample: 10 or more
+</a>
 
-            </div>
+<div id="imageRecommendation" class="image-recommendation" style="display: none;">
 
+    <h3>Recommended Number of Images per Water Sample</h3>
+
+    <p>
+        A minimum of <strong>10 microscope images per water sample</strong>
+        is recommended to improve the reliability and representativeness
+        of microplastic detection and quantification.
+    </p>
+
+    <p>
+        Analyzing more images provides a larger area of the sample for
+        examination and reduces the influence of unusually particle-rich
+        or particle-poor microscope fields.
+    </p>
+
+    <p>
+        Using fewer images may produce less representative results and
+        greater variation between measurements.
+    </p>
+
+    <p>
+        For MicroCount STEVision, users should analyze
+        <strong>10 or more images per water sample</strong> whenever
+        possible. The system allows up to 20 images per sample.
+    </p>
+
+</div>
 
             <!-- ============================= -->
             <!-- MAGNIFICATION -->
@@ -429,10 +455,30 @@
                         information I provide for the MicroCount
                         (STEVision) system in line with applicable
                         data privacy laws.
+                        <a
+
+
+    href="data-privacy.html"
+    target="_blank"
+    rel="noopener noreferrer"
+    style="
+        display: inline-block;
+        margin-top: 10px;
+        margin-left: 32px;
+        color: #183b6b;
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+    "
+>
+    → Read Data Privacy and Research Consent Policy
+</a>
 
                     </span>
 
                 </label>
+                <a
+ 
 
 
                 <!-- OPTIONAL -->

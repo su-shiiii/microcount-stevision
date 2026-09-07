@@ -1591,7 +1591,7 @@ button{
     box-sizing: border-box;
 }
 /* ======================================
-   POSSIBLE HEALTH CONSIDERATIONS
+Possible Health Effects Section
 ====================================== */
 
 .health-effects {
@@ -1623,4 +1623,196 @@ button{
 .health-effects li {
     margin-bottom: 10px;
     line-height: 1.5;
+}
+.health-evidence-box {
+    background: #f4f7fb;
+    border: 1px solid #dce5f0;
+    border-radius: 12px;
+    padding: 18px;
+    margin: 20px 0;
+}
+
+.health-sources {
+    background: #f8fafc;
+    border: 1px solid #dce5f0;
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 25px;
+}
+
+.health-sources a {
+    color: #12345b;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.health-sources a:hover {
+    opacity: 0.75;
+}
+
+.health-disclaimer {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #dce5f0;
+}
+
+.healthEffects h4 {
+    margin-top: 24px;
+}
+/* =====================================================
+   RISK LEVEL COLORS
+===================================================== */
+
+.risk-box {
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 20px;
+    border: 2px solid #dce5ef;
+}
+
+.risk-box h2 {
+    margin: 0 0 10px 0;
+}
+
+
+/* LEVEL 1 */
+
+.risk-level-1 {
+    background: #e8f7ed;
+    border-color: #58b77a;
+}
+
+.risk-level-1 h2 {
+    color: #23834a;
+}
+
+
+/* LEVEL 2 */
+
+.risk-level-2 {
+    background: #fff8df;
+    border-color: #e4bd42;
+}
+
+.risk-level-2 h2 {
+    color: #a77a00;
+}
+
+
+/* LEVEL 3 */
+
+.risk-level-3 {
+    background: #fff0df;
+    border-color: #e49a45;
+}
+
+.risk-level-3 h2 {
+    color: #b85f00;
+}
+
+
+/* LEVEL 4 */
+
+.risk-level-4 {
+    background: #ffe8e8;
+    border-color: #dc6262;
+}
+
+.risk-level-4 h2 {
+    color: #b52d2d;
+}
+.image-recommendation-link {
+    display: inline-block;
+    margin-top: 8px;
+
+    color: #183b6b;
+    font-weight: 700;
+    text-decoration: underline;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.image-recommendation-link:hover {
+    color: #20b8c8;
+}
+.image-recommendation-link {
+    display: inline-block;
+    margin-top: 8px;
+
+    color: #183b6b;
+    font-weight: 700;
+
+    text-decoration: underline;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.image-recommendation-link:hover {
+    color: #20b8c8;
+}
+/* =====================================================
+   NUMBER OF MICROSCOPE IMAGES
+   ===================================================== */
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    color: #102f63;
+}
+
+.form-group input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+
+    height: 58px;
+    padding: 0 18px;
+
+    border: 1px solid #d5dfeb;
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    font-family: inherit;
+    font-size: 17px;
+    color: #222;
+
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input[type="number"]:focus {
+    border-color: #27b8c8;
+    box-shadow: 0 0 0 3px rgba(39, 184, 200, 0.15);
+}
+
+.input-help {
+    display: block;
+    margin-top: 8px;
+
+    font-size: 15px;
+    color: #667085;
+}
+
+.info-link {
+    display: inline-block;
+    margin-top: 8px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #123d72;
+    text-decoration: underline;
+}
+
+.info-link:hover {
+    color: #20b7c7;
 }

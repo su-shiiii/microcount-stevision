@@ -26,6 +26,104 @@
     <style>
 
         /* =====================================================
+           ANALYZED IMAGES
+        ===================================================== */
+
+        .analyzed-images {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 30px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .analyzed-image-card {
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 20px;
+
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+
+        }
+
+
+        .analyzed-image-card h3 {
+
+            margin-bottom: 15px;
+
+            color: #183b6b;
+
+        }
+
+
+        .image-canvas-wrapper {
+
+            position: relative;
+
+            display: inline-block;
+
+            max-width: 100%;
+
+            overflow: hidden;
+
+        }
+
+
+        .image-canvas-wrapper img {
+
+            display: block;
+
+            max-width: 100%;
+
+            height: auto;
+
+        }
+
+
+        .image-canvas-wrapper canvas {
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            pointer-events: none;
+
+        }
+
+
+        .particle-info {
+
+            margin-top: 15px;
+
+            font-size: 15px;
+
+        }
+
+
+        .particle-count {
+
+            font-weight: bold;
+
+            color: #183b6b;
+
+        }
+
+
+        /* =====================================================
            PER-IMAGE RESULTS LINK
         ===================================================== */
 
@@ -64,9 +162,8 @@
         }
 
 
-
         /* =====================================================
-           PER-IMAGE RESULTS SECTION
+           PER-IMAGE RESULTS
         ===================================================== */
 
         #perImageResults {
@@ -79,11 +176,6 @@
 
         }
 
-
-
-        /* =====================================================
-           PER-IMAGE TABLE
-        ===================================================== */
 
         .per-image-table {
 
@@ -149,11 +241,6 @@
         }
 
 
-
-        /* =====================================================
-           TOTAL ROW
-        ===================================================== */
-
         .per-image-total-row {
 
             font-weight: bold;
@@ -170,11 +257,6 @@
         }
 
 
-
-        /* =====================================================
-           MESSAGE WHEN NO DATA EXISTS
-        ===================================================== */
-
         .per-image-no-data {
 
             padding: 20px;
@@ -189,6 +271,174 @@
 
         }
 
+
+        /* =====================================================
+           RISK BOX
+        ===================================================== */
+
+        .risk-box {
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            margin-top: 15px;
+
+        }
+
+
+        .risk-box h2 {
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .risk-level-1 {
+
+            background: #e8f5e9;
+
+            border: 2px solid #4caf50;
+
+        }
+
+
+        .risk-level-2 {
+
+            background: #fff8e1;
+
+            border: 2px solid #ffc107;
+
+        }
+
+
+        .risk-level-3 {
+
+            background: #fff3e0;
+
+            border: 2px solid #ff9800;
+
+        }
+
+
+        .risk-level-4 {
+
+            background: #ffebee;
+
+            border: 2px solid #f44336;
+
+        }
+
+
+        /* =====================================================
+           HEALTH EFFECTS
+        ===================================================== */
+
+        .health-effects {
+
+            margin-top: 30px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .health-effects h3 {
+
+            color: #183b6b;
+
+            margin-top: 25px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .health-effects h4 {
+
+            color: #183b6b;
+
+            margin-top: 25px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .health-time {
+
+            padding: 18px;
+
+            margin-top: 15px;
+
+            background: #f7fafc;
+
+            border-left: 4px solid #183b6b;
+
+            border-radius: 8px;
+
+        }
+
+
+        .health-evidence-box {
+
+            background: #fff8e6;
+
+            border: 1px solid #f0d58a;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .health-evidence {
+
+            background: #f5f8fc;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin-top: 25px;
+
+        }
+
+
+        .health-sources {
+
+            margin-top: 25px;
+
+        }
+
+
+        .health-sources a {
+
+            color: #183b6b;
+
+            font-weight: bold;
+
+        }
+
+
+        .health-disclaimer {
+
+            margin-top: 25px;
+
+            padding: 18px;
+
+            background: #f1f1f1;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+
+        }
 
 
         /* =====================================================
@@ -210,7 +460,6 @@
 </head>
 
 
-
 <body>
 
 
@@ -218,13 +467,11 @@
 
     <nav class="navbar">
 
-
         <div class="logo">
 
             <img
                 src="images/logo.png"
                 alt="MicroCount Logo">
-
 
             <span>
 
@@ -236,55 +483,36 @@
         </div>
 
 
-
         <ul class="nav-links">
 
-
             <li>
-
                 <a href="index.html">
-
                     Home
-
                 </a>
-
             </li>
 
-
             <li>
-
                 <a href="sample.html">
-
                     Sample
-
                 </a>
-
             </li>
 
+<li>
+    <a href="results.html" class="active">
+        Results
+    </a>
+</li>
+ <li>
+    <a href="contamination-index.html">
+        Contamination Index
+    </a>
+</li>
 
             <li>
-
-                <a
-                    href="results.html"
-                    class="active">
-
-                    Results
-
-                </a>
-
-            </li>
-
-
-            <li>
-
                 <a href="about.html">
-
                     About
-
                 </a>
-
             </li>
-
 
         </ul>
 
@@ -293,14 +521,11 @@
 </header>
 
 
-
 <main class="results-page">
 
 
     <h1>
-
         Results & Risk Assessment
-
     </h1>
 
 
@@ -312,18 +537,14 @@
     </p>
 
 
-
     <!-- =====================================================
          ANALYZED MICROSCOPE IMAGES
     ====================================================== -->
 
     <section class="results-card">
 
-
         <h2>
-
             Analyzed Microscope Images
-
         </h2>
 
 
@@ -340,13 +561,9 @@
             id="analyzedImages"
             class="analyzed-images">
 
-            <!-- Images inserted by results.js -->
-
         </div>
 
-
     </section>
-
 
 
     <!-- =====================================================
@@ -355,107 +572,53 @@
 
     <section class="result-card">
 
-
         <h2>
-
             Sample Information
-
         </h2>
 
 
         <p>
-
-            <strong>
-                School Name:
-            </strong>
-
-            <span id="schoolName">
-                —
-            </span>
-
+            <strong>School Name:</strong>
+            <span id="schoolName">—</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Section:
-            </strong>
-
-            <span id="section">
-                —
-            </span>
-
+            <strong>Section:</strong>
+            <span id="section">—</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Water Source:
-            </strong>
-
-            <span id="source">
-                —
-            </span>
-
+            <strong>Water Source:</strong>
+            <span id="source">—</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Water Condition:
-            </strong>
-
-            <span id="waterCondition">
-                —
-            </span>
-
+            <strong>Water Condition:</strong>
+            <span id="waterCondition">—</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Days Stored:
-            </strong>
-
-            <span id="daysStored">
-                —
-            </span>
-
+            <strong>Days Stored:</strong>
+            <span id="daysStored">—</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Microscope Magnification:
-            </strong>
-
-            <span id="magnification">
-                —
-            </span>
-
+            <strong>Microscope Magnification:</strong>
+            <span id="magnification">—</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Sample ID:
-            </strong>
-
-            <span id="sampleID">
-                —
-            </span>
-
+            <strong>Sample ID:</strong>
+            <span id="sampleID">—</span>
         </p>
-
 
     </section>
-
 
 
     <!-- =====================================================
@@ -464,129 +627,92 @@
 
     <section class="result-card">
 
-
         <h2>
-
             Analysis Summary
-
         </h2>
 
 
         <p>
-
-            <strong>
-                Number of Images:
-            </strong>
-
-            <span id="numImages">
-                0
-            </span>
-
+            <strong>Number of Images:</strong>
+            <span id="numImages">0</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Detected Particles:
-            </strong>
-
-            <span id="particleCount">
-                0
-            </span>
-
+            <strong>Detected Particles:</strong>
+            <span id="particleCount">0</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Average Count:
-            </strong>
-
-            <span id="average">
-                0
-            </span>
-
+            <strong>Average Count:</strong>
+            <span id="average">0</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Total Particle Area:
-            </strong>
-
-            <span id="totalArea">
-                0
-            </span>
-
+            <strong>Total Particle Area:</strong>
+            <span id="totalArea">0</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Average Particle Area:
-            </strong>
-
-            <span id="averageArea">
-                0
-            </span>
-
+            <strong>Average Particle Area:</strong>
+            <span id="averageArea">0</span>
         </p>
 
 
         <p>
-
-            <strong>
-                Detection Method:
-            </strong>
-
+            <strong>Detection Method:</strong>
             Fiji/ImageJ Analyze Particles
-
         </p>
-
 
     </section>
 
 
-
     <!-- =====================================================
          RISK LEVEL
+         IMPORTANT:
+         Risk is calculated from AVERAGE particles/image
+         in results.js
     ====================================================== -->
 
-<section class="result-card">
+    <section class="result-card">
 
-    <h2>
-        Risk Level
-    </h2>
-
-    <div
-        id="riskBox"
-        class="risk-box">
-
-        <h2 id="riskLevel">
-            —
+        <h2>
+            Risk Level
         </h2>
 
-        <p id="riskText">
-            —
-        </p>
 
-    </div>
+        <div
+            id="riskBox"
+            class="risk-box">
+
+            <h2 id="riskLevel">
+                —
+            </h2>
 
 
-    <!-- POSSIBLE HEALTH CONSIDERATIONS -->
+            <p id="riskText">
+                —
+            </p>
 
-    <div
-        id="healthEffects"
-        class="health-effects">
+        </div>
 
-    </div>
 
-</section>
+        <!-- =================================================
+             LONG-TERM HEALTH EFFECTS
+        ================================================== -->
 
+        <div
+            id="healthEffects"
+            class="health-effects">
+
+            <!-- Generated by results.js -->
+
+        </div>
+
+    </section>
 
 
     <!-- =====================================================
@@ -595,11 +721,8 @@
 
     <section class="result-card">
 
-
         <h2>
-
             Interpretation
-
         </h2>
 
 
@@ -609,22 +732,17 @@
 
         </p>
 
-
     </section>
 
 
-
     <!-- =====================================================
-         MICROPLASTIC TYPES IDENTIFIED
+         MICROPLASTIC TYPES
     ====================================================== -->
 
     <section class="results-card">
 
-
         <h2>
-
             Microplastic Types Identified
-
         </h2>
 
 
@@ -637,29 +755,26 @@
         </p>
 
 
-<div style="text-align:center; margin-top:20px;">
+        <!-- PER IMAGE LINK -->
 
-    <a
-        href="per-image-results.html"
-        id="perImageLink"
-        style="
-            color:#183b6b;
-            font-weight:bold;
-            text-decoration:underline;
-            cursor:pointer;
-        "
-    >
-        → View detailed results per image
-    </a>
+        <div class="per-image-link-container">
 
-</div>
+            <a
+                href="#"
+                id="viewPerImageResults">
+
+                → View detailed results per image
+
+            </a>
+
+        </div>
+
 
         <!-- =================================================
-             OVERALL MICROPLASTIC TABLE
+             OVERALL TABLE
         ================================================== -->
 
         <table class="microplastic-table">
-
 
             <thead>
 
@@ -789,14 +904,11 @@
 
             </tbody>
 
-
         </table>
 
 
-
-  <!-- =================================================
+        <!-- =================================================
              PER-IMAGE TABLE
-             Hidden until the link is clicked
         ================================================== -->
 
         <div
@@ -851,19 +963,14 @@
                 <tbody
                     id="perImageTableBody">
 
-                    <!-- Filled by JavaScript -->
-
                 </tbody>
 
 
             </table>
 
-
         </div>
 
-
     </section>
-
 
 
     <!-- =====================================================
@@ -872,11 +979,8 @@
 
     <section class="result-card">
 
-
         <h2>
-
             Recommendations
-
         </h2>
 
 
@@ -887,9 +991,7 @@
 
         </div>
 
-
     </section>
-
 
 
     <!-- =====================================================
@@ -897,7 +999,6 @@
     ====================================================== -->
 
     <div class="results-buttons">
-
 
         <button
             id="newAnalysisBtn">
@@ -914,12 +1015,10 @@
 
         </button>
 
-
     </div>
 
 
 </main>
-
 
 
 <!-- =====================================================
@@ -931,25 +1030,22 @@
 </script>
 
 
-
 <!-- =====================================================
-     YOUR EXISTING RESULTS.JS
+     RESULTS JAVASCRIPT
 ====================================================== -->
 
 <script src="results.js"></script>
 
 
-
 <!-- =====================================================
-     PER-IMAGE RESULTS SCRIPT
+     PER-IMAGE RESULTS JAVASCRIPT
 ====================================================== -->
 
 <script>
 
-
 document.addEventListener(
     "DOMContentLoaded",
-    function() {
+    function () {
 
 
         const link =
@@ -970,67 +1066,52 @@ document.addEventListener(
             );
 
 
-
-        /*
-            Read the data saved by analysis.html.
-        */
-
-
-        const savedData =
-            localStorage.getItem(
-                "perImageResults"
-            );
-
-
-
-        // =================================================
-        // LINK CLICK
-        // =================================================
+        if (
+            !link ||
+            !container ||
+            !tableBody
+        ) {
+            return;
+        }
 
 
         link.addEventListener(
             "click",
-            function(event) {
-
+            function (event) {
 
                 event.preventDefault();
 
 
-
-                /*
-                    If table is currently visible,
-                    hide it.
-                */
-
+                /* =========================================
+                   HIDE TABLE
+                ========================================= */
 
                 if (
-                    container.style.display ===
-                    "block"
+                    container.style.display === "block"
                 ) {
-
 
                     container.style.display =
                         "none";
 
-
                     link.textContent =
                         "→ View detailed results per image";
-
 
                     return;
 
                 }
 
 
+                /* =========================================
+                   GET DATA
+                ========================================= */
 
-                /*
-                    If no data exists
-                    show a message.
-                */
+                const savedData =
+                    localStorage.getItem(
+                        "perImageResults"
+                    );
 
 
                 if (!savedData) {
-
 
                     tableBody.innerHTML = `
 
@@ -1059,16 +1140,17 @@ document.addEventListener(
                     container.style.display =
                         "block";
 
-
                     link.textContent =
                         "← Hide detailed results per image";
-
 
                     return;
 
                 }
 
 
+                /* =========================================
+                   PARSE DATA
+                ========================================= */
 
                 let results;
 
@@ -1076,13 +1158,11 @@ document.addEventListener(
                 try {
 
                     results =
-                        JSON.parse(
-                            savedData
-                        );
+                        JSON.parse(savedData);
 
                 }
-                catch (error) {
 
+                catch (error) {
 
                     console.error(
                         "Could not read per-image results:",
@@ -1111,18 +1191,15 @@ document.addEventListener(
                     container.style.display =
                         "block";
 
-
                     return;
 
                 }
-
 
 
                 if (
                     !Array.isArray(results) ||
                     results.length === 0
                 ) {
-
 
                     tableBody.innerHTML = `
 
@@ -1145,64 +1222,33 @@ document.addEventListener(
                     container.style.display =
                         "block";
 
-
                     return;
 
                 }
 
 
+                /* =========================================
+                   CLEAR TABLE
+                ========================================= */
 
-                // =================================================
-                // CLEAR OLD TABLE
-                // =================================================
-
-
-                tableBody.innerHTML =
-                    "";
+                tableBody.innerHTML = "";
 
 
-
-                // =================================================
-                // TOTALS
-                // =================================================
-
-
-                let totalFragments =
-                    0;
-
-
-                let totalFibers =
-                    0;
+                let totalFragments = 0;
+                let totalFibers = 0;
+                let totalFilms = 0;
+                let totalFoams = 0;
+                let totalPellets = 0;
+                let totalLines = 0;
+                let totalParticles = 0;
 
 
-                let totalFilms =
-                    0;
-
-
-                let totalFoams =
-                    0;
-
-
-                let totalPellets =
-                    0;
-
-
-                let totalLines =
-                    0;
-
-
-                let totalParticles =
-                    0;
-
-
-
-                // =================================================
-                // CREATE EACH IMAGE ROW
-                // =================================================
-
+                /* =========================================
+                   CREATE ROWS
+                ========================================= */
 
                 results.forEach(
-                    function(result) {
+                    function (result, index) {
 
 
                         const fragments =
@@ -1255,10 +1301,6 @@ document.addEventListener(
                             );
 
 
-
-                        // Add to totals
-
-
                         totalFragments +=
                             fragments;
 
@@ -1287,10 +1329,9 @@ document.addEventListener(
                             particles;
 
 
-
-                        // =================================================
-                        // CREATE ROW
-                        // =================================================
+                        const imageNumber =
+                            result.imageNumber ||
+                            index + 1;
 
 
                         const row =
@@ -1303,53 +1344,45 @@ document.addEventListener(
 
                             <td class="image-name">
 
-                                Image
-                                ${result.imageNumber}
+                                Image ${imageNumber}
 
                             </td>
 
-                            <td>
 
+                            <td>
                                 ${fragments}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 ${fibers}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 ${films}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 ${foams}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 ${pellets}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 ${lines}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 <strong>
                                     ${particles}
                                 </strong>
-
                             </td>
 
                         `;
@@ -1363,11 +1396,9 @@ document.addEventListener(
                 );
 
 
-
-                // =================================================
-                // TOTAL ROW
-                // =================================================
-
+                /* =========================================
+                   TOTAL ROW
+                ========================================= */
 
                 const totalRow =
                     document.createElement(
@@ -1421,11 +1452,9 @@ document.addEventListener(
                 );
 
 
-
-                // =================================================
-                // SHOW TABLE
-                // =================================================
-
+                /* =========================================
+                   SHOW TABLE
+                ========================================= */
 
                 container.style.display =
                     "block";
@@ -1433,7 +1462,6 @@ document.addEventListener(
 
                 link.textContent =
                     "← Hide detailed results per image";
-
 
             }
 
