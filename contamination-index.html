@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Contamination Index | MicroCount STEVision
+    </title>
+
+    <link rel="icon"
+          type="image/png"
+          href="images/logo.png">
+
+    <link rel="stylesheet"
+          href="style.css">
+
+    <style>
+
+        .contamination-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .contamination-page h1 {
+            color: #183b6b;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .ci-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .ci-card h2 {
+            color: #183b6b;
+            margin-bottom: 15px;
+        }
+
+        .formula {
+            background: #f3f7fb;
+            border-left: 5px solid #183b6b;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        .variable {
+            margin: 10px 0;
+        }
+
+        .example-box {
+            background: #eef7fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .classification-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .classification-table th {
+            background: #183b6b;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        .classification-table td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .classification-table tr:nth-child(even) {
+            background: #f5f8fc;
+        }
+
+        .important-note {
+            background: #fff7e6;
+            border-left: 5px solid #e6a23c;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .source-box {
+            background: #f5f8fc;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .source-box a {
+            color: #183b6b;
+            font-weight: bold;
+        }
+
+        @media (max-width: 700px) {
+
+            .ci-card {
+                padding: 20px;
+            }
+
+            .classification-table {
+                font-size: 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <img src="images/logo.png"
+                 alt="MicroCount Logo">
+
+            <span>
+
+                MicroCount
+                <strong>STEVision</strong>
+
+            </span>
+
+        </div>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="index.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="sample.html">
+                    Sample
+                </a>
+            </li>
+
+            <li>
+                <a href="results.html">
+                    Results
+                </a>
+            </li>
+
+            <li>
+                <a href="contamination-index.html"
+                   class="active">
+                    Contamination Index
+                </a>
+            </li>
+
+            <li>
+                <a href="about.html">
+                    About
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+
+<main class="contamination-page">
+
+
+    <h1>
+        Microplastic Contamination Index
+    </h1>
+
+    <p class="subtitle">
+
+        Scientific basis, computation, and interpretation
+        used for assessing suspected microplastic contamination.
+
+    </p>
+
+
+    <!-- =====================================================
+         SCIENTIFIC BASIS
+    ====================================================== -->
+
+    <section class="ci-card">
+
+        <h2>
+            Scientific Basis
+        </h2>
+
+        <p>
+
+            MicroCount uses particle abundance as an indicator
+            of suspected microplastic contamination. Because
+            MicroCount analyzes microscope images rather than
+            measuring polymer concentration directly, the result
+            should be interpreted as an indicator of observed
+            particle contamination rather than a measurement of
+            human health risk.
+
+        </p>
+
+        <p>
+
+            Published microplastic studies have adapted
+            contamination-factor and pollution-load approaches
+            to compare measured microplastic abundance with a
+            reference or baseline concentration.
+
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTAMINATION FACTOR
+    ====================================================== -->
+
+    <section class="ci-card">
+
+        <h2>
+            Contamination Factor
+        </h2>
+
+        <p>
+
+            The contamination factor compares the measured
+            microplastic concentration with a selected baseline
+            or reference concentration.
+
+        </p>
+
+
+        <div class="formula">
+
+            CF = C<sub>i</sub> / C<sub>0</sub>
+
+        </div>
+
+
+        <div class="variable">
+
+            <strong>CF</strong> =
+            Contamination Factor
+
+        </div>
+
+        <div class="variable">
+
+            <strong>C<sub>i</sub></strong> =
+            measured microplastic concentration
+
+        </div>
+
+        <div class="variable">
+
+            <strong>C<sub>0</sub></strong> =
+            reference or baseline microplastic concentration
+
+        </div>
+
+
+        <div class="important-note">
+
+            <strong>Important:</strong>
+
+            A valid contamination factor requires a
+            scientifically justified reference or baseline.
+            MicroCount should not invent a baseline value.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         POLLUTION LOAD INDEX
+    ====================================================== -->
+
+    <section class="ci-card">
+
+        <h2>
+            Pollution Load Index
+        </h2>
+
+        <p>
+
+            Published studies have also used the Pollution Load
+            Index (PLI) to summarize microplastic pollution
+            relative to reference concentrations.
+
+        </p>
+
+
+        <div class="formula">
+
+            PLI = √CF
+
+        </div>
+
+
+        <p>
+
+            When multiple sampling sites or categories are
+            available, published applications may calculate an
+            overall PLI using the geometric mean of the individual
+            pollution-load indices.
+
+        </p>
+
+
+        <div class="formula">
+
+            PLI<sub>overall</sub> =
+            ⁿ√(PLI<sub>1</sub> × PLI<sub>2</sub> × ... × PLI<sub>n</sub>)
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         STEP BY STEP
+    ====================================================== -->
+
+    <section class="ci-card">
+
+        <h2>
+            Step-by-Step Computation
+        </h2>
+
+
+        <ol>
+
+            <li>
+
+                <strong>Determine the measured particle
+                concentration.</strong>
+
+                <br>
+
+                MicroCount obtains the number of suspected
+                particles detected in the analyzed microscope
+                images.
+
+            </li>
+
+
+            <br>
+
+
+            <li>
+
+                <strong>Determine the reference
+                concentration.</strong>
+
+                <br>
+
+                A scientifically justified background or baseline
+                value must be selected from an appropriate
+                published source or reference dataset.
+
+            </li>
+
+
+            <br>
+
+
+            <li>
+
+                <strong>Calculate the Contamination Factor.</strong>
+
+                <br>
+
+                Divide the measured concentration by the
+                reference concentration.
+
+            </li>
+
+
+            <br>
+
+
+            <li>
+
+                <strong>Calculate the Pollution Load Index,
+                when appropriate.</strong>
+
+                <br>
+
+                The contamination factor can be transformed
+                according to the published PLI framework.
+
+            </li>
+
+
+            <br>
+
+
+            <li>
+
+                <strong>Interpret the result.</strong>
+
+                <br>
+
+                Higher values indicate a greater measured
+                microplastic load relative to the selected
+                baseline.
+
+            </li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- =====================================================
+         MICROCOUNT APPLICATION
+    ====================================================== -->
+
+    <section class="ci-card">
+
+        <h2>
+            Application to MicroCount
+        </h2>
+
+        <p>
+
+            MicroCount currently reports suspected particles per
+            microscope image. Therefore, the MicroCount average
+            particle count can be used as an observational
+            abundance measure.
+
+        </p>
+
+
+        <div class="example-box">
+
+            <strong>Example:</strong>
+
+            <br><br>
+
+            Suppose MicroCount detects an average of
+
+            <strong>
+                12.5 suspected particles/image
+            </strong>
+
+            across the analyzed microscope images.
+
+            <br><br>
+
+            This value describes the observed particle abundance
+            in the analyzed images. It should not automatically
+            be converted into a contamination factor unless an
+            appropriate reference value measured using a
+            comparable method and unit is available.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         INTERPRETATION
+    ====================================================== -->
+
+    <section class="ci-card">
+
+        <h2>
+            Interpretation
+        </h2>
+
+
+        <table class="classification-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Result
+                    </th>
+
+                    <th>
+                        Interpretation
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        CF &lt; 1
+                    </td>
+
+                    <td>
+                        Measured concentration is below
+                        the selected reference value.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        CF = 1
+                    </td>
+
+                    <td>
+                        Measured concentration equals
+                        the selected reference value.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        CF &gt; 1
+                    </td>
+
+                    <td>
+                        Measured concentration is higher
+                        than the selected reference value.
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+
+        <p style="margin-top:20px;">
+
+            These interpretations describe contamination
+            relative to the chosen baseline. They should not
+            be interpreted as direct human-health risk levels.
+
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         IMPORTANT LIMITATION
+    ====================================================== -->
+
+    <section class="ci-card">
+
+        <h2>
+            Important Scientific Limitation
+        </h2>
+
+
+        <div class="important-note">
+
+            MicroCount detects suspected particles visible in
+            microscope images. Microscopic particle counts do
+            not by themselves establish polymer identity,
+            chemical composition, particle mass, human absorbed
+            dose, or disease risk.
+
+            <br><br>
+
+            Therefore, the Contamination Index should be used
+            for environmental comparison and research
+            interpretation rather than as a clinical health-risk
+            assessment.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PUBLISHED REFERENCE
+    ====================================================== -->
+
+    <section class="ci-card">
+
+        <h2>
+            Published Scientific Reference
+        </h2>
+
+
+        <div class="source-box">
+
+            <p>
+
+                The contamination-factor and pollution-load
+                framework used in microplastic research has been
+                applied in published studies using:
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Microplastic contamination in environmental
+                    samples using contamination factor and
+                    pollution load index approaches.
+                </strong>
+
+            </p>
+
+
+            <p>
+
+                A published example describes the microplastic
+                contamination factor as:
+
+            </p>
+
+
+            <div class="formula">
+
+                MPCF<sub>i</sub> =
+                MP<sub>i</sub> / MP<sub>b</sub>
+
+            </div>
+
+
+            <p>
+
+                where the measured microplastic abundance is
+                compared with a baseline abundance. Published
+                applications subsequently use these factors to
+                calculate a microplastic pollution load index.
+
+            </p>
+
+
+            <p>
+
+                Reference:
+
+                <a
+                    href="https://doi.org/10.1007/s13201-024-02350-9"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    Assessment of microplastic release from
+                    facial and body scrubs in aquatic ecosystems
+                    — Applied Water Science
+
+                </a>
+
+            </p>
+
+
+            <p>
+
+                Additional published work describing contamination
+                factors and pollution-load approaches for
+                microplastics can be found in:
+
+            </p>
+
+
+            <p>
+
+                <a
+                    href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10998050/"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    Microplastic concentrations and risk
+                    assessment in water, sediment and
+                    invertebrates from Simon's Town, South Africa
+
+                </a>
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>

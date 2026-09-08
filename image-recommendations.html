@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Recommended Number of Images | MicroCount STEVision
+    </title>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="images/logo.png">
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+
+    <style>
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .image-recommendations-page {
+
+            max-width: 1000px;
+
+            margin: 50px auto;
+
+            padding: 0 25px 60px;
+
+        }
+
+
+        .image-recommendations-page h1 {
+
+            color: #183b6b;
+
+            text-align: center;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .page-subtitle {
+
+            text-align: center;
+
+            color: #555;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        /* =====================================================
+           CARDS
+        ===================================================== */
+
+        .recommendation-card {
+
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 30px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        .recommendation-card h2 {
+
+            color: #183b6b;
+
+            margin-top: 0;
+
+        }
+
+
+        .recommendation-card h3 {
+
+            color: #183b6b;
+
+            margin-top: 25px;
+
+        }
+
+
+        .recommendation-card p {
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =====================================================
+           BIG RECOMMENDATION
+        ===================================================== */
+
+        .minimum-box {
+
+            background: #eef8fa;
+
+            border-left: 6px solid #20b8c8;
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            margin: 25px 0;
+
+            text-align: center;
+
+        }
+
+
+        .minimum-number {
+
+            font-size: 42px;
+
+            font-weight: bold;
+
+            color: #183b6b;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .minimum-text {
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            color: #20aabb;
+
+        }
+
+
+        /* =====================================================
+           FORMULA
+        ===================================================== */
+
+        .formula-box {
+
+            background: #f4f7fb;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            margin: 20px 0;
+
+            text-align: center;
+
+            font-size: 18px;
+
+            color: #183b6b;
+
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .image-reliability-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 20px;
+
+        }
+
+
+        .image-reliability-table th {
+
+            background: #183b6b;
+
+            color: white;
+
+            padding: 14px;
+
+            text-align: left;
+
+        }
+
+
+        .image-reliability-table td {
+
+            padding: 14px;
+
+            border-bottom: 1px solid #d8e0e8;
+
+        }
+
+
+        .image-reliability-table tr:nth-child(even) {
+
+            background: #f5f8fc;
+
+        }
+
+
+        .image-reliability-table .recommended-row {
+
+            background: #e8f7fa;
+
+            font-weight: bold;
+
+        }
+
+
+        /* =====================================================
+           STEPS
+        ===================================================== */
+
+        .recommendation-steps {
+
+            padding-left: 25px;
+
+            line-height: 1.8;
+
+        }
+
+
+        .recommendation-steps li {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        /* =====================================================
+           SCIENTIFIC NOTE
+        ===================================================== */
+
+        .scientific-note {
+
+            background: #fff8e8;
+
+            border-left: 5px solid #d99a00;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            margin-top: 25px;
+
+        }
+
+
+        .scientific-note h3 {
+
+            margin-top: 0;
+
+            color: #7a5700;
+
+        }
+
+
+        /* =====================================================
+           REFERENCES
+        ===================================================== */
+
+        .references {
+
+            border-top: 1px solid #ddd;
+
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+        }
+
+
+        .references a {
+
+            color: #183b6b;
+
+            font-weight: bold;
+
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+        ===================================================== */
+
+        .back-button-container {
+
+            text-align: center;
+
+            margin-top: 30px;
+
+        }
+
+
+        .back-button {
+
+            display: inline-block;
+
+            padding: 13px 25px;
+
+            background: #20b8c8;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            transition: 0.2s ease;
+
+        }
+
+
+        .back-button:hover {
+
+            background: #183b6b;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .image-recommendations-page {
+
+                margin-top: 30px;
+
+                padding-left: 15px;
+
+                padding-right: 15px;
+
+            }
+
+
+            .recommendation-card {
+
+                padding: 20px;
+
+            }
+
+
+            .image-reliability-table {
+
+                font-size: 13px;
+
+            }
+
+
+            .image-reliability-table th,
+            .image-reliability-table td {
+
+                padding: 9px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<header>
+
+    <nav class="navbar">
+
+
+        <div class="logo">
+
+            <img
+                src="images/logo.png"
+                alt="MicroCount Logo">
+
+
+            <span>
+
+                MicroCount
+                <strong>STEVision</strong>
+
+            </span>
+
+        </div>
+
+
+        <ul class="nav-links">
+
+            <li>
+
+                <a href="index.html">
+                    Home
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="sample.html">
+                    Sample
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="results.html">
+                    Results
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="about.html">
+                    About
+                </a>
+
+            </li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+====================================================== -->
+
+<main class="image-recommendations-page">
+
+
+    <h1>
+        Recommended Number of Images per Water Sample
+    </h1>
+
+
+    <p class="page-subtitle">
+
+        Guidelines for improving the reliability and
+        representativeness of MicroCount STEVision results.
+
+    </p>
+
+
+
+    <!-- =================================================
+         MAIN RECOMMENDATION
+    ================================================== -->
+
+    <section class="recommendation-card">
+
+
+        <h2>
+            Recommended Minimum
+        </h2>
+
+
+        <div class="minimum-box">
+
+
+            <div class="minimum-number">
+                10+
+            </div>
+
+
+            <div class="minimum-text">
+                Microscope Images per Water Sample
+            </div>
+
+
+        </div>
+
+
+        <p>
+
+            MicroCount STEVision recommends analyzing
+            <strong>at least 10 microscope images</strong>
+            from each water sample whenever practical.
+
+            Analyzing multiple microscope fields provides
+            more observations of the prepared sample than
+            relying on a single image.
+
+        </p>
+
+
+        <p>
+
+            This recommendation is intended to improve the
+            representativeness of the estimated average
+            particle count and reduce the influence of an
+            unusually high or low particle count in one
+            microscope field.
+
+        </p>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         WHY MULTIPLE IMAGES
+    ================================================== -->
+
+    <section class="recommendation-card">
+
+
+        <h2>
+            Why Analyze Multiple Images?
+        </h2>
+
+
+        <p>
+
+            Microplastic particles may not be distributed
+            uniformly throughout a prepared water sample.
+            Some microscope fields may contain many
+            particles, while other fields may contain
+            relatively few.
+
+        </p>
+
+
+        <p>
+
+            If only one or a small number of images are
+            analyzed, the calculated result may be strongly
+            influenced by the particular microscope fields
+            selected.
+
+        </p>
+
+
+        <p>
+
+            Increasing the number of microscope images
+            provides more observations and can make the
+            estimated average particle count more stable
+            and representative of the analyzed sample.
+
+        </p>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         RELIABILITY TABLE
+    ================================================== -->
+
+    <section class="recommendation-card">
+
+
+        <h2>
+            How the Number of Images Affects Reliability
+        </h2>
+
+
+        <table class="image-reliability-table">
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Number of Images
+                    </th>
+
+                    <th>
+                        General Reliability
+                    </th>
+
+                    <th>
+                        Guideline
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+                <tr>
+
+                    <td>
+                        1–3
+                    </td>
+
+                    <td>
+                        Low
+                    </td>
+
+                    <td>
+
+                        A small number of microscope fields
+                        may not adequately represent the
+                        variation within the prepared sample.
+
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        4–9
+                    </td>
+
+                    <td>
+                        Moderate
+                    </td>
+
+                    <td>
+
+                        Provides additional observations,
+                        but particle distribution may still
+                        be insufficiently represented.
+
+                    </td>
+
+                </tr>
+
+
+                <tr class="recommended-row">
+
+                    <td>
+                        10 or more
+                    </td>
+
+                    <td>
+                        Recommended
+                    </td>
+
+                    <td>
+
+                        Provides a broader set of microscope
+                        fields for estimating the average
+                        observed particle count.
+
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        20 or more
+                    </td>
+
+                    <td>
+                        Higher observational coverage
+                    </td>
+
+                    <td>
+
+                        Provides additional observations and
+                        may improve the stability of the
+                        estimated average when particle
+                        distribution is highly variable.
+
+                    </td>
+
+                </tr>
+
+
+            </tbody>
+
+        </table>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         FORMULA
+    ================================================== -->
+
+    <section class="recommendation-card">
+
+
+        <h2>
+            MicroCount Average Calculation
+        </h2>
+
+
+        <p>
+
+            MicroCount uses the number of analyzed images
+            when calculating the average detected particle
+            count.
+
+        </p>
+
+
+        <div class="formula-box">
+
+            <strong>
+                Average Particles per Image
+            </strong>
+
+            <br><br>
+
+            Total Detected Particles
+            ÷
+            Number of Images Analyzed
+
+        </div>
+
+
+        <p>
+
+            For example, if 10 microscope images contain a
+            combined total of 50 detected particles:
+
+        </p>
+
+
+        <div class="formula-box">
+
+            50 ÷ 10 = <strong>5 particles/image</strong>
+
+        </div>
+
+
+        <p>
+
+            The resulting average represents the average
+            number of suspected particles observed per
+            microscope image.
+
+        </p>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         RECOMMENDED PROCEDURE
+    ================================================== -->
+
+    <section class="recommendation-card">
+
+
+        <h2>
+            Recommended Procedure
+        </h2>
+
+
+        <ol class="recommendation-steps">
+
+
+            <li>
+
+                Prepare the water sample using the same
+                procedure for each sample.
+
+            </li>
+
+
+            <li>
+
+                Capture microscope images from different
+                representative fields of the prepared
+                sample.
+
+            </li>
+
+
+            <li>
+
+                Analyze at least
+                <strong>10 microscope images</strong>
+                whenever practical.
+
+            </li>
+
+
+            <li>
+
+                Record the number of suspected particles
+                detected in each image.
+
+            </li>
+
+
+            <li>
+
+                Calculate the average number of detected
+                particles per image.
+
+            </li>
+
+
+            <li>
+
+                Report the total number of images analyzed
+                together with the particle count and
+                calculated average.
+
+            </li>
+
+
+        </ol>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         IMPORTANT SCIENTIFIC LIMITATION
+    ================================================== -->
+
+    <section class="recommendation-card">
+
+
+        <div class="scientific-note">
+
+
+            <h3>
+                Scientific Basis and Limitation
+            </h3>
+
+
+            <p>
+
+                The recommendation of
+                <strong>10 or more images</strong>
+                is a MicroCount study-design recommendation
+                intended to increase observational coverage
+                and improve the representativeness of the
+                estimated average.
+
+            </p>
+
+
+            <p>
+
+                It should <strong>not</strong> be described
+                as a universal international minimum
+                requirement for all microplastic studies.
+
+                The appropriate number of images can depend
+                on the study objectives, sample preparation,
+                particle distribution, microscope method,
+                and other analytical conditions.
+
+            </p>
+
+
+            <p>
+
+                Increasing the number of images does not by
+                itself confirm that every detected particle
+                is plastic. MicroCount results should therefore
+                be described as
+                <strong>suspected microplastic particles</strong>
+                unless an appropriate confirmatory method is
+                used.
+
+            </p>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         REFERENCES
+    ================================================== -->
+
+    <section class="recommendation-card">
+
+
+        <div class="references">
+
+
+            <h2>
+                Scientific References
+            </h2>
+
+
+            <p>
+
+                <strong>
+                    World Health Organization (WHO).
+                </strong>
+
+                (2019).
+
+                <em>
+                    Microplastics in drinking-water.
+                </em>
+
+                <br>
+
+                <a
+                    href="https://www.who.int/publications/i/item/9789241516198"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    View WHO publication
+
+                </a>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    U.S. Environmental Protection Agency
+                    (EPA).
+                </strong>
+
+                Information regarding assessment of
+                methods for measuring microplastics in water.
+
+                <br>
+
+                <a
+                    href="https://www.epa.gov/sciencematters/assessing-methods-measuring-microplastics-water"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    View EPA information
+
+                </a>
+
+            </p>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         BACK BUTTON
+    ================================================== -->
+
+    <div class="back-button-container">
+
+
+        <a
+            href="sample.html"
+            class="back-button">
+
+            ← Back to Sample Information
+
+        </a>
+
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>
