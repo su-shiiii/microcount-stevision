@@ -958,6 +958,115 @@ function saveResults(allResults) {
 // MAIN ANALYSIS
 // ==========================================
 
+// ==========================================
+// SAVE FINDINGS TO SUPABASE
+// ==========================================
+
+async function saveSubmissionToSupabase() {
+
+    const submission = {
+        sample_id:
+            localStorage.getItem("sampleID") || "",
+
+        school_name:
+            localStorage.getItem("schoolName") || "",
+
+        section:
+            localStorage.getItem("section") || "",
+
+        source:
+            localStorage.getItem("source") || "",
+
+        water_condition:
+            localStorage.getItem("waterCondition") || "",
+
+        days_stored:
+            Number(localStorage.getItem("daysStored")) || 0,
+
+        magnification:
+            localStorage.getItem("totalMagnification") || "",
+
+        num_images:
+            Number(localStorage.getItem("numImages")) || 0,
+
+        particles:
+            Number(localStorage.getItem("particles")) || 0,
+
+        average:
+            Number(localStorage.getItem("average")) || 0,
+
+        total_area:
+            null,
+
+        average_area:
+            null,
+
+        fragments:
+            Number(localStorage.getItem("fragment")) || 0,
+
+        fibers:
+            Number(localStorage.getItem("fiber")) || 0,
+
+        films:
+            Number(localStorage.getItem("film")) || 0,
+
+        foams:
+            Number(localStorage.getItem("foam")) || 0,
+
+        pellets:
+            Number(localStorage.getItem("pellet")) || 0,
+
+        lines:
+            Number(localStorage.getItem("line")) || 0,
+
+        risk_level:
+            localStorage.getItem("riskLevel") || "",
+
+        risk_text:
+            localStorage.getItem("riskText") || "",
+
+        recommendations:
+            localStorage.getItem("recommendations") || ""
+    };
+
+    for (let attempt = 1; attempt <= 3; attempt++) {
+
+        try {
+
+            const { error } =
+                await supabaseClient
+                    .from("submissions")
+                    .insert([submission]);
+
+            if (!error) {
+
+                console.log(
+                    "Findings successfully saved to Supabase."
+                );
+
+                return true;
+            }
+
+            console.error(
+                `Supabase attempt ${attempt} failed:`,
+                error
+            );
+
+        } catch (error) {
+
+            console.error(
+                `Supabase attempt ${attempt} error:`,
+                error
+            );
+        }
+
+        await new Promise(
+            resolve => setTimeout(resolve, 1000)
+        );
+    }
+
+    return false;
+}
 async function startAnalysis() {
 
     try {
@@ -988,10 +1097,13 @@ async function startAnalysis() {
             );
 
 
-            const result =
-                await analyzeImage(
-                    images[i]
-                );
+const imageData =
+    typeof images[i] === "string"
+        ? images[i]
+        : images[i].data;
+
+const result =
+    await analyzeImage(imageData);
 
 
             results.push(result);
@@ -1019,13 +1131,27 @@ async function startAnalysis() {
         );
 
 
-        saveResults(results);
+saveResults(results);
 
+setProgress(
+    92,
+    "Saving findings to researcher database..."
+);
 
-        setProgress(
-            100,
-            "Analysis complete!"
-        );
+const saved =
+    await saveSubmissionToSupabase();
+
+if (!saved) {
+
+    throw new Error(
+        "The analysis was completed, but the findings could not be saved to the researcher database."
+    );
+}
+
+setProgress(
+    100,
+    "Analysis complete!"
+);
 
 
         analysisTitle.textContent =
@@ -1069,3 +1195,6 @@ async function startAnalysis() {
 // START
 
 startAnalysis();
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="analysis.js"></script>
