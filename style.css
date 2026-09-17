@@ -1816,3 +1816,45 @@ Possible Health Effects Section
 .info-link:hover {
     color: #20b7c7;
 }
+/* ======================================
+   RECOMMENDATION REFERENCES
+====================================== */
+
+.recommendation-references {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #dfe6ee;
+}
+
+.recommendation-references h3 {
+    margin-bottom: 10px;
+    color: #183b6b;
+    font-size: 22px;
+}
+
+.recommendation-references p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.recommendation-references ul {
+    margin: 0;
+    padding-left: 22px;
+}
+
+.recommendation-references li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.recommendation-references a {
+    color: #159eac;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.recommendation-references a:hover {
+    text-decoration: underline;
+    color: #183b6b;
+}
